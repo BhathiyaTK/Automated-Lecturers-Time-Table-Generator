@@ -1,0 +1,91 @@
+{% extends 'base.html' %} {% block content %} {% load static %}
+<section>
+    <div class="row">
+        <div class="col-2" id="side-panel">
+            <div class="profile-img-div fluid">
+                <img src="{% static 'images/profile.jpg' %}" alt="Profile Image">
+                <p class="welcome-text pb-0 mb-0">Hi, welcome back!</p>
+                {% if user.is_authenticated %}
+                <p class="username">Mr. {{user.first_name}}</p>
+                {% endif %}
+            </div>
+            <div class="signout-btn-div fluid">
+                <a href="logout" class="btn btn-sm"><i class="fas fa-power-off"></i>&nbsp Log out</a>
+            </div>
+            <br>
+            <hr>
+            <br>
+            <ul class="menu-links">
+                <li><a href="../home"><i class="fas fa-home"></i>&nbsp&nbsp Home</a></li>
+                <li><a href="."><i class="fas fa-user-alt"></i>&nbsp&nbsp My Account</a></li>
+                <li><a href="#"><i class="fas fa-cog"></i>&nbsp&nbsp Settings</a></li>
+            </ul>
+        </div>
+        <div class="col-10 py-5 px-5" id="main-panel">
+            <div class="main-panel-title">
+                <h4>User Profile</h4>
+                <small class="text-muted">Manage your profile details</small>
+            </div>
+            <br><br>
+            <div class="section-div container py-5 px-5" id="profile-section">
+                {% if user.is_authenticated %}
+                <form>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <a href="#"><img src="{% static 'images/profile.jpg' %}" alt="Your Profile Image"></a>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="alert alert-info mb-4">
+                                        {% if user.is_superuser %}
+                                        <strong>User role : Super Admin </strong> {% else %}
+                                        <strong>User role : Guest </strong>&nbsp<small class="text-muted">( No access to change your user role )</small> {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="first_name">First Name</label>
+                                        <input class="form-control" type="text" name="fisrt_name" value="{{user.first_name}}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="last_name">Last Name</label>
+                                        <input class="form-control" type="text" name="last_name" value="{{user.last_name}}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <input class="form-control" type="email" name="email" value="{{user.email}}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="username">Username</label>
+                                        <input class="form-control" type="text" name="username" value="{{user.username}}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="save-btn-div text-right">
+                        <button type="submit" class="btn px-4">Save</button>
+                    </div>
+                </form>
+                {% else %}
+                <strong>User is not logged in.</strong> {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

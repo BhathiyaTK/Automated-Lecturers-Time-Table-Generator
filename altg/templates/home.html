@@ -1,0 +1,83 @@
+{% extends 'base.html' %} {% block content %}{% load static %}
+<section>
+    <div class="row">
+        <div class="col-2" id="side-panel">
+            <div class="profile-img-div fluid">
+                <img src="{% static 'images/profile.jpg' %}" alt="Profile Image">
+                <p class="welcome-text pb-0 mb-0">Hi, welcome back!</p>
+                {% if user.is_authenticated %}
+                <p class="username">Mr. {{user.first_name}}</p>
+                {% endif %}
+            </div>
+            <div class="signout-btn-div fluid">
+                <a href="logout" class="btn btn-sm"><i class="fas fa-power-off"></i>&nbsp Log out</a>
+            </div>
+            <br>
+            <hr>
+            <br>
+            <ul class="menu-links">
+                <li><a href="."><i class="fas fa-home"></i>&nbsp&nbsp Home</a></li>
+                <li><a href="../profile"><i class="fas fa-user-alt"></i>&nbsp&nbsp My Account</a></li>
+                <li><a href="#"><i class="fas fa-cog"></i>&nbsp&nbsp Settings</a></li>
+            </ul>
+        </div>
+        <div class="col-10 py-5 px-5" id="main-panel">
+            <div class="main-panel-title">
+                <h4>Data Form</h4>
+                <small class="text-muted">Fill below fields to generate time-table</small>
+            </div>
+            <br><br>
+            <div class="section-div container px-5 py-5">
+                <form>
+                    <div class="form-group">
+                        <label for="exampleInputName">Lecturer's Name</label>
+                        <input type="text" class="form-control" id="exampleInputName" name="lec_name" aria-describedby="nameHelp">
+                        <small id="nameHelp" class="form-text text-muted"><i>NOTE : Name with initials</i></small>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="exampleSelect">Batch</label>
+                                <select class="form-control" name="batch">
+                                    <option selected disabled>--- Choose ---</option>
+                                    <option value="1st">1st Year</option>
+                                    <option value="2nd">2nd Year</option>
+                                    <option value="3rd">3rd Year</option>
+                                    <option value="4th">4th Year</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="exampleSelect">Lecture Hall</label>
+                                <select class="form-control" name="batch">
+                                    <option selected disabled>--- Choose ---</option>
+                                    <option value="204">204</option>
+                                    <option value="104">104</option>
+                                    <option value="NLH">NLH</option>
+                                    <option value="Z9">Z9</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <label for="exampleInputSubject">Subject</label>
+                            <input type="text" class="form-control" id="exampleInputSubject" name="subject" aria-describedby="subjectHelp">
+                            <small id="subjectHelp" class="form-text text-muted"><i>NOTE : Subject code only</i></small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="exampleInputStdNo">Number of Students</label>
+                            <input type="text" class="form-control" id="exampleInputStdNo" name="std_no">
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <button type="submit" class="btn px-4">Generate</button><span class="text-muted ml-3" style="font-size: 12px;">These data will never save on the database.</span>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

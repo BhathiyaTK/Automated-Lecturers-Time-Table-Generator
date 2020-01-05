@@ -1,0 +1,199 @@
+/* ==========================================================================
+   #FONT
+   ========================================================================== */
+
+.font-robo {
+    font-family: "Roboto", "Arial", "Helvetica Neue", sans-serif;
+}
+
+.font-poppins {
+    font-family: "Poppins", "Arial", "Helvetica Neue", sans-serif;
+}
+
+.font-opensans {
+    font-family: "Open Sans", "Arial", "Helvetica Neue", sans-serif;
+}
+
+@font-face {
+    font-family: Poppins-Regular;
+    src: url('../fonts/poppins/Poppins-Regular.ttf');
+}
+
+@font-face {
+    font-family: Poppins-Medium;
+    src: url('../fonts/poppins/Poppins-Medium.ttf');
+}
+
+@font-face {
+    font-family: Poppins-Bold;
+    src: url('../fonts/poppins/Poppins-Bold.ttf');
+}
+
+@font-face {
+    font-family: Poppins-SemiBold;
+    src: url('../fonts/poppins/Poppins-SemiBold.ttf');
+}
+
+@font-face {
+    font-family: Montserrat-Bold;
+    src: url('../fonts/montserrat/Montserrat-Bold.ttf');
+}
+
+@font-face {
+    font-family: Montserrat-SemiBold;
+    src: url('../fonts/montserrat/Montserrat-SemiBold.ttf');
+}
+
+@font-face {
+    font-family: Montserrat-Regular;
+    src: url('../fonts/montserrat/Montserrat-Regular.ttf');
+}
+
+
+/* ==================================================================
+    # Common styles 
+    ================================================================= */
+
+.row {
+    margin: 0 !important;
+}
+
+.col-md-4,
+.col-md-5 {
+    padding: 0 !important;
+}
+
+.col-md-6,
+.col-md-8,
+.col-md-12 {
+    padding-right: 0 !important;
+    padding-left: 20px !important;
+}
+
+hr {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+.section-div {
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 7px;
+}
+
+
+/* ==================================================================
+    # Home Page styles 
+    ================================================================= */
+
+
+/* side panel  */
+
+#side-panel {
+    background: #3B5998;
+    height: 100vh;
+    padding: 3rem 1rem;
+}
+
+.profile-img-div,
+.signout-btn-div {
+    text-align: center;
+}
+
+.profile-img-div img {
+    width: 60%;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+}
+
+.welcome-text {
+    font-family: Open Sans;
+    font-weight: 300;
+    font-size: 0.9em;
+    color: #fff;
+}
+
+.username {
+    font-family: Open Sans;
+    font-weight: 600;
+    color: #fff;
+    font-size: 1.4em;
+    margin-bottom: 20px;
+}
+
+.signout-btn-div a {
+    background: #FF4B5A;
+    color: #fff;
+    font-family: Poppins-Medium;
+    transition: 0.2s;
+}
+
+.signout-btn-div a:hover {
+    mix-blend-mode: normal;
+    box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.25);
+}
+
+.menu-links {
+    list-style: none;
+    text-align: left;
+    padding: 0;
+}
+
+.menu-links li {
+    line-height: 40px;
+    padding: 0 20px;
+    margin-bottom: 10px;
+    border-radius: 7px;
+    transition: 0.2s;
+}
+
+.menu-links a {
+    color: rgba(255, 255, 255, 0.7);
+    font-family: Poppins-Regular;
+    letter-spacing: 0.5px;
+    font-size: 14px;
+}
+
+.menu-links li:hover {
+    padding-left: 25px;
+    background: rgba(94, 135, 224, 0.4);
+    border-left: 7px solid #fff;
+}
+
+.menu-links li:hover a {
+    text-decoration: none;
+    color: #fff;
+}
+
+
+/* main panel */
+
+.main-panel-title h4 {
+    font-family: Open Sans;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+}
+
+.section-div form label {
+    font-family: Poppins-Medium;
+}
+
+.section-div form button {
+    background: #3B5998;
+    color: #fff;
+    font-family: Poppins-Medium;
+    transition: 0.2s;
+}
+
+.section-div form button:hover {
+    mix-blend-mode: normal;
+    box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.25);
+}
+
+
+/* ==================================================================
+    # Profile Page styles 
+    ================================================================= */
+
+#profile-section img {
+    width: 100%;
+    border-radius: 7px;
+}
