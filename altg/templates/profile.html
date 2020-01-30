@@ -39,7 +39,7 @@
                                 <div class="col-md-12">
                                     <div class="alert alert-info mb-4">
                                         {% if user.is_superuser %}
-                                        <strong>User role : Super Admin </strong> {% else %}
+                                        <strong>User role : Admin </strong> {% else %}
                                         <strong>User role : Guest </strong>&nbsp<small class="text-muted">( No access to change your user role )</small> {% endif %}
                                     </div>
                                 </div>
@@ -78,7 +78,7 @@
                     </div>
                     <br>
                     <div class="save-btn-div text-right">
-                        <button type="submit" class="btn px-4">Save</button>
+                        <input type="submit" class="btn px-4 submit_btn" value="Save" />
                     </div>
                 </form>
                 {% else %}

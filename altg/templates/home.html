@@ -17,6 +17,8 @@
             <br>
             <ul class="menu-links">
                 <li><a href="."><i class="fas fa-home"></i>&nbsp&nbsp Home</a></li>
+                <li><a href="#"><i class="fas fa-university"></i>&nbsp&nbsp Add New Hall</a></li>
+                <li><a href="#"><i class="fas fa-user-plus"></i>&nbsp&nbsp Add New User</a></li>
                 <li><a href="../profile"><i class="fas fa-user-alt"></i>&nbsp&nbsp My Account</a></li>
                 <li><a href="#"><i class="fas fa-cog"></i>&nbsp&nbsp Settings</a></li>
             </ul>
@@ -28,54 +30,40 @@
             </div>
             <br><br>
             <div class="section-div container px-5 py-5">
-                <form>
+                <form action="./table/" method="POST">
+                    {% csrf_token %}
                     <div class="form-group">
-                        <label for="exampleInputName">Lecturer's Name</label>
-                        <input type="text" class="form-control" id="exampleInputName" name="lec_name" aria-describedby="nameHelp">
+                        <label for="exampleInputName">Lecturer's Name</label> {{form.lecturer_name}}
                         <small id="nameHelp" class="form-text text-muted"><i>NOTE : Name with initials</i></small>
                     </div>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="exampleSelect">Batch</label>
-                                <select class="form-control" name="batch">
-                                    <option selected disabled>--- Choose ---</option>
-                                    <option value="1st">1st Year</option>
-                                    <option value="2nd">2nd Year</option>
-                                    <option value="3rd">3rd Year</option>
-                                    <option value="4th">4th Year</option>
-                                </select>
+                                <label for="exampleSelect">Batch</label> {{form.batch}}
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label for="exampleSelect">Lecture Hall</label>
-                                <select class="form-control" name="batch">
-                                    <option selected disabled>--- Choose ---</option>
-                                    <option value="204">204</option>
-                                    <option value="104">104</option>
-                                    <option value="NLH">NLH</option>
-                                    <option value="Z9">Z9</option>
-                                </select>
+                                <label for="exampleSelect">Lecture Hall</label> {{form.hall}}
                             </div>
                         </div>
                         <div class="col-md-5">
-                            <label for="exampleInputSubject">Subject</label>
-                            <input type="text" class="form-control" id="exampleInputSubject" name="subject" aria-describedby="subjectHelp">
+                            <label for="exampleInputSubject">Subject</label> {{form.subject}}
                             <small id="subjectHelp" class="form-text text-muted"><i>NOTE : Subject code only</i></small>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-4">
-                            <label for="exampleInputStdNo">Number of Students</label>
-                            <input type="text" class="form-control" id="exampleInputStdNo" name="std_no">
+                            <label for="exampleInputStdNo">Number of Students</label> {{form.students}}
                         </div>
                     </div>
                     <br>
                     <br>
-                    <button type="submit" class="btn px-4">Generate</button><span class="text-muted ml-3" style="font-size: 12px;">These data will never save on the database.</span>
+                    <input type="submit" class="btn px-4 submit_btn" value="Generate" /><span class="text-muted ml-3" style="font-size: 12px;">These data will never save on the database.</span>
                 </form>
             </div>
+            <br><br>
+            <div class="table-section"></div>
         </div>
     </div>
 </section>

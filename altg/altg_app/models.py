@@ -8,7 +8,7 @@ class ProcessData(models.Model):
         (2, '2nd Year'),
         (3, '3rd Year'),
         (4, '4th Year'),
-    )
+    )  
     HALL = (
         (4, 'NLH'),
         (5, '204'),
