@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Bhathiya Kariyawasam">
     <meta name="keywords" content="Automated Time Table Generator">
-    <link rel="icon" type="image/png" href="{% static 'images/icons/favicon.ico' %}" />
+    <link rel="icon" type="image/png" href="{% static 'images/icons/favicon.png' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
     <!-- Font special for pages-->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
@@ -30,7 +30,22 @@
 <body>
 
     {% block content %} {% endblock content %}
+    <script>
+        var dropdown = document.getElementsByClassName("dropdown-btn");
+        var i;
 
+        for (i = 0; i < dropdown.length; i++) {
+            dropdown[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var dropdownContent = this.nextElementSibling;
+                if (dropdownContent.style.display === "block") {
+                    dropdownContent.style.display = "none";
+                } else {
+                    dropdownContent.style.display = "block";
+                }
+            });
+        }
+    </script>
     <!-- Jquery JS-->
     <script src="{% static 'vendor/jquery/jquery-3.2.1.min.js' %}"></script>
     <!-- Vendor JS-->

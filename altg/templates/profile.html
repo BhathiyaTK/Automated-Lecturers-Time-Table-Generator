@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% block content %} {% load static %}
 <section>
     <div class="row">
-        <div class="col-2" id="side-panel">
+        <div class="col-2 mh-100" id="side-panel">
             <div class="profile-img-div fluid">
                 <img src="{% static 'images/profile.jpg' %}" alt="Profile Image">
                 <p class="welcome-text pb-0 mb-0">Hi, welcome back!</p>
@@ -14,44 +14,60 @@
             </div>
             <br>
             <hr>
-            <br>
             <ul class="menu-links">
                 <li><a href="../home"><i class="fas fa-home"></i>&nbsp&nbsp Home</a></li>
-                <li><a href="."><i class="fas fa-user-alt"></i>&nbsp&nbsp My Account</a></li>
-                <li><a href="#"><i class="fas fa-cog"></i>&nbsp&nbsp Settings</a></li>
+                {% if user.is_superuser %}
+                <button class="dropdown-btn"><i class="fas fa-plus"></i>&nbsp&nbsp Add <span class="float-right"><i class="fas fa-chevron-down"></i></span></button>
+                <div class="dropdown-container">
+                    <li><a href="../hall"><i class="fas fa-building fa-lg"></i>&nbsp&nbsp New Hall</a></li>
+                    <li><a href="../subject"><i class="fas fa-book fa-lg"></i>&nbsp&nbsp New Subject</a></li>
+                    <li><a href="../register"><i class="fas fa-user fa-lg"></i>&nbsp&nbsp New Lecturer</a></li>
+                </div>
+                {% endif %}
+                <li class="active-link"><a href="."><i class="fas fa-user-alt"></i>&nbsp&nbsp My Account</a></li class="active-link">
+                <li><a href="../help"><i class="fas fa-question"></i>&nbsp&nbsp Help</a></li>
             </ul>
         </div>
         <div class="col-10 py-5 px-5" id="main-panel">
             <div class="main-panel-title">
-                <h4>User Profile</h4>
-                <small class="text-muted">Manage your profile details</small>
+                <div class="row justify-content-between">
+                    <div class="col-4">
+                        <h4>User Profile</h4>
+                        <small class="text-muted">Manage your profile details</small>
+                    </div>
+                    <div class="col-3 text-center right-padding-zero-cols">
+                        {% if user.is_authenticated %}
+                        <div class="alert alert-info mb-4">
+                            {% if user.is_superuser %}
+                            <strong>User Role : ADMIN </strong> {% else %}
+                            <strong>User Role : GUEST </strong> {% endif %}
+                        </div>
+                        {% else %}
+                        <div class="alert alert-danger mb-4">
+                            Please log in to continue
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
-            <br><br>
+            <br>
             <div class="section-div container py-5 px-5" id="profile-section">
                 {% if user.is_authenticated %}
-                <form>
+                <form action="." method="POST">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-4 left-padding-zero-cols">
                             <a href="#"><img src="{% static 'images/profile.jpg' %}" alt="Your Profile Image"></a>
+                            <small id="imageHelp" class="form-text text-muted"><i>NOTE : Click on the image to upload new</i></small>
                         </div>
-                        <div class="col-md-8">
+                        <div class="col-md-8 right-padding-zero-cols">
                             <div class="row">
-                                <div class="col-md-12">
-                                    <div class="alert alert-info mb-4">
-                                        {% if user.is_superuser %}
-                                        <strong>User role : Admin </strong> {% else %}
-                                        <strong>User role : Guest </strong>&nbsp<small class="text-muted">( No access to change your user role )</small> {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-6 left-padding-zero-cols">
                                     <div class="form-group">
                                         <label for="first_name">First Name</label>
-                                        <input class="form-control" type="text" name="fisrt_name" value="{{user.first_name}}">
+                                        <input class="form-control" type="text" name="first_name" value="{{user.first_name}}">
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-6 non-padding-cols">
                                     <div class="form-group">
                                         <label for="last_name">Last Name</label>
                                         <input class="form-control" type="text" name="last_name" value="{{user.last_name}}">
@@ -59,7 +75,15 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-12 non-padding-cols">
+                                    <div class="form-group">
+                                        <label for="first_name">Name with Initials</label>
+                                        <input class="form-control" type="text" name="fisrt_name" value="{{user.lecturer_name}}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 non-padding-cols">
                                     <div class="form-group">
                                         <label for="email">Email</label>
                                         <input class="form-control" type="email" name="email" value="{{user.email}}">
@@ -67,7 +91,13 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-6 left-padding-zero-cols">
+                                    <div class="form-group">
+                                        <label for="username">Lecturer Code</label>
+                                        <input class="form-control" type="text" name="lecturer_code" value="{{user.lecturer_code}}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 non-padding-cols">
                                     <div class="form-group">
                                         <label for="username">Username</label>
                                         <input class="form-control" type="text" name="username" value="{{user.username}}">
@@ -78,7 +108,7 @@
                     </div>
                     <br>
                     <div class="save-btn-div text-right">
-                        <input type="submit" class="btn px-4 submit_btn" value="Save" />
+                        <input type="submit" class="btn px-4 submit_btn" value="Save Updates" />
                     </div>
                 </form>
                 {% else %}

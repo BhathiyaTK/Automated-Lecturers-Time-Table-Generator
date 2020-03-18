@@ -1,4 +1,5 @@
 {% extends 'base.html' %} {% block content %} {% load static %}
+
 <section>
     <div class="row">
         <div class="col-2 mh-100" id="side-panel">
@@ -19,9 +20,9 @@
                 {% if user.is_superuser %}
                 <button class="dropdown-btn active-link"><i class="fas fa-plus"></i>&nbsp&nbsp Add <span class="float-right"><i class="fas fa-chevron-down"></i></span></button>
                 <div class="dropdown-container">
-                    <li><a href="../hall"><i class="fas fa-building fa-lg"></i>&nbsp&nbsp New Hall</a></li>
+                    <li class="active-link"><a href="."><i class="fas fa-building fa-lg"></i>&nbsp&nbsp New Hall</a></li>
                     <li><a href="../subject"><i class="fas fa-book fa-lg"></i>&nbsp&nbsp New Subject</a></li>
-                    <li class="active-link"><a href="."><i class="fas fa-user fa-lg"></i>&nbsp&nbsp New Lecturer</a></li class="active-link">
+                    <li><a href="../register"><i class="fas fa-user fa-lg"></i>&nbsp&nbsp New Lecturer</a></li class="active-link">
                 </div>
                 {% endif %}
                 <li><a href="../profile"><i class="fas fa-user-alt"></i>&nbsp&nbsp My Account</a></li>
@@ -32,8 +33,8 @@
             <div class="main-panel-title">
                 <div class="row justify-content-between">
                     <div class="col-4">
-                        <h4>User Panel</h4>
-                        <small class="text-muted">Manage lecturers data</small>
+                        <h4>Lecture Hall</h4>
+                        <small class="text-muted">Manage added lecture halls</small>
                     </div>
                     <div class="col-3 text-center right-padding-zero-cols">
                         {% if user.is_authenticated %}
@@ -55,59 +56,20 @@
                 <form action="." method="POST">
                     {% csrf_token %}
                     <div class="row">
-                        <div class="col-md-6 left-padding-zero-cols">
+                        <div class="col-md-5 left-padding-zero-cols">
                             <div class="form-group">
-                                <label for="exampleInputName">First Name</label>{{reg_form.first_name}}
+                                <label for="exampleInputName">Hall Number</label>{{hall_form.hall_number}}
                             </div>
                         </div>
-                        <div class="col-md-6 non-padding-cols">
+                        <div class="col-md-7 non-padding-cols">
                             <div class="form-group">
-                                <label for="exampleInputName">Last Name</label>{{reg_form.last_name}}
-                            </div>
-                        </div>
-                        <div class="col-md-8 left-padding-zero-cols">
-                            <div class="form-group">
-                                <label for="exampleInputName">Lecturer Name with Initials</label>{{reg_form.lecturer_name}}
-                            </div>
-                        </div>
-                        <div class="col-md-4 non-padding-cols">
-                            <div class="form-group">
-                                <label for="exampleInputName">Lecturer Code</label>{{reg_form.lecturer_code}}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-7 left-padding-zero-cols">
-                            <div class="form-group">
-                                <label for="exampleInputName">Email</label>{{reg_form.email}}
-                            </div>
-                        </div>
-                        <div class="col-md-5 non-padding-cols">
-                            <div class="form-group">
-                                <label for="exampleInputName">Username</label>{{reg_form.username}}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4 left-padding-zero-cols">
-                            <div class="form-group">
-                                <label for="exampleInputName">Password</label>{{reg_form.password1}}
-                            </div>
-                        </div>
-                        <div class="col-md-4 non-padding-cols">
-                            <div class="form-group">
-                                <label for="exampleInputName">Confirm Password</label>{{reg_form.password2}}
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="exampleSelect">User Type</label>{{reg_form.user_type}}
+                                <label for="exampleInputName">Hall Name</label>{{hall_form.hall_name}}
                             </div>
                         </div>
                     </div>
                     <br>
                     <div class="save-btn-div text-right">
-                        <input type="submit" class="btn px-4 submit_btn" value="Add user">
+                        <input type="submit" class="btn px-4 submit_btn" value="Add Lecture Hall">
                     </div>
                 </form>
             </div>

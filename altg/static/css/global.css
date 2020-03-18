@@ -58,16 +58,18 @@
     margin: 0 !important;
 }
 
-.col-md-4,
-.col-md-5 {
+.non-padding-cols {
     padding: 0 !important;
 }
 
-.col-md-6,
-.col-md-8,
-.col-md-12 {
+.right-padding-zero-cols {
     padding-right: 0 !important;
     padding-left: 20px !important;
+}
+
+.left-padding-zero-cols {
+    padding-right: 20px !important;
+    padding-left: 0 !important;
 }
 
 hr {
@@ -138,7 +140,7 @@ hr {
 }
 
 .menu-links li {
-    line-height: 40px;
+    line-height: 30px;
     padding: 0 20px;
     margin-bottom: 10px;
     border-radius: 7px;
@@ -149,17 +151,83 @@ hr {
     color: rgba(255, 255, 255, 0.7);
     font-family: Poppins-Regular;
     letter-spacing: 0.5px;
-    font-size: 14px;
+    font-size: 13px;
+    outline: none;
+    border: none;
 }
 
 .menu-links li:hover {
-    padding-left: 25px;
+    /* padding-left: 25px; */
     background: rgba(94, 135, 224, 0.4);
-    border-left: 7px solid #fff;
+    /* border-left: 7px solid #fff; */
 }
 
 .menu-links li:hover a {
     text-decoration: none;
+    color: #fff;
+}
+
+.dropdown-btn {
+    text-decoration: none;
+    font-size: 13px;
+    font-family: Poppins-Regular;
+    letter-spacing: 0.5px;
+    color: rgba(255, 255, 255, 0.7);
+    display: block;
+    border: 0;
+    background: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    outline: 0;
+    line-height: 35px;
+    padding: 0 20px;
+    margin-bottom: 10px;
+    border-radius: 7px;
+    transition: 0.2s;
+}
+
+.dropdown-btn:hover {
+    background: rgba(94, 135, 224, 0.4);
+    color: white;
+}
+
+.dropdown-container {
+    display: none;
+    border-radius: 7px;
+    margin-bottom: 15px;
+    background-color: #fff;
+    padding: 5px;
+    transition: 0.2s;
+}
+
+.dropdown-container li {
+    line-height: 30px;
+    padding: 0 20px;
+    margin: 3px;
+    border-radius: 7px;
+    transition: 0.2s;
+}
+
+.dropdown-container li a {
+    color: black;
+    font-size: 12px;
+}
+
+.dropdown-container li:hover a {
+    color: black;
+}
+
+.active {
+    background: rgba(94, 135, 224, 0.4);
+    color: white;
+}
+
+.active-link {
+    background: rgba(94, 135, 224, 0.6);
+}
+
+.active-link a {
     color: #fff;
 }
 
