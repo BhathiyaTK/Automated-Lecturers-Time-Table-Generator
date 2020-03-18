@@ -10,6 +10,5 @@ doing this is automate the manual process which is using to create lecturers tim
 - JavaScript
 - JQuery
 - PostgreSQL
-- Firebase
 
 :bulb: **Hope to implement this for entire faculty using machine learning technologies**:wink:
