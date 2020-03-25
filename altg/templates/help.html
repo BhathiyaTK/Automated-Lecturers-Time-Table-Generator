@@ -3,30 +3,42 @@
 <section>
     <div class="row">
         <div class="col-2 mh-100" id="side-panel">
+            {% if user.is_authenticated %}
             <div class="profile-img-div fluid">
-                <img src="{% static 'images/profile.jpg' %}" alt="Profile Image">
+                {% if profile_photo %} {% for photo in profile_photo %}
+                <img src="../media/{{photo.user_profile_img}}" alt="Your Profile Image"> {% endfor %} {% else %}
+                <img src="{% static 'images/profile.jpg' %}" alt="Profile Image"> {% endif %}
                 <p class="welcome-text pb-0 mb-0">Hi, welcome back!</p>
-                {% if user.is_authenticated %}
-                <p class="username">Mr. {{user.first_name}}</p>
-                {% endif %}
+                <p class="username">{{user.user_title}}. {{user.first_name}}</p>
             </div>
             <div class="signout-btn-div fluid">
-                <a href="logout" class="btn btn-sm"><i class="fas fa-power-off"></i>&nbsp Log out</a>
+                <a href="logout" class="btn btn-sm"><i class="fal fa-power-off"></i>&nbsp Log out</a>
             </div>
+            {% else %}
+            <div class="profile-img-div fluid">
+                <img src="{% static 'images/profile.jpg' %}" alt="Profile Image">
+                <p class="welcome-text pb-0 mb-0">Please log in to continue.</p>
+            </div>
+            <div class="signin-btn-div fluid">
+                <a href="/" class="btn btn-sm"><i class="fal fa-sign-in-alt"></i>&nbsp Log in</a>
+            </div>
+            {% endif %}
             <br>
             <hr>
             <ul class="menu-links">
-                <li><a href="../home"><i class="fas fa-home"></i>&nbsp&nbsp Home</a></li>
+                {% if user.is_authenticated %}
+                <li><a href="../home"><i class="fal fa-home-lg-alt"></i>&nbsp&nbsp Home</a></li>
                 {% if user.is_superuser %}
-                <button class="dropdown-btn"><i class="fas fa-plus"></i>&nbsp&nbsp Add <span class="float-right"><i class="fas fa-chevron-down"></i></span></button>
+                <button class="dropdown-btn"><i class="fal fa-sliders-h"></i>&nbsp&nbsp Manage<span class="float-right"><i class="fal fa-chevron-down"></i></span></button>
                 <div class="dropdown-container">
-                    <li><a href="../hall"><i class="fas fa-building fa-lg"></i>&nbsp&nbsp New Hall</a></li>
-                    <li><a href="../subject"><i class="fas fa-book fa-lg"></i>&nbsp&nbsp New Subject</a></li>
-                    <li><a href="../register"><i class="fas fa-user fa-lg"></i>&nbsp&nbsp New Lecturer</a></li class="active-link">
+                    <li><a href="../hall">&nbsp;<i class="fal fa-building fa-lg"></i>&nbsp;&nbsp; Lecture Halls</a></li>
+                    <li><a href="../subject">&nbsp;<i class="fal fa-book fa-lg"></i>&nbsp;&nbsp; Subjects</a></li>
+                    <li><a href="../users"><i class="fal fa-users fa-lg"></i>&nbsp;&nbsp; Lecturers</a></li class="active-link">
                 </div>
                 {% endif %}
-                <li><a href="../profile"><i class="fas fa-user-alt"></i>&nbsp&nbsp My Account</a></li>
-                <li class="active-link"><a href="."><i class="fas fa-question"></i>&nbsp&nbsp Help</a></li>
+                <li><a href="../profile"><i class="fal fa-user-alt"></i>&nbsp&nbsp My Account</a></li>
+                {% endif %}
+                <li class="active-link"><a href="."><i class="fal fa-question-circle"></i>&nbsp&nbsp Help</a></li>
             </ul>
         </div>
         <div class="col-10 py-5 px-5" id="main-panel">
@@ -40,8 +52,8 @@
                         {% if user.is_authenticated %}
                         <div class="alert alert-info mb-4">
                             {% if user.is_superuser %}
-                            <strong>User Role : ADMIN </strong> {% else %}
-                            <strong>User Role : GUEST </strong> {% endif %}
+                            <strong>Your Role : ADMIN </strong> {% else %}
+                            <strong>Your Role : GUEST </strong> {% endif %}
                         </div>
                         {% else %}
                         <div class="alert alert-danger mb-4">
@@ -51,8 +63,7 @@
                     </div>
                 </div>
             </div>
-            <br>
-            <div class="section-div container py-5 px-5">
+            <div class="section-div container py-5 px-5 font-opensans mb-5" style="font-size: 14px;">
                 <li>
                     <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque, cumque. Laudantium, eaque! Ipsum necessitatibus fugiat optio repudiandae omnis quos, obcaecati corporis tempora voluptate veritatis in earum autem ut. Facilis, dolore.</p>
                 </li>
@@ -63,10 +74,6 @@
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni fuga quo, molestiae voluptatum velit ut est adipisci laudantium libero. Quae velit repudiandae quisquam ratione explicabo soluta, unde qui autem officiis. Lorem ipsum, dolor
                     sit amet consectetur adipisicing elit. Sequi distinctio tempore autem atque iste nesciunt, alias voluptatibus aperiam est inventore dolorum sed laudantium placeat soluta sint velit quis pariatur? Non? Lorem ipsum dolor sit amet consectetur,
                     adipisicing elit. Quidem amet quam eaque, tempore dolor sed dolores nulla in adipisci, incidunt aperiam. Ea, reprehenderit. Facere, vitae inventore? Corporis ad blanditiis impedit?</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni fuga quo, molestiae voluptatum velit ut est adipisci laudantium libero. Quae velit repudiandae quisquam ratione explicabo soluta, unde qui autem officiis. Lorem ipsum, dolor
-                    sit amet consectetur adipisicing elit. Sequi distinctio tempore autem atque iste nesciunt, alias voluptatibus aperiam est inventore dolorum sed laudantium placeat soluta sint velit quis pariatur? Non? Lorem ipsum dolor sit amet consectetur,
-                    adipisicing elit.
-                </p>
             </div>
         </div>
     </div>

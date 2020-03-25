@@ -11,7 +11,7 @@
 }
 
 .font-opensans {
-    font-family: "Open Sans", "Arial", "Helvetica Neue", sans-serif;
+    font-family: "Open Sans";
 }
 
 @font-face {
@@ -58,6 +58,10 @@
     margin: 0 !important;
 }
 
+.form-group {
+    margin-bottom: 0.5rem;
+}
+
 .non-padding-cols {
     padding: 0 !important;
 }
@@ -76,27 +80,51 @@ hr {
     background-color: rgba(255, 255, 255, 0.4);
 }
 
+#main-panel {
+    background-color: rgba(0, 0, 0, 0.035);
+}
+
 .section-div {
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 7px;
+    background-color: rgb(255, 255, 255);
+}
+
+.horizontal-divider-common {
+    border-top: 2px solid rgba(94, 135, 224, 0.781);
+}
+
+#section-table th,
+#section-table td {
+    border: 1px solid rgb(197, 197, 197) !important;
+    vertical-align: middle;
+    font-size: 14px;
+    font-family: "Open Sans";
+}
+
+#section-table thead {
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.06);
+}
+
+#section-table th {
+    font-weight: 600;
 }
 
 
 /* ==================================================================
-    # Home Page styles 
+    # Side Panel Styles
     ================================================================= */
-
-
-/* side panel  */
 
 #side-panel {
     background: #3B5998;
     height: 100vh;
-    padding: 3rem 1rem;
+    padding: 2rem 1rem;
 }
 
 .profile-img-div,
-.signout-btn-div {
+.signout-btn-div,
+.signin-btn-div {
     text-align: center;
 }
 
@@ -109,26 +137,38 @@ hr {
 .welcome-text {
     font-family: Open Sans;
     font-weight: 300;
-    font-size: 0.9em;
-    color: #fff;
+    font-size: 0.85em;
+    color: #dccccc;
 }
 
 .username {
-    font-family: Open Sans;
-    font-weight: 600;
+    font-family: "Open Sans";
+    font-weight: 500;
     color: #fff;
-    font-size: 1.4em;
-    margin-bottom: 20px;
+    font-size: 1.32em;
+}
+
+.signout-btn-div,
+.signin-btn-div {
+    margin-top: 20px;
 }
 
 .signout-btn-div a {
     background: #FF4B5A;
     color: #fff;
-    font-family: Poppins-Medium;
+    font-family: "Open Sans";
     transition: 0.2s;
 }
 
-.signout-btn-div a:hover {
+.signin-btn-div a {
+    background: #0fb42b;
+    color: #fff;
+    font-family: "Open Sans";
+    transition: 0.2s;
+}
+
+.signout-btn-div a:hover,
+.signin-btn-div a:hover {
     mix-blend-mode: normal;
     box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.25);
 }
@@ -149,9 +189,9 @@ hr {
 
 .menu-links a {
     color: rgba(255, 255, 255, 0.7);
-    font-family: Poppins-Regular;
+    font-family: "Open Sans";
     letter-spacing: 0.5px;
-    font-size: 13px;
+    font-size: 13.5px;
     outline: none;
     border: none;
 }
@@ -169,8 +209,8 @@ hr {
 
 .dropdown-btn {
     text-decoration: none;
-    font-size: 13px;
-    font-family: Poppins-Regular;
+    font-size: 13.5px;
+    font-family: "Open Sans";
     letter-spacing: 0.5px;
     color: rgba(255, 255, 255, 0.7);
     display: block;
@@ -198,7 +238,7 @@ hr {
     margin-bottom: 15px;
     background-color: #fff;
     padding: 5px;
-    transition: 0.2s;
+    transition: 0.2s ease-in-out;
 }
 
 .dropdown-container li {
@@ -211,7 +251,7 @@ hr {
 
 .dropdown-container li a {
     color: black;
-    font-size: 12px;
+    font-size: 12.5px;
 }
 
 .dropdown-container li:hover a {
@@ -232,28 +272,80 @@ hr {
 }
 
 
-/* main panel */
+/* ==================================================================
+    # Main Panel Styles
+    ================================================================= */
+
+#main-panel {
+    height: 100vh;
+    overflow-y: scroll;
+}
 
 .main-panel-title h4 {
-    font-family: Open Sans;
+    font-family: "Open Sans";
     font-weight: 700;
     margin-bottom: 0.3rem;
 }
 
 .section-div form label {
-    font-family: Poppins-Medium;
+    font-family: "Open Sans";
+    font-weight: 600;
+    font-size: 14px;
 }
 
 .section-div form .submit_btn {
     background: #3B5998;
     color: #fff;
-    font-family: Poppins-Medium;
+    font-family: "Open Sans";
+    font-weight: 600;
+    transition: 0.2s;
+    font-size: 15px;
+}
+
+.section-div .option-btn {
+    background: #3b5998;
+    color: #fff;
     transition: 0.2s;
 }
 
-.section-div form .submit_btn:hover {
+.section-div form .submit_btn:hover,
+.section-div .option-btn:hover {
     mix-blend-mode: normal;
     box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.25);
+}
+
+.messages {
+    margin: 0;
+    padding: 0;
+}
+
+.alert {
+    margin: 0;
+}
+
+.close {
+    line-height: 0.7;
+}
+
+
+/* ==================================================================
+    # Home Page Styles
+    ================================================================= */
+
+.table-section {
+    background-color: rgb(255, 255, 255);
+}
+
+.result-icon {
+    color: #3B5998;
+}
+
+.result_text {
+    font-family: 'Open Sans';
+}
+
+.result_lec_name {
+    font-weight: 600;
 }
 
 
@@ -265,3 +357,27 @@ hr {
     width: 100%;
     border-radius: 7px;
 }
+
+.profile_image input {
+    display: none;
+}
+
+.profile_image img {
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.profile_image img:hover {
+    opacity: 0.7;
+}
+
+.profile_image_bottom_div {
+    background: rgb(235, 228, 228);
+    /* margin: 0 2px; */
+    border-radius: 7px;
+}
+
+
+/* ==================================================================
+    # Lecturers Page styles 
+    ================================================================= */

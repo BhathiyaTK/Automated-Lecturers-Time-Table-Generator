@@ -2,45 +2,57 @@
 <section>
     <div class="row">
         <div class="col-2 mh-100" id="side-panel">
+            {% if user.is_authenticated %}
             <div class="profile-img-div fluid">
-                <img src="{% static 'images/profile.jpg' %}" alt="Profile Image">
+                {% if profile_photo %} {% for photo in profile_photo %}
+                <img src="../media/{{photo.user_profile_img}}" alt="Your Profile Image"> {% endfor %} {% else %}
+                <img src="{% static 'images/profile.jpg' %}" alt="Profile Image"> {% endif %}
                 <p class="welcome-text pb-0 mb-0">Hi, welcome back!</p>
-                {% if user.is_authenticated %}
-                <p class="username">Mr. {{user.first_name}}</p>
-                {% endif %}
+                <p class="username">{{user.user_title}}. {{user.first_name}}</p>
             </div>
             <div class="signout-btn-div fluid">
-                <a href="logout" class="btn btn-sm"><i class="fas fa-power-off"></i>&nbsp Log out</a>
+                <a href="logout" class="btn btn-sm"><i class="fal fa-power-off"></i>&nbsp Log out</a>
             </div>
+            {% else %}
+            <div class="profile-img-div fluid">
+                <img src="{% static 'images/profile.jpg' %}" alt="Profile Image">
+                <p class="welcome-text pb-0 mb-0">Please log in to continue.</p>
+            </div>
+            <div class="signin-btn-div fluid">
+                <a href="/" class="btn btn-sm"><i class="fal fa-sign-in-alt"></i>&nbsp Log in</a>
+            </div>
+            {% endif %}
             <br>
             <hr>
             <ul class="menu-links">
-                <li><a href="../home"><i class="fas fa-home"></i>&nbsp&nbsp Home</a></li>
+                {% if user.is_authenticated %}
+                <li><a href="../home"><i class="fal fa-home-lg-alt"></i>&nbsp&nbsp Home</a></li>
                 {% if user.is_superuser %}
-                <button class="dropdown-btn active-link"><i class="fas fa-plus"></i>&nbsp&nbsp Add <span class="float-right"><i class="fas fa-chevron-down"></i></span></button>
+                <button class="dropdown-btn active-link"><i class="fal fa-sliders-h"></i>&nbsp&nbsp Manage<span class="float-right"><i class="fal fa-chevron-down"></i></span></button>
                 <div class="dropdown-container">
-                    <li><a href="../hall"><i class="fas fa-building fa-lg"></i>&nbsp&nbsp New Hall</a></li>
-                    <li class="active-link"><a href="."><i class="fas fa-book fa-lg"></i>&nbsp&nbsp New Subject</a></li>
-                    <li><a href="../register"><i class="fas fa-user fa-lg"></i>&nbsp&nbsp New Lecturer</a></li class="active-link">
+                    <li><a href="../hall">&nbsp;<i class="fal fa-building fa-lg"></i>&nbsp;&nbsp; Lecture Halls</a></li>
+                    <li class="active-link">&nbsp;<a href="."><i class="fal fa-book fa-lg"></i>&nbsp;&nbsp; Subjects</a></li>
+                    <li><a href="../users"><i class="fal fa-users fa-lg"></i>&nbsp;&nbsp; Lecturers</a></li class="active-link">
                 </div>
                 {% endif %}
-                <li><a href="../profile"><i class="fas fa-user-alt"></i>&nbsp&nbsp My Account</a></li>
-                <li><a href="../help"><i class="fas fa-question"></i>&nbsp&nbsp Help</a></li>
+                <li><a href="../profile"><i class="fal fa-user-alt"></i>&nbsp&nbsp My Account</a></li>
+                {% endif %}
+                <li><a href="../help"><i class="fal fa-question-circle"></i>&nbsp&nbsp Help</a></li>
             </ul>
         </div>
         <div class="col-10 py-5 px-5" id="main-panel">
             <div class="main-panel-title">
                 <div class="row justify-content-between">
                     <div class="col-4">
-                        <h4>Subject</h4>
+                        <h4>Subjects</h4>
                         <small class="text-muted">Manage added subjects</small>
                     </div>
                     <div class="col-3 text-center right-padding-zero-cols">
                         {% if user.is_authenticated %}
                         <div class="alert alert-info mb-4">
                             {% if user.is_superuser %}
-                            <strong>User Role : ADMIN </strong> {% else %}
-                            <strong>User Role : GUEST </strong> {% endif %}
+                            <strong>Your Role : ADMIN </strong> {% else %}
+                            <strong>Your Role : GUEST </strong> {% endif %}
                         </div>
                         {% else %}
                         <div class="alert alert-danger mb-4">
@@ -50,35 +62,125 @@
                     </div>
                 </div>
             </div>
-            <br>
-            <div class="section-div container py-5 px-5">
+            <div class="section-div container p-4 mb-5">
+                {% if messages %}
+                <ul class="messages mb-4">
+                    {% for message in messages %} {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert {{message.tags}} alert-dismissable" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                        <i class="far fa-check-circle fa-lg"></i>&nbsp; <b>{{message}}</b>
+                    </div>
+                    {% else %}
+                    <div class="alert {{message.tags}} alert-dismissable" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                        <i class="far fa-times-circle fa-lg"></i>&nbsp; <b>{{message}}</b>
+                    </div>
+                    {% endif %} {% endfor%}
+                </ul>
+                {% endif %} {% if user.is_authenticated %}
+                <div class="section-sub-title font-opensans">
+                    <h6><b>Add New Subject</b></h6>
+                </div>
+                <div class="horizontal-divider-common mt-3 mb-4"></div>
                 <form action="." method="POST">
                     {% csrf_token %}
                     <div class="row">
-                        <div class="col-md-4 left-padding-zero-cols">
+                        <div class="col-md-2 left-padding-zero-cols">
                             <div class="form-group">
-                                <label for="exampleInputName">Subject Code</label>{{subject_form.subject_code}}
+                                <label for="exampleSelect">Related Batch</label>
+                                <select name="related_batch" class="form-control form-control-sm">
+                                    <option value="">---- Choose ----</option>
+                                    <option value="1">1<sup>st</sup> Year</option>
+                                    <option value="2">2<sup>nd</sup> Year</option>
+                                    <option value="3">3<sup>rd</sup> Year</option>
+                                    <option value="4">4<sup>th</sup> Year</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="col-md-8 non-padding-cols">
+                        <div class="col-md-2 non-padding-cols">
                             <div class="form-group">
-                                <label for="exampleInputName">Subject Name</label>{{subject_form.subject_name}}
+                                <label for="exampleInputName">Subject Code</label>
+                                <input type="text" name="subject_code" class="form-control form-control-sm">
                             </div>
                         </div>
-                        <div class="col-md-3 left-padding-zero-cols">
+                        <div class="col-md-8 right-padding-zero-cols">
                             <div class="form-group">
-                                <label for="exampleSelect">Related Batch</label>{{subject_form.related_batch}}
+                                <label for="exampleInputName">Subject Name</label>
+                                <input type="text" name="subject_name" class="form-control form-control-sm">
+                            </div>
+                        </div>
+                        <div class="col-md-6 left-padding-zero-cols">
+                            <div class="form-group">
+                                <label for="exampleInputName">Related Lecturer</label>
+                                <select name="related_lecturer" class="form-control form-control-sm">
+                                    <option value="">---- Choose ----</option>
+                                    {% for user in lecturers_data %}
+                                    <option value="{{user.lecturer_name}}">{{user.user_title}}. {{user.lecturer_name}}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
                     </div>
-                    <br>
                     <div class="save-btn-div text-right">
-                        <input type="submit" class="btn px-4 submit_btn" value="Add Subject">
+                        <input type="submit" class="btn px-4 submit_btn" value="Add Subject" name="subject_add_btn">
                     </div>
                 </form>
+                {% else %}
+                <div class="error-msg-div my-5 text-center">
+                    <p class="text-danger mb-4"><i class="fal fa-exclamation-triangle fa-5x"></i></p>
+                    <p class="text-danger font-opensans">You are not logged in. Please log in <a href="/">here</a>.</p>
+                </div>
+                {% endif %}
             </div>
+
+            {% if user.is_authenticated %}
+            <div class="section-div container p-4 mb-5">
+                <div class="section-sub-title font-opensans">
+                    <h6><b>Subjects List</b></h6>
+                </div>
+                <div class="horizontal-divider-common mt-3 mb-4"></div>
+                <div class="section-list-table">
+                    {% if subjects_data %}
+                    <table class="table table-sm font-opensans" id="section-table" style="background-color: rgba(0,0,0,0.025);">
+                        <thead>
+                            <tr>
+                                <th scope="col">Subject Code</th>
+                                <th scope="col">Subject</th>
+                                <th scope="col">Lecturer</th>
+                                <th scope="col">Batch</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for subject in subjects_data %}
+                            <tr>
+                                <th style="font-weight: 400;">{{subject.subject_code}}</th>
+                                <td>{{subject.subject_name}}</td>
+                                <td>{{subject.related_lecturer}}</td>
+                                <td class="text-center">{{subject.related_batch}}</td>
+                                <td class="text-center">
+                                    <form action="." method="POST">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="subject_code" value="{{subject.id}}">
+                                        <input type="submit" class="btn btn-sm btn-outline-danger" value="Delete" name="subject_delete_btn" style="font-size: 12px;">
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <div class="text-danger">
+                        <i class="fal fa-frown fa-lg"></i>&nbsp; No subject found!
+                    </div> {% endif %}
+                </div>
+            </div>
+            {% endif %}
         </div>
-    </div>
 </section>
 
 {% endblock content %}

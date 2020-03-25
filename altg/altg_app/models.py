@@ -1,12 +1,21 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth import get_user_model
+from PIL import Image
 
 class User(AbstractUser):
     USER_ROLES = (
         ('admin', 'Admin'),
         ('guest', 'Guest'),
     )
+    TITLES = (
+        ('Prof', 'Prof'),
+        ('Dr', 'Dr'),
+        ('Mr', 'Mr'),
+        ('Mrs', 'Mrs'),
+        ('Miss', 'Miss'),
+    )
+    user_title = models.CharField(max_length=30, choices=TITLES, default=None)
     first_name = models.CharField(max_length=224, default=None)
     last_name = models.CharField(max_length=224, default=None)
     lecturer_name = models.CharField(max_length=224, default=None)
@@ -14,7 +23,6 @@ class User(AbstractUser):
     username = models.CharField(max_length=150, unique=True)
     password = models.CharField(max_length=100)
     lecturer_code = models.CharField(max_length=224)
-    user_profile = models.ImageField(upload_to='media/')
 
 class ProcessData(models.Model):
     BATCH = (
@@ -36,11 +44,11 @@ class ProcessData(models.Model):
     subject = models.CharField(max_length=50) 
     students = models.IntegerField()
 
-class LectureHalls(models.Model):
+class AllLectureHalls(models.Model):
     hall_number = models.CharField(max_length=224)
     hall_name = models.CharField(max_length=224)
 
-class Subjects(models.Model):
+class AllSubjects(models.Model):
     BATCH = (
         ('1', '1st Year'),
         ('2', '2nd Year'),
@@ -49,7 +57,7 @@ class Subjects(models.Model):
     )
     subject_code = models.CharField(max_length=100)
     subject_name = models.CharField(max_length=224)
-    related_batch = models.IntegerField(choices=BATCH)
+    related_batch = models.CharField(max_length=20, choices=BATCH, default=None)
     related_lecturer = models.CharField(max_length=224, default='')
 
 class Batch(models.Model):
@@ -63,3 +71,15 @@ class TimeSlots(models.Model):
 class Days(models.Model):
     days = models.CharField(max_length=150)
     batch = models.CharField(max_length=50)
+
+class Profiles(models.Model):
+    username = models.CharField(max_length=224)
+    user_profile_img = models.ImageField(upload_to='users/')
+
+    def save(self):
+        super().save()
+        img = Image.open(self.user_profile_img.path)
+        if img.height > 300 or img.width >300:
+            output_size = (300, 300)
+            img.thumbnail(output_size)
+            img.save(self.user_profile_img.path)
