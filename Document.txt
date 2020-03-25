@@ -1,1 +1,0 @@
-This web-based Automated Lecturer Time-Table Generator developed by using Django web framework. Fully open for anyone who interested to contribute for this project using python and django.
