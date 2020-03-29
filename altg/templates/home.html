@@ -62,15 +62,18 @@
                     </div>
                 </div>
             </div>
-            <div class="section-div container px-4 pb-2 pt-4">
+            <div class="section-div container px-5 pb-2 pt-4">
                 {% if user.is_authenticated %}
                 <form action="./table/" method="POST">
                     {% csrf_token %}
                     <div class="generate-msg text-center">
                         <h2 class="font-opensans">Hello, {{user.first_name}}!</h2>
-                        <p class="font-opensans mt-3 mb-4 text-secondary" style="font-size: 14.5px;">
-                            Welcome to the Automated Lecturers' Time-table Generator. This is a web-based platform which mainly allows you to generate time-tables for the lecturers instantly without wasting time. You can find the options in the left side panel for manage users,
-                            subjects, lecture halls and also access your profile. Let's get started. Select the lecturer's name from the below <span class="badge badge-secondary">Select Box</span> and click the
+                        <p class="font-opensans mt-3 text-secondary" style="font-size: 14.5px;">
+                            Welcome to the Automated Lecturers' Time-table Generator web platform. This is a web-based platform which mainly allows you to generate time-tables for the lecturers instantly without wasting time. You also allowed to view and download generated time-tables.
+                            You can find the options in the left side panel for manage users, subjects, lecture halls and also access your profile.
+                        </p>
+                        <p class="font-opensans mb-4 text-secondary" style="font-size: 14.5px;">
+                            Let's get started. Select the lecturer's name from the below <span class="badge badge-secondary">Select List</span> and click the
                             <span class="badge badge-secondary">Generate</span> button to see the result.
                         </p>
                     </div>
@@ -95,15 +98,16 @@
             <br> {% if user.is_authenticated %}
             <div class="table-section section-div container px-1 py-4">
                 <div class="row justify-content-between generated-result align-items-center" style="font-size: 15px;">
-                    <div class="col-md-7 result_text">
+                    <div class="col-md-8 result_text">
                         <div class="row align-items-center">
                             <div class="col-md-1 result-icon"><i class="fal fa-calendar-alt fa-2x"></i></div>
-                            <div class="col-md-11">Generated time-table for <span class="result_lec_name">{{user.lecturer_name}} ({{user.lecturer_code}})</span></div>
+                            <div class="col-md-11">Generated lecture schedule for <span class="result_lec_name">{{user.lecturer_name}} ({{user.lecturer_code}})</span></div>
                         </div>
                     </div>
-                    <div class="col-md-3 text-center">
-                        <button type="button" class="btn btn-sm option-btn bg-primary font-opensans" data-toggle="modal" data-target="#staticBackdrop"><i class="fal fa-expand"></i>&nbsp View</button> &nbsp
-                        <button type="button" class="btn btn-sm option-btn font-opensans"><i class="fal fa-download"></i>&nbsp Download</button>
+                    <div class="col-md-4 text-center">
+                        <button type="button" class="btn btn-sm option-btn bg-primary font-opensans" data-toggle="modal" data-target="#staticBackdrop"><i class="fal fa-expand"></i>&nbsp View</button> &nbsp;
+                        <button type="button" class="btn btn-sm option-btn bg-secondary font-opensans"><i class="fal fa-save"></i>&nbsp; Save</button> &nbsp;
+                        <button type="button" class="btn btn-sm option-btn font-opensans"><i class="fal fa-download"></i>&nbsp; Download</button>
                     </div>
                 </div>
             </div>
@@ -117,9 +121,9 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel"> Generated Time-table</h5>
+                <h5 class="modal-title font-opensans" id="staticBackdropLabel"> Generated Lecture Schedule</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="far fa-times-circle fa-lg text-danger"></i>
+                    <i class="fal fa-times-circle text-danger"></i>
                 </button>
             </div>
             <div class="modal-body">

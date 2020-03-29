@@ -31,6 +31,11 @@
 
     {% block content %} {% endblock content %}
     <script>
+        window.addEventListener("load", function() {
+            var loader = document.getElementById("se-pre-con");
+            loader.style.display = "none";
+        });
+
         var dropdown = document.getElementsByClassName("dropdown-btn");
         var i;
 
@@ -60,5 +65,6 @@
     <script src="{% static 'js/global.js' %}"></script>
 
 </body>
+<div id="se-pre-con"></div>
 
 </html>

@@ -12,6 +12,8 @@
     <link rel="icon" type="image/png" href="{% static 'images/icons/favicon.png' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
     <!-- Font special for pages-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.12.1/css/all.css">
     <link rel="stylesheet" type="text/css" href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'fonts/Linearicons-Free-v1.0.0/icon-font.min.css' %}">
     <!-- Vendor CSS-->
@@ -31,8 +33,8 @@
             <div class="wrap-login100">
                 <form class="login100-form validate-form" action="." method="POST">
                     {% csrf_token %}
-                    <span class="login100-form-title p-b-43">
-						User login
+                    <span class="login100-form-title pb-4">
+						<i class="fad fa-user-circle fa-4x" style="color: #6675df;"></i>
 					</span>
 
                     <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
@@ -58,10 +60,28 @@
                         </div>
                     </div>
 
-                    <div class="container-login100-form-btn">
+                    <div class="container-login100-form-btn mb-4">
                         <input class="login100-form-btn" type="submit" value="Login">
                     </div>
-                    <!-- <div class="register-link mt-5">New around here? <a href="accounts/register">Register</a></div> -->
+                    {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %} {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                        <div class="alert {{message.tags}} alert-dismissable mb-4" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                            <i class="far fa-check-circle fa-lg"></i>&nbsp; <b>{{message}}</b>
+                        </div>
+                        {% else %}
+                        <div class="alert {{message.tags}} alert-dismissable mb-4" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                            <i class="far fa-times-circle fa-lg"></i>&nbsp; <b>{{message}}</b>
+                        </div>
+                        {% endif %} {% endfor%}
+                    </ul>
+                    {% endif %}
                 </form>
                 <div class="login100-more" style="background-image: url('../static/images/bg-01.jpg');">
                     <div class="login-title">
@@ -82,7 +102,7 @@
 
 
     <!-- Jquery JS-->
-    <script src="{% static 'vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+    <script src="{% static 'vendor/jquery/jquery-3.4.1.min.js' %}"></script>
     <!-- Vendor JS-->
     <script src="{% static 'vendor/animsition/js/animsition.min.js' %}"></script>
     <script src="{% static 'vendor/bootstrap/js/popper.js' %}"></script>

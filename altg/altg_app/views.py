@@ -7,6 +7,7 @@ from .forms import DataForm, AddUserForm, AddHallForm, DeleteUserForm, UserUpdat
 from .models import ProcessData, User, AllLectureHalls, AllSubjects, Batch, TimeSlots, Days, Profiles
 from django.contrib import messages
 from django.db.models import Q
+from datetime import datetime
 
 # Login function
 def userLogin(request):
@@ -17,11 +18,12 @@ def userLogin(request):
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
-            request.session['logged_username'] = username
+            request.session['logged_username'] = user.username
             login(request, user)
             print('------------- User logged in successfully -------------')
             return redirect('home')          
         else:
+            messages.error(request, 'Invalid user login creditials!')
             print('------------- Not valid user credentials -------------')
             return redirect('/')
     else:
@@ -90,10 +92,11 @@ def subject(request):
             sub_code = request.POST['subject_code']
             sub_name = request.POST['subject_name']
             rel_batch = request.POST['related_batch']
+            semester = request.POST['semester']
             rel_lecturer = request.POST['related_lecturer']
 
-            if (sub_code and sub_name and rel_batch and rel_lecturer) is not None:            
-                subjects = AllSubjects(subject_code=sub_code, subject_name=sub_name, related_batch=rel_batch, related_lecturer=rel_lecturer)
+            if (sub_code and sub_name and rel_batch and rel_lecturer and semester) is not None:            
+                subjects = AllSubjects(subject_code=sub_code, subject_name=sub_name, related_batch=rel_batch, related_lecturer=rel_lecturer, semester=semester)
                 subjects.save()
                 messages.success(request, 'Subject added successfully!')
                 return redirect('subject')
@@ -120,6 +123,18 @@ def subject(request):
             print('------------- Subject deletion failed -------------')
             message.error(request, 'Subject deletion failed! Try again later.')
             return redirect('subject')
+    elif 'subject_edit_btn' in request.POST:
+        pass
+        # if request.POST == 'POST':
+        #     subject_code = request.POST['subject_code']
+        #     AllSubjects.objects.filter(Q(subject_code=subject_code)).update(
+        #         first_name=new_first_name,
+        #         last_name=new_last_name,
+        #         lecturer_name=new_lecturer_name,
+        #         email=new_email,
+        #         lecturer_code=new_lecturer_code,
+        #         username=new_username
+        #     )
     else:
         lecturers_data = User.objects.all()
         subjects_data = AllSubjects.objects.all()
@@ -143,6 +158,7 @@ def users(request):
                 password1 = reg_data.cleaned_data.get('password1')
                 password2 = reg_data.cleaned_data.get('password2')
                 user_type = reg_data.cleaned_data.get('user_type')
+                default_profile_img = 'users/profile.jpg'
 
                 if password1 == password2:
                     if user_type == 'admin':
@@ -156,10 +172,11 @@ def users(request):
                             password=password1, 
                             email=email,
                             is_active=True,
-                            is_staff=True,
-                            user_profile='profile.jpg'
+                            is_staff=True
                         )
+                        prof_img = Profiles(username=username, user_profile_img=default_profile_img)
                         user.save()
+                        prof_img.save()
                         messages.success(request, 'Lecturer was added successfully!')
                         return redirect('users')
                     else:
@@ -173,10 +190,11 @@ def users(request):
                             password=password1, 
                             email=email,
                             is_active=True,
-                            is_staff=True,
-                            user_profile='profile.jpg'
+                            is_staff=True
                         )
+                        prof_img = Profiles(username=username, user_profile_img=default_profile_img)
                         user.save()
+                        prof_img.save()
                         messages.success(request, 'Lecturer was registered successfully!')
                         return redirect('users')
                 else:
@@ -190,10 +208,12 @@ def users(request):
                 return redirect('users')
         else:
             lecturers_values = User.objects.all()
+            myDate = datetime.now()
+            formatedDate = myDate.strftime("%d-%m-%Y")
             reg_form = AddUserForm()
             user_delete_form = DeleteUserForm()
             profile_photo = Profiles.objects.filter(username=request.session['logged_username'])
-            reg_context = {'reg_form':reg_form, 'user_delete_form':user_delete_form, 'lecturers_values':lecturers_values, 'profile_photo':profile_photo}
+            reg_context = {'reg_form':reg_form, 'user_delete_form':user_delete_form, 'lecturers_values':lecturers_values, 'profile_photo':profile_photo, 'date':formatedDate}
             return render(request, 'users.html', reg_context)
 
     elif 'user_delete_btn' in request.POST:
@@ -209,19 +229,21 @@ def users(request):
             return redirect('users')
     else:
         lecturers_values = User.objects.all()
+        myDate = datetime.now()
+        formatedDate = myDate.strftime("%d-%m-%Y")
         reg_form = AddUserForm()
         user_delete_form = DeleteUserForm()
         profile_photo = Profiles.objects.filter(username=request.session['logged_username'])
-        reg_context = {'reg_form':reg_form, 'user_delete_form':user_delete_form, 'lecturers_values':lecturers_values, 'profile_photo':profile_photo}
+        reg_context = {'reg_form':reg_form, 'user_delete_form':user_delete_form, 'lecturers_values':lecturers_values, 'profile_photo':profile_photo, 'date':formatedDate}
         return render(request, 'users.html', reg_context)
 
 # Profile page rendering function
 def profile(request):
     if request.method == 'POST':
         user_update_form = UserUpdateForm(request.POST, instance=request.user)
-        profile_update_form = ProfileUpdateForm(request.POST, request.FILES)
-        if user_update_form.is_valid() and profile_update_form.is_valid():
-            profile_image = request.FILES['user_profile_img']
+        profile_update_form = ProfileUpdateForm()
+        if user_update_form.is_valid() or profile_update_form.is_valid():
+            profile_image = request.FILES.get('user_profile_img')
             profile_id = request.POST['id']
             new_first_name = request.POST['first_name']
             new_last_name = request.POST['last_name']
@@ -230,29 +252,53 @@ def profile(request):
             new_lecturer_code = request.POST['lecturer_code']
             new_username = request.POST['username']
 
-            User.objects.filter(Q(id=profile_id)).update(
-                first_name=new_first_name,
-                last_name=new_last_name,
-                lecturer_name=new_lecturer_name,
-                email=new_email,
-                lecturer_code=new_lecturer_code,
-                username=new_username
-            )
-            exist_profile = Profiles.objects.filter(username=request.session['logged_username'])
-            if exist_profile is not None:
-                Profiles.objects.filter(username=request.session['logged_username']).delete()
-                updated_profile_img = Profiles(username=request.session['logged_username'], user_profile_img=profile_image)
-                updated_profile_img.save()
-                messages.success(request, 'User details updated successfully!')
+            if profile_image is None:
+                User.objects.filter(Q(id=profile_id)).update(
+                    first_name=new_first_name,
+                    last_name=new_last_name,
+                    lecturer_name=new_lecturer_name,
+                    email=new_email,
+                    lecturer_code=new_lecturer_code,
+                    username=new_username
+                )
+                exist_profile = Profiles.objects.filter(username=request.session['logged_username'])
+                exist_profile_path = Profiles.objects.get(username=request.session['logged_username'])
+                if exist_profile is not None:
+                    Profiles.objects.filter(username=request.session['logged_username']).delete()
+                    updated_profile_img = Profiles(username=request.session['logged_username'], user_profile_img=exist_profile_path.user_profile_img)
+                    updated_profile_img.save()
+                    messages.success(request, 'Your profile updated successfully!')
+                    return redirect('profile')
+                else:
+                    updated_profile_img = Profiles(username=request.session['logged_username'], user_profile_img=exist_profile_path.user_profile_img)
+                    updated_profile_img.save()
+                    messages.success(request, 'Your profile updated successfully!')
+                    return redirect('profile')
+                messages.success(request, 'Your profile updated successfully!')
                 return redirect('profile')
             else:
-                updated_profile_img = Profiles(username=request.session['logged_username'], user_profile_img=profile_image)
-                updated_profile_img.save()
-                messages.success(request, 'User details updated successfully!')
-                return redirect('profile')
-            
+                User.objects.filter(Q(id=profile_id)).update(
+                    first_name=new_first_name,
+                    last_name=new_last_name,
+                    lecturer_name=new_lecturer_name,
+                    email=new_email,
+                    lecturer_code=new_lecturer_code,
+                    username=new_username
+                )
+                exist_profile = Profiles.objects.filter(username=request.session['logged_username'])
+                if exist_profile is not None:
+                    Profiles.objects.filter(username=request.session['logged_username']).delete()
+                    updated_profile_img = Profiles(username=request.session['logged_username'], user_profile_img=profile_image)
+                    updated_profile_img.save()
+                    messages.success(request, 'Your profile updated successfully!')
+                    return redirect('profile')
+                else:
+                    updated_profile_img = Profiles(username=request.session['logged_username'], user_profile_img=profile_image)
+                    updated_profile_img.save()
+                    messages.success(request, 'Your profile updated successfully!')
+                    return redirect('profile')
         else:
-            messages.error(request, 'User details updating failed! Try again.')
+            messages.error(request, 'Profile updating process failed! Something went wrong. Try again.')
             return redirect('profile')
     else:
         user_update_form = UserUpdateForm(instance=request.user)

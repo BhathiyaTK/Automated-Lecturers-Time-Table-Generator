@@ -64,16 +64,16 @@
             </div>
             <div class="section-div container p-4 mb-4">
                 {% if messages %}
-                <ul class="messages mb-4">
+                <ul class="messages">
                     {% for message in messages %} {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-                    <div class="alert {{message.tags}} alert-dismissable" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
+                    <div class="alert {{message.tags}} alert-dismissable mb-4" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                         <i class="far fa-check-circle fa-lg"></i>&nbsp; <b>{{message}}</b>
                     </div>
                     {% else %}
-                    <div class="alert {{message.tags}} alert-dismissable" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
+                    <div class="alert {{message.tags}} alert-dismissable mb-4" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -175,11 +175,13 @@
                     <table class="table table-sm font-opensans" id="section-table" style="background-color: rgba(0,0,0,0.025);">
                         <thead>
                             <tr>
-                                <th scope="col">Lecturer Code</th>
+                                <th scope="col">Code</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Email</th>
-                                <th scope="col">User Role</th>
-                                <th scope="col">Actions</th>
+                                <th scope="col">Role</th>
+                                <th scope="col">Joined On</th>
+                                <th scopr="col">Last Login</th>
+                                <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -191,6 +193,12 @@
                                 <td class="text-center">
                                     {% if user.is_superuser%} Admin {% else %} Guest {% endif %}
                                 </td>
+                                <td class="text-center">{{user.date_joined|date:'d.m.Y (P)'}}</td>
+                                {% if user.last_login is None %}
+                                <td class="text-muted text-center">Not Available</td>
+                                {% else %}
+                                <td class="text-center">{{user.last_login|date:'d/m/Y (P)'}}</td>
+                                {% endif %}
                                 <td class="text-center">
                                     <form action="." method="POST">
                                         {% csrf_token %}

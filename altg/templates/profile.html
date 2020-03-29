@@ -65,16 +65,16 @@
 
             <div class="section-div container p-4" id="profile-section">
                 {% if messages %}
-                <ul class="messages mb-4">
+                <ul class="messages">
                     {% for message in messages %} {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-                    <div class="alert {{message.tags}} alert-dismissable" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
+                    <div class="alert {{message.tags}} alert-dismissable mb-4" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                         <i class="far fa-check-circle fa-lg"></i>&nbsp; <b>{{message}}</b>
                     </div>
                     {% else %}
-                    <div class="alert {{message.tags}} alert-dismissable" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
+                    <div class="alert {{message.tags}} alert-dismissable mb-4" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -90,10 +90,10 @@
                             <label for="id_user_profile_img" class="m-0">
                             {% if profile_photo %}
                                 {% for photo in profile_photo %}
-                                    <img src="../media/{{photo.user_profile_img}}" alt="Your Profile Image" id="prof_img">
+                                    <img src="../media/{{photo.user_profile_img}}" id="prof_img">
                                 {% endfor %}
                             {% else %}
-                            <img src="{% static 'images/profile.jpg' %}" alt="Profile Image">
+                            <img src="{% static 'images/profile.jpg' %}">
                             {% endif %}
                             </label> {{profile_update_form.user_profile_img}}
                             <div class="profile_image_bottom_div py-2 mt-2">
@@ -142,7 +142,7 @@
                             <br>
                             <div class="save-btn-div text-right">
                                 {{user_update_form.id}}
-                                <input type="submit" class="btn px-4 submit_btn" value="Save Updates" />
+                                <input type="submit" class="btn px-4 submit_btn" value="Save Changes" />
                             </div>
                         </div>
                     </div>
@@ -154,9 +154,91 @@
                 </div>
                 {% endif %}
             </div>
+            {% if user.is_authenticated %}
+            <div class="table-section section-div container px-1 py-3 mt-4">
+                <div class="row justify-content-between generated-result align-items-center" style="font-size: 15px;">
+                    <div class="col-md-8 result_text">
+                        <div class="row align-items-center">
+                            <div class="col-md-1 result-icon"><i class="fal fa-calendar-alt fa-2x"></i></div>
+                            <div class="col-md-11">Currently using lecture schedule</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 text-right">
+                        <button type="button" class="btn btn-sm option-btn bg-primary font-opensans" data-toggle="modal" data-target="#staticBackdrop"><i class="fal fa-expand"></i>&nbsp View</button> &nbsp;
+                        <button type="button" class="btn btn-sm option-btn bg-danger font-opensans"><i class="fal fa-ban"></i>&nbsp; Delete</button>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
         </div>
     </div>
 </section>
+
+<!--Time-Table Modal -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title font-opensans" id="staticBackdropLabel">Your Lecture schedule</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fal fa-times-circle text-danger"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-div">
+                    <table class="table table-bordered table-hover">
+                        <thead class="text-center bg-dark text-white">
+                            <th>Time</th>
+                            <th>Monday</th>
+                            <th>Tuesday</th>
+                            <th>Wednesday</th>
+                            <th>Thursday</th>
+                            <th>Friday</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-italic bg-light align-middle">8.00 A.M. - 10.00 A.M</td>
+                                <td>Hall 1<br><small>Subject Name</small></td>
+                                <td>Hall 2<br><small>Subject Name</small></td>
+                                <td>Hall 3<br><small>Subject Name</small></td>
+                                <td>Hall 4<br><small>Subject Name</small></td>
+                                <td>Hall 5<br><small>Subject Name</small></td>
+                            </tr>
+                            <tr>
+                                <td class="font-italic bg-light align-middle">10.00 A.M. - 12.00 A.M</td>
+                                <td>Hall 1<br><small>Subject Name</small></td>
+                                <td>Hall 2<br><small>Subject Name</small></td>
+                                <td>Hall 3<br><small>Subject Name</small></td>
+                                <td>Hall 4<br><small>Subject Name</small></td>
+                                <td>Hall 5<br><small>Subject Name</small></td>
+                            </tr>
+                            <tr class="text-muted bg-light align-middle">
+                                <td class="font-italic">12.00 A.M. - 1.00 P.M</td>
+                                <td colspan="5" class="text-center">Lunch Time</td>
+                            </tr>
+                            <tr>
+                                <td class="font-italic bg-light align-middle">1.00 P.M. - 3.00 P.M</td>
+                                <td>Hall 1<br><small>Subject Name</small></td>
+                                <td>Hall 2<br><small>Subject Name</small></td>
+                                <td>Hall 3<br><small>Subject Name</small></td>
+                                <td>Hall 4<br><small>Subject Name</small></td>
+                                <td>Hall 5<br><small>Subject Name</small></td>
+                            </tr>
+                            <tr>
+                                <td class="font-italic bg-light align-middle">3.00 P.M. - 5.00 P.M</td>
+                                <td>Hall 1<br><small>Subject Name</small></td>
+                                <td>Hall 2<br><small>Subject Name</small></td>
+                                <td>Hall 3<br><small>Subject Name</small></td>
+                                <td>Hall 4<br><small>Subject Name</small></td>
+                                <td>Hall 5<br><small>Subject Name</small></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     function readURL(input) {
         if (input.files && input.files[0]) {

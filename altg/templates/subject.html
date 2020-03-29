@@ -64,16 +64,16 @@
             </div>
             <div class="section-div container p-4 mb-5">
                 {% if messages %}
-                <ul class="messages mb-4">
+                <ul class="messages">
                     {% for message in messages %} {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-                    <div class="alert {{message.tags}} alert-dismissable" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
+                    <div class="alert {{message.tags}} alert-dismissable mb-4" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                         <i class="far fa-check-circle fa-lg"></i>&nbsp; <b>{{message}}</b>
                     </div>
                     {% else %}
-                    <div class="alert {{message.tags}} alert-dismissable" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
+                    <div class="alert {{message.tags}} alert-dismissable mb-4" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -113,7 +113,17 @@
                                 <input type="text" name="subject_name" class="form-control form-control-sm">
                             </div>
                         </div>
-                        <div class="col-md-6 left-padding-zero-cols">
+                        <div class="col-md-2 left-padding-zero-cols">
+                            <div class="form-group">
+                                <label for="exampleInputName">Semester</label>
+                                <select name="semester" class="form-control form-control-sm">
+                                    <option value="">---- Choose ----</option>
+                                    <option value="1">Semester I</option>
+                                    <option value="2">Semester II</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4 left-padding-zero-cols">
                             <div class="form-group">
                                 <label for="exampleInputName">Related Lecturer</label>
                                 <select name="related_lecturer" class="form-control form-control-sm">
@@ -150,8 +160,9 @@
                             <tr>
                                 <th scope="col">Subject Code</th>
                                 <th scope="col">Subject</th>
+                                <th scope="col">Year</th>
+                                <th scope="col">Semester</th>
                                 <th scope="col">Lecturer</th>
-                                <th scope="col">Batch</th>
                                 <th scope="col">Actions</th>
                             </tr>
                         </thead>
@@ -160,16 +171,95 @@
                             <tr>
                                 <th style="font-weight: 400;">{{subject.subject_code}}</th>
                                 <td>{{subject.subject_name}}</td>
-                                <td>{{subject.related_lecturer}}</td>
                                 <td class="text-center">{{subject.related_batch}}</td>
+                                <td class="text-center">{{subject.semester}}</td>
+                                <td>{{subject.related_lecturer}}</td>
                                 <td class="text-center">
-                                    <form action="." method="POST">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="subject_code" value="{{subject.id}}">
-                                        <input type="submit" class="btn btn-sm btn-outline-danger" value="Delete" name="subject_delete_btn" style="font-size: 12px;">
-                                    </form>
+                                    <div class="row">
+                                        <div class="col-md-6 non-padding-cols">
+                                            <button type="button" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#subjectEditModal{{subject.subject_code}}" style="font-size: 12px;">Edit</button>
+                                        </div>
+                                        <div class="col-md-6 non-padding-cols">
+                                            <form action="." method="POST">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="subject_code" value="{{subject.id}}">
+                                                <input type="submit" class="btn btn-sm btn-outline-danger" value="Delete" name="subject_delete_btn" style="font-size: 12px;">
+                                            </form>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
+                            <!--Time-Table Modal -->
+                            <div class="modal fade" id="subjectEditModal{{subject.subject_code}}" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="subjectEditModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header" style="background-color: #f2f2f2;">
+                                            <h5 class="modal-title font-opensans" id="subjectEditModalLabel"> Edit subject : <b>{{subject.subject_name}}</b></h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <i class="fal fa-times-circle text-danger"></i>
+                                        </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="." method="POST">
+                                                {% csrf_token %}
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label>Subject Code</label>
+                                                            <input type="text" name="new_subject_code" value="{{subject.subject_code}}" class="form-control form-control-sm">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <div class="form-group">
+                                                            <label>Subject Name</label>
+                                                            <input type="text" name="new_subject_name" value="{{subject.subject_name}}" class="form-control form-control-sm">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label>Related Lecturer</label>
+                                                            <select name="new_related_lecturer" class="form-control form-control-sm">
+                                                                <option value="">---- Choose ----</option>
+                                                                {% for user in lecturers_data %}
+                                                                <option value="{{user.lecturer_name}}">{{user.user_title}}. {{user.lecturer_name}}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label>Batch</label>
+                                                            <select name="new_batch" class="form-control form-control-sm">
+                                                                <option value="">---- Choose ----</option>
+                                                                <option value="1">1<sup>st</sup> Year</option>
+                                                                <option value="2">2<sup>nd</sup> Year</option>
+                                                                <option value="3">3<sup>rd</sup> Year</option>
+                                                                <option value="4">4<sup>th</sup> Year</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label>Semester</label>
+                                                            <select name="new_semester" class="form-control form-control-sm">
+                                                                <option value="">---- Choose ----</option>
+                                                                <option value="1">Semester I</option>
+                                                                <option value="2">Semester II</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" name="subject_code" value="{{subject.id}}">
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer" style="background-color: #f2f2f2;">
+                                            <input type="submit" class="btn btn-success btn-sm" value="Save Changes" name="subject_edit_btn" style="font-family: 'Open Sans'; font-weight: 600;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             {% endfor %}
                         </tbody>
                     </table>
