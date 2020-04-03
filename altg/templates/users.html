@@ -170,9 +170,9 @@
                     <h6><b>Lecturers List</b></h6>
                 </div>
                 <div class="horizontal-divider-common mt-3 mb-4"></div>
-                <div class="section-list-table">
+                <div class="section-list-table table-responsive">
                     {% if lecturers_values %}
-                    <table class="table table-sm font-opensans" id="section-table" style="background-color: rgba(0,0,0,0.025);">
+                    <table class="table table-sm font-opensans section-table" id="" style="background-color: rgba(0,0,0,0.025);">
                         <thead>
                             <tr>
                                 <th scope="col">Code</th>
@@ -203,7 +203,9 @@
                                     <form action="." method="POST">
                                         {% csrf_token %}
                                         <input type="hidden" name="user_code" value="{{user.id}}">
-                                        <input type="submit" class="btn btn-sm btn-outline-danger" value="Delete" name="user_delete_btn" style="font-size: 12px;">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" name="user_delete_btn" title="Delete user" style="font-size: 12px;" onclick="return confirm('Are you sure to delete this user?');">
+                                            <i class="fad fa-trash-alt fa-lg"></i>
+                                        </button>
                                     </form>
                                 </td>
                             </tr>
@@ -211,7 +213,7 @@
                         </tbody>
                     </table>
                     {% else %}
-                    <div class="text-danger">
+                    <div class="text-danger text-center">
                         <i class="fal fa-frown fa-lg"></i>&nbsp; No user found!
                     </div> {% endif %}
                 </div>

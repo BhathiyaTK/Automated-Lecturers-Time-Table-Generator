@@ -93,21 +93,6 @@
     padding-left: 0 !important;
 }
 
-.custom-padding-cols {
-    padding-left: 10px !important;
-    padding-right: 10px !important;
-}
-
-.custom-right-padding-cols {
-    padding-right: 0 !important;
-    padding-left: 10px !important;
-}
-
-.custom-left-padding-cols {
-    padding-right: 10px !important;
-    padding-left: 0 !important;
-}
-
 hr {
     background-color: rgba(255, 255, 255, 0.4);
 }
@@ -126,28 +111,24 @@ hr {
     border-top: 2px solid rgba(94, 135, 224, 0.781);
 }
 
-.table {
-    margin-bottom: 0;
-}
-
-.section-table th,
-.section-table td {
+#section-table th,
+#section-table td {
     border: 1px solid rgb(197, 197, 197) !important;
     vertical-align: middle;
     font-family: "Open Sans";
 }
 
-.section-table thead {
+#section-table thead {
     text-align: center;
     background-color: rgba(0, 0, 0, 0.06);
 }
 
-.section-table th {
+#section-table th {
     font-weight: 600;
     font-size: 14px;
 }
 
-.section-table td {
+#section-table td {
     font-size: 13px;
 }
 
@@ -355,7 +336,7 @@ label {
     font-family: "Open Sans";
     font-weight: 600;
     transition: 0.2s;
-    font-size: 14px;
+    font-size: 15px;
 }
 
 .section-div .option-btn {
@@ -428,13 +409,6 @@ label {
     background: rgb(235, 228, 228);
     /* margin: 0 2px; */
     border-radius: 7px;
-}
-
-.generated-result {
-    font-size: 15px;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    border-radius: 7px;
-    background: rgba(0, 0, 0, 0.04);
 }
 
 

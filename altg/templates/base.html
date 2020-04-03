@@ -28,14 +28,22 @@
 </head>
 
 <body>
+    {% block jquery %}
+    <!-- Jquery JS-->
+    <script type="text/javascript" src="{% static 'vendor/jquery/jquery-3.4.1.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'vendor/bootstrap/js/popper.min.js' %}"></script>
+    <!-- Vendor JS-->
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'vendor/animsition/js/animsition.min.js' %}"></script>
+    <script src="{% static 'vendor/select2/select2.min.js' %}"></script>
+    <script src="{% static 'vendor/daterangepicker/moment.min.js' %}"></script>
+    <script src="{% static 'vendor/daterangepicker/daterangepicker.js' %}"></script>
+    <script src="{% static 'vendor/countdowntime/countdowntime.js' %}"></script>
+    <!-- Main JS-->
+    <script src="{% static 'js/global.js' %}"></script>
+    {% endblock jquery %} {% block content %} {% endblock content %}
 
-    {% block content %} {% endblock content %}
     <script>
-        window.addEventListener("load", function() {
-            var loader = document.getElementById("se-pre-con");
-            loader.style.display = "none";
-        });
-
         var dropdown = document.getElementsByClassName("dropdown-btn");
         var i;
 
@@ -51,19 +59,6 @@
             });
         }
     </script>
-    <!-- Jquery JS-->
-    <script src="{% static 'vendor/jquery/jquery-3.4.1.min.js' %}"></script>
-    <!-- Vendor JS-->
-    <script src="{% static 'vendor/animsition/js/animsition.min.js' %}"></script>
-    <script src="{% static 'vendor/bootstrap/js/popper.js' %}"></script>
-    <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'vendor/select2/select2.min.js' %}"></script>
-    <script src="{% static 'vendor/daterangepicker/moment.min.js' %}"></script>
-    <script src="{% static 'vendor/daterangepicker/daterangepicker.js' %}"></script>
-    <script src="{% static 'vendor/countdowntime/countdowntime.js' %}"></script>
-    <!-- Main JS-->
-    <script src="{% static 'js/global.js' %}"></script>
-
 </body>
 <div id="se-pre-con"></div>
 

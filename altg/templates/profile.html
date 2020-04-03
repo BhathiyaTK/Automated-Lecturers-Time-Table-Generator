@@ -40,7 +40,7 @@
                 <li><a href="../help"><i class="fal fa-question-circle"></i>&nbsp&nbsp Help</a></li>
             </ul>
         </div>
-        <div class="col-10 py-5 px-5" id="main-panel">
+        <div class="col-10 p-5" id="main-panel">
             <div class="main-panel-title">
                 <div class="row justify-content-between">
                     <div class="col-4">
@@ -83,6 +83,10 @@
                     {% endif %} {% endfor%}
                 </ul>
                 {% endif %} {% if user.is_authenticated %}
+                <div class="section-sub-title font-opensans">
+                    <h6><b>Your Personal Details</b></h6>
+                </div>
+                <div class="horizontal-divider-common mt-3 mb-4"></div>
                 <form action="." method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="row">
@@ -102,12 +106,17 @@
                         </div>
                         <div class="col-md-8 non-padding-cols">
                             <div class="row">
-                                <div class="col-md-6 left-padding-zero-cols">
+                                <div class="col-md-2 left-padding-zero-cols">
+                                    <div class="form-group">
+                                        <label for="user_title">Title</label>{{user_update_form.user_title}}
+                                    </div>
+                                </div>
+                                <div class="col-md-5 left-padding-zero-cols">
                                     <div class="form-group">
                                         <label for="first_name">First Name</label>{{user_update_form.first_name}}
                                     </div>
                                 </div>
-                                <div class="col-md-6 non-padding-cols">
+                                <div class="col-md-5 non-padding-cols">
                                     <div class="form-group">
                                         <label for="last_name">Last Name</label>{{user_update_form.last_name}}
                                     </div>
@@ -155,21 +164,49 @@
                 {% endif %}
             </div>
             {% if user.is_authenticated %}
-            <div class="table-section section-div container px-1 py-3 mt-4">
-                <div class="row justify-content-between generated-result align-items-center" style="font-size: 15px;">
-                    <div class="col-md-8 result_text">
-                        <div class="row align-items-center">
-                            <div class="col-md-1 result-icon"><i class="fal fa-calendar-alt fa-2x"></i></div>
-                            <div class="col-md-11">Currently using lecture schedule</div>
+            <br>
+            <div class="container px-0">
+                <div class="row">
+                    <div class="col-md-6 left-padding-zero-cols custom-left-padding-cols">
+                        <div class="section-div container p-4">
+                            <div class="section-sub-title font-opensans">
+                                <h6><b>Assigned Subjects</b></h6>
+                            </div>
+                            <div class="horizontal-divider-common mt-3">
+                                <ul class="font-opensans mt-3 mb-0 pl-3" style="font-size: 14px;">
+                                    {% for subjects in lecturers_subjects %}
+                                    <li>{{subjects.subject_name}} - <span class="text-muted">{{subjects.subject_code}}</span> <i>(Year {{subjects.related_batch}} Semester {{subjects.semester}})</i></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-3 text-right">
-                        <button type="button" class="btn btn-sm option-btn bg-primary font-opensans" data-toggle="modal" data-target="#staticBackdrop"><i class="fal fa-expand"></i>&nbsp View</button> &nbsp;
-                        <button type="button" class="btn btn-sm option-btn bg-danger font-opensans"><i class="fal fa-ban"></i>&nbsp; Delete</button>
+                    <div class="col-md-6 right-padding-zero-cols custom-right-padding-cols">
+                        <div class="section-div container p-4">
+                            <div class="section-sub-title font-opensans">
+                                <h6><b>Your Current Lecture Schedule</b></h6>
+                            </div>
+                            <div class="horizontal-divider-common mt-3 mb-4"></div>
+                            <div class="table-section">
+                                <div class="row generated-result align-items-center p-3">
+                                    <div class="col-md-8 result_text non-padding-cols">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-1 left-padding-zero-cols result-icon"><i class="fal fa-calendar-alt fa-lg"></i></div>
+                                            <div class="col-md-11">Lecture schedule</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 text-right non-padding-cols">
+                                        <button type="button" class="btn btn-sm btn-outline-primary font-opensans" data-toggle="modal" data-target="#staticBackdrop" title="View"><i class="fad fa-external-link fa-lg"></i></button>&nbsp;
+                                        <button type="button" class="btn btn-sm btn-outline-primary font-opensans" title="Download"><i class="fad fa-download fa-lg"></i></button>&nbsp;
+                                        <button type="button" class="btn btn-sm btn-outline-danger font-opensans" title="Delete"><i class="fad fa-trash-alt fa-lg"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            {% endif %}
+            <br><br> {% endif %}
         </div>
     </div>
 </section>

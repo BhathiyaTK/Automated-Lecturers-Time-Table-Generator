@@ -1,5 +1,5 @@
 from django import forms
-from .models import ProcessData, User, AllLectureHalls, AllSubjects, Batch, TimeSlots, Days, Profiles
+from .models import ProcessData, User, AllLectureHalls, AllSubjects, AllBatches, AllSemesters, Batch, TimeSlots, Days, Profiles
 
 BATCH = (
     ('', '---- Choose ----'),
@@ -57,6 +57,7 @@ class DeleteUserForm(forms.Form):
 
 class UserUpdateForm(forms.ModelForm):
     id = forms.CharField(max_length=224, widget=forms.HiddenInput(attrs={'name':'id'}), required=True)
+    user_title = forms.ChoiceField(choices=TITLES, widget=forms.Select(attrs={'class':'form-control form-control-sm', 'name':'user_title'}), required=True)
     first_name = forms.CharField(max_length=224, widget=forms.TextInput(attrs={'class':'form-control form-control-sm', 'name':'first_name'}), required=True)
     last_name = forms.CharField(max_length=224, widget=forms.TextInput(attrs={'class':'form-control form-control-sm', 'name':'last_name'}), required=True)
     lecturer_name = forms.CharField(max_length=224, widget=forms.TextInput(attrs={'class':'form-control form-control-sm', 'name':'lecturer_name'}), required=True)
@@ -66,7 +67,7 @@ class UserUpdateForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['id', 'first_name', 'last_name', 'lecturer_name', 'email', 'lecturer_code', 'username']
+        fields = ['id', 'user_title', 'first_name', 'last_name', 'lecturer_name', 'email', 'lecturer_code', 'username']
 
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:

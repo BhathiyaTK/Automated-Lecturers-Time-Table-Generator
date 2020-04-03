@@ -4,10 +4,12 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import make_password, check_password
 from django.http import HttpResponse, HttpResponseRedirect
 from .forms import DataForm, AddUserForm, AddHallForm, DeleteUserForm, UserUpdateForm, ProfileUpdateForm
-from .models import ProcessData, User, AllLectureHalls, AllSubjects, Batch, TimeSlots, Days, Profiles
+from .models import ProcessData, User, AllLectureHalls, AllSubjects, AllBatches, AllSemesters, Batch, TimeSlots, Days, Profiles
 from django.contrib import messages
 from django.db.models import Q
 from datetime import datetime
+from django.http import JsonResponse
+from django.core import serializers
 
 # Login function
 def userLogin(request):
@@ -78,12 +80,63 @@ def hall(request):
             print('------------- Lecture hall deletion failed -------------')
             messages.error(request, 'Lecture hall deletion failed! Try again later.')
             return redirect('hall')
+    elif 'hall_edit_btn' in request.POST:
+        if request.method == 'POST':
+            hall_code = request.POST['hall_code']
+            new_hall_number = request.POST['new_hall_number']
+            new_hall_name = request.POST['new_hall_name']
+            AllLectureHalls.objects.filter(Q(id=hall_code)).update(
+                hall_number=new_hall_number,
+                hall_name=new_hall_name
+            )
+            messages.success(request, 'Hall updated successfully!')
+            return redirect('hall')
+    elif 'batch_edit_btn' in request.POST:
+        if request.method == 'POST':
+            batch_code = request.POST['batch_code']
+            new_no_of_students = request.POST['new_no_of_students']
+            AllBatches.objects.filter(Q(id=batch_code)).update(
+                no_of_students = request.POST['new_no_of_students']
+            )
+            messages.success(request, 'Batch data updated successfully!')
+            return redirect('hall')
     else:
         halls_data = AllLectureHalls.objects.all()
+        batch_data = AllBatches.objects.all()
         hall_form = AddHallForm()
         profile_photo = Profiles.objects.filter(username=request.session['logged_username'])
-        hall_context = {'hall_form':hall_form, 'halls_data':halls_data, 'profile_photo':profile_photo}
+        hall_context = {'hall_form':hall_form, 'halls_data':halls_data, 'profile_photo':profile_photo, 'batch_data':batch_data}
         return render(request, 'hall.html', hall_context)
+
+def lecturerFilter(request):
+    if request.method == 'GET':
+        lecturerVal = request.GET['lecturerVal']
+        if lecturerVal == 'all':
+            filtered_data = AllSubjects.objects.all().order_by('related_batch','semester')
+            data = serializers.serialize('json', filtered_data)
+        else:
+            filtered_data = AllSubjects.objects.filter(Q(related_lecturer=lecturerVal)).order_by('related_batch','semester')
+            data = serializers.serialize('json', filtered_data)
+        print('Filtering successfull')
+        return HttpResponse(data, content_type="text/json-comment-filtered")
+    else:
+        print('Filtering failed')
+        return redirect('subject')
+
+def subjectFilter(request):
+    if request.method == 'GET':
+        filterVal = request.GET['filterVal']
+        if filterVal == 'all':
+            filtered_data = AllSubjects.objects.all().order_by('related_batch','semester')
+            data = serializers.serialize('json', filtered_data)
+        else:
+            filtered_data = AllSubjects.objects.filter(Q(related_batch=filterVal)).order_by('related_batch','semester')
+            data = serializers.serialize('json', filtered_data)
+        print('Filtering successfull')
+        return HttpResponse(data, content_type="text/json-comment-filtered")
+    else:
+        print('Filtering failed')
+        return redirect('subject')
 
 # Subjects manage & subject page rendering function
 def subject(request):
@@ -113,10 +166,10 @@ def subject(request):
             subject_context = {'subject_form':subject_form, 'lecturers_data':lecturers_data, 'subjects_data':subjects_data, 'profile_photo':profile_photo}
             return render(request, 'subject.html', subject_context)
 
-    elif 'subject_delete_btn' in request.POST:
-        if request.method == 'POST':
-            subject_code = request.POST['subject_code']
-            AllSubjects.objects.filter(Q(id=subject_code)).delete()
+    elif 'subject_delete_btn' in request.GET:
+        if request.method == 'GET':
+            subject_code = request.GET['subject_code']
+            AllSubjects.objects.filter(Q(subject_code=subject_code)).delete()
             messages.success(request, 'Subject deleted successfully')
             return redirect('subject')
         else:
@@ -124,22 +177,39 @@ def subject(request):
             message.error(request, 'Subject deletion failed! Try again later.')
             return redirect('subject')
     elif 'subject_edit_btn' in request.POST:
-        pass
-        # if request.POST == 'POST':
-        #     subject_code = request.POST['subject_code']
-        #     AllSubjects.objects.filter(Q(subject_code=subject_code)).update(
-        #         first_name=new_first_name,
-        #         last_name=new_last_name,
-        #         lecturer_name=new_lecturer_name,
-        #         email=new_email,
-        #         lecturer_code=new_lecturer_code,
-        #         username=new_username
-        #     )
+        if request.method == 'POST':
+            new_subject_code = request.POST['new_subject_code']
+            new_subject_name = request.POST['new_subject_name']
+            new_related_lecturer = request.POST['new_related_lecturer']
+            new_batch = request.POST['new_batch']
+            new_semester = request.POST['new_semester']
+            subject_code = request.POST['subject_code']
+            AllSubjects.objects.filter(Q(id=subject_code)).update(
+                subject_code=new_subject_code,
+                subject_name=new_subject_name,
+                related_lecturer=new_related_lecturer,
+                related_batch=new_batch,
+                semester=new_semester
+            )
+            messages.success(request, 'Subject updated successfully!')
+            return redirect('subject')
+        else:
+            print('------------- Subject deletion failed -------------')
+            messages.error(request, 'Subject deletion failed! Try again later.')
+            return redirect('subject')
     else:
         lecturers_data = User.objects.all()
-        subjects_data = AllSubjects.objects.all()
+        subjects_data = AllSubjects.objects.all().order_by('related_batch','semester')
+        batch_data = AllBatches.objects.all().order_by('batch_no')
+        semester_data = AllSemesters.objects.all()
         profile_photo = Profiles.objects.filter(username=request.session['logged_username'])
-        subject_context = {'lecturers_data':lecturers_data, 'subjects_data':subjects_data, 'profile_photo':profile_photo}
+        subject_context = {
+            'lecturers_data':lecturers_data,
+            'subjects_data':subjects_data,
+            'profile_photo':profile_photo,
+            'batch_data':batch_data,
+            'semester_data':semester_data
+        }
         return render(request, 'subject.html', subject_context)
 
 # Users manage and user page rendering function
@@ -244,6 +314,7 @@ def profile(request):
         profile_update_form = ProfileUpdateForm()
         if user_update_form.is_valid() or profile_update_form.is_valid():
             profile_image = request.FILES.get('user_profile_img')
+            new_user_title = request.POST['user_title']
             profile_id = request.POST['id']
             new_first_name = request.POST['first_name']
             new_last_name = request.POST['last_name']
@@ -254,6 +325,7 @@ def profile(request):
 
             if profile_image is None:
                 User.objects.filter(Q(id=profile_id)).update(
+                    user_title=new_user_title,
                     first_name=new_first_name,
                     last_name=new_last_name,
                     lecturer_name=new_lecturer_name,
@@ -278,6 +350,7 @@ def profile(request):
                 return redirect('profile')
             else:
                 User.objects.filter(Q(id=profile_id)).update(
+                    user_title=new_user_title,
                     first_name=new_first_name,
                     last_name=new_last_name,
                     lecturer_name=new_lecturer_name,
@@ -303,12 +376,16 @@ def profile(request):
     else:
         user_update_form = UserUpdateForm(instance=request.user)
         profile_update_form = ProfileUpdateForm(instance=Profiles)
-        profile_values = User.objects.all()
         profile_photo = Profiles.objects.filter(username=request.session['logged_username'])
+        profile_values = User.objects.filter(username=request.session['logged_username'])
+        p = profile_values.values('lecturer_name')
+        for lec in p:
+            lecturers_subjects = AllSubjects.objects.filter(related_lecturer=lec['lecturer_name'])
         profile_context = {
             'profile_values':profile_values,
             'profile_photo':profile_photo,
             'user_update_form':user_update_form,
+            'lecturers_subjects':lecturers_subjects,
             'profile_update_form':profile_update_form
         }
         return render(request, 'profile.html', profile_context)

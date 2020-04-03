@@ -40,7 +40,7 @@
                 <li><a href="../help"><i class="fal fa-question-circle"></i>&nbsp&nbsp Help</a></li>
             </ul>
         </div>
-        <div class="col-10 py-5 px-5" id="main-panel">
+        <div class="col-10 p-5" id="main-panel">
             <div class="main-panel-title">
                 <div class="row justify-content-between">
                     <div class="col-4">
@@ -94,10 +94,9 @@
                                 <label for="exampleSelect">Related Batch</label>
                                 <select name="related_batch" class="form-control form-control-sm">
                                     <option value="">---- Choose ----</option>
-                                    <option value="1">1<sup>st</sup> Year</option>
-                                    <option value="2">2<sup>nd</sup> Year</option>
-                                    <option value="3">3<sup>rd</sup> Year</option>
-                                    <option value="4">4<sup>th</sup> Year</option>
+                                    {% for batch in batch_data %}
+                                    <option value="{{batch.batch_no}}">{{batch.batch_no}}<sup>{{batch.batch_name_suffix}}</sup> Year</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                         </div>
@@ -118,8 +117,9 @@
                                 <label for="exampleInputName">Semester</label>
                                 <select name="semester" class="form-control form-control-sm">
                                     <option value="">---- Choose ----</option>
-                                    <option value="1">Semester I</option>
-                                    <option value="2">Semester II</option>
+                                    {% for semester in semester_data %}
+                                    <option value="{{semester.semester_no}}">{{semester.semester_no}}<sup>{{semester.semester_name_suffix}}</sup> Semester</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                         </div>
@@ -153,9 +153,34 @@
                     <h6><b>Subjects List</b></h6>
                 </div>
                 <div class="horizontal-divider-common mt-3 mb-4"></div>
-                <div class="section-list-table">
+                <div class="subject_filter_div mb-3">
+                    <div class="row justify-content-end">
+                        <div class="col-md-2 non-padding-cols font-opensans text-right" style="font-size: 14px; margin-top: 4px;">Apply filters : </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <select name="lecturer_filter" id="lecturer_filter" class="form-control form-control-sm">
+                                    <option value="all" selected>All Lecturers</option>
+                                    {% for lecturer in lecturers_data %}
+                                    <option value="{{lecturer.lecturer_name}}">{{lecturer.lecturer_name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2 non-padding-cols">
+                            <div class="form-group">
+                                <select name="subject_filter" id="subject_filter" class="form-control form-control-sm">
+                                    <option value="all" selected>All Batches</option>
+                                    {% for batch in batch_data %}
+                                    <option value="{{batch.batch_no}}">{{batch.batch_no}}<sup>{{batch.batch_name_suffix}}</sup> Year</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section-list-table" id="subject-table-div">
                     {% if subjects_data %}
-                    <table class="table table-sm font-opensans" id="section-table" style="background-color: rgba(0,0,0,0.025);">
+                    <table class="table table-sm font-opensans section-table" id="subject-table" style="background-color: rgba(0,0,0,0.025);">
                         <thead>
                             <tr>
                                 <th scope="col">Subject Code</th>
@@ -169,21 +194,22 @@
                         <tbody>
                             {% for subject in subjects_data %}
                             <tr>
-                                <th style="font-weight: 400;">{{subject.subject_code}}</th>
+                                <td>{{subject.subject_code}}</td>
                                 <td>{{subject.subject_name}}</td>
                                 <td class="text-center">{{subject.related_batch}}</td>
                                 <td class="text-center">{{subject.semester}}</td>
                                 <td>{{subject.related_lecturer}}</td>
                                 <td class="text-center">
-                                    <div class="row">
-                                        <div class="col-md-6 non-padding-cols">
-                                            <button type="button" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#subjectEditModal{{subject.subject_code}}" style="font-size: 12px;">Edit</button>
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-4 custom-left-padding-cols">
+                                            <button type="button" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#subjectEditModal{{subject.subject_code}}" title="Edit subject" style="font-size: 12px;"><i class="fad fa-marker fa-lg"></i></button>
                                         </div>
-                                        <div class="col-md-6 non-padding-cols">
-                                            <form action="." method="POST">
-                                                {% csrf_token %}
+                                        <div class="col-md-4 custom-right-padding-cols">
+                                            <form action="." method="GET">
                                                 <input type="hidden" name="subject_code" value="{{subject.id}}">
-                                                <input type="submit" class="btn btn-sm btn-outline-danger" value="Delete" name="subject_delete_btn" style="font-size: 12px;">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger" name="subject_delete_btn" title="Delete subject" style="font-size: 12px;" onclick="return confirm('Are you sure to delete this subject?');">
+                                                    <i class="fad fa-trash-alt fa-lg"></i>
+                                                </button>
                                             </form>
                                         </div>
                                     </div>
@@ -193,69 +219,66 @@
                             <div class="modal fade" id="subjectEditModal{{subject.subject_code}}" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="subjectEditModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                     <div class="modal-content">
-                                        <div class="modal-header" style="background-color: #f2f2f2;">
-                                            <h5 class="modal-title font-opensans" id="subjectEditModalLabel"> Edit subject : <b>{{subject.subject_name}}</b></h5>
+                                        <div class="modal-header px-4" style="background-color: #f2f2f2;">
+                                            <h5 class="modal-title font-opensans" id="subjectEditModalLabel"> Edit subject : <b style="color: #3B5998;">{{subject.subject_name}}</b></h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <i class="fal fa-times-circle text-danger"></i>
                                         </button>
                                         </div>
-                                        <div class="modal-body">
+                                        <div class="modal-body px-0 pb-0">
                                             <form action="." method="POST">
                                                 {% csrf_token %}
-                                                <div class="row">
-                                                    <div class="col-md-3">
+                                                <div class="row px-4 pb-3">
+                                                    <div class="col-md-3 left-padding-zero-cols">
                                                         <div class="form-group">
                                                             <label>Subject Code</label>
                                                             <input type="text" name="new_subject_code" value="{{subject.subject_code}}" class="form-control form-control-sm">
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-9">
+                                                    <div class="col-md-9 non-padding-cols">
                                                         <div class="form-group">
                                                             <label>Subject Name</label>
                                                             <input type="text" name="new_subject_name" value="{{subject.subject_name}}" class="form-control form-control-sm">
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-md-5">
+                                                <div class="row px-4 pb-3">
+                                                    <div class="col-md-5 left-padding-zero-cols">
                                                         <div class="form-group">
                                                             <label>Related Lecturer</label>
                                                             <select name="new_related_lecturer" class="form-control form-control-sm">
-                                                                <option value="">---- Choose ----</option>
                                                                 {% for user in lecturers_data %}
-                                                                <option value="{{user.lecturer_name}}">{{user.user_title}}. {{user.lecturer_name}}</option>
+                                                                <option value="{{user.lecturer_name}}" {% if user.lecturer_name == subject.related_lecturer %} selected {% endif %}>{{user.user_title}}. {{user.lecturer_name}}</option>
                                                                 {% endfor %}
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-3">
+                                                    <div class="col-md-3 non-padding-cols">
                                                         <div class="form-group">
                                                             <label>Batch</label>
                                                             <select name="new_batch" class="form-control form-control-sm">
-                                                                <option value="">---- Choose ----</option>
-                                                                <option value="1">1<sup>st</sup> Year</option>
-                                                                <option value="2">2<sup>nd</sup> Year</option>
-                                                                <option value="3">3<sup>rd</sup> Year</option>
-                                                                <option value="4">4<sup>th</sup> Year</option>
+                                                                {% for batch in batch_data %}
+                                                                <option value="{{batch.batch_no}}" {% if batch.batch_no == subject.related_batch %} selected {% endif %}>{{batch.batch_no}}<sup>{{batch.batch_name_suffix}}</sup> Year</option>
+                                                                {% endfor %}
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-3">
+                                                    <div class="col-md-3 right-padding-zero-cols">
                                                         <div class="form-group">
                                                             <label>Semester</label>
                                                             <select name="new_semester" class="form-control form-control-sm">
-                                                                <option value="">---- Choose ----</option>
-                                                                <option value="1">Semester I</option>
-                                                                <option value="2">Semester II</option>
+                                                                {% for semester in semester_data %}
+                                                                <option value="{{semester.semester_no}}" {% if semester.semester_no == subject.semester %} selected {% endif %}>{{semester.semester_no}}<sup>{{semester.semester_name_suffix}}</sup> Semester</option>
+                                                                {% endfor %}
                                                             </select>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <input type="hidden" name="subject_code" value="{{subject.id}}">
+                                                <div class="text-right px-4 py-3" style="background-color: #f2f2f2;">
+                                                    <input type="submit" class="btn btn-success btn-sm" value="Save Changes" name="subject_edit_btn" style="font-family: 'Open Sans'; font-weight: 600;">
+                                                </div>
                                             </form>
-                                        </div>
-                                        <div class="modal-footer" style="background-color: #f2f2f2;">
-                                            <input type="submit" class="btn btn-success btn-sm" value="Save Changes" name="subject_edit_btn" style="font-family: 'Open Sans'; font-weight: 600;">
                                         </div>
                                     </div>
                                 </div>
@@ -264,7 +287,7 @@
                         </tbody>
                     </table>
                     {% else %}
-                    <div class="text-danger">
+                    <div class="text-danger text-center">
                         <i class="fal fa-frown fa-lg"></i>&nbsp; No subject found!
                     </div> {% endif %}
                 </div>

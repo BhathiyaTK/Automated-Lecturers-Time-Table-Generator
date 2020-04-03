@@ -18,4 +18,6 @@ urlpatterns = [
     path("subject/", views.subject, name="subject"),
     path('hall/', views.hall, name='hall'),
     path('help/', views.help, name='help'),
+    path('subjectFilter/', views.subjectFilter, name='subjectFilter'),
+    path('lecturerFilter/', views.lecturerFilter, name='lecturerFilter'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

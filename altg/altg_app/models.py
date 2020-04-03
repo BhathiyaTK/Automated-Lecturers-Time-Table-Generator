@@ -65,6 +65,15 @@ class AllSubjects(models.Model):
     semester = models.CharField(max_length=20, choices=SEMESTERS, default=None)
     related_lecturer = models.CharField(max_length=224, default='')
 
+class AllBatches(models.Model):
+    batch_no = models.CharField(max_length=20)
+    batch_name_suffix = models.CharField(max_length=20)
+    no_of_students = models.CharField(max_length=50)
+
+class AllSemesters(models.Model):
+    semester_no = models.CharField(max_length=20)
+    semester_name_suffix = models.CharField(max_length=20)
+
 class Batch(models.Model):
     batch_no = models.CharField(max_length=50)
     no_of_students = models.CharField(max_length=100)
