@@ -10,6 +10,15 @@ from django.db.models import Q
 from datetime import datetime
 from django.http import JsonResponse
 from django.core import serializers
+from django.db.models import Sum, Count
+from django.db.models.functions import Cast
+from django.db.models import IntegerField
+import prettytable as prettytable
+import random as rnd
+import sys
+from subprocess import run, PIPE
+from os import popen
+import ast
 
 # Login function
 def userLogin(request):
@@ -23,7 +32,7 @@ def userLogin(request):
             request.session['logged_username'] = user.username
             login(request, user)
             print('------------- User logged in successfully -------------')
-            return redirect('home')          
+            return redirect('dashboard')          
         else:
             messages.error(request, 'Invalid user login creditials!')
             print('------------- Not valid user credentials -------------')
@@ -37,15 +46,82 @@ def userLogout(request):
     print('------------- User logged out successfully -------------')
     return redirect('/')
 
-# Home page rendering function
-def home(request):
-    lecturer_names = User.objects.all()
-    form = DataForm()
+# Dashboard page functions
+def dashboard(request):
     profile_photo = Profiles.objects.filter(username=request.session['logged_username'])
-    context = {'form':form, 'lecturer_names': lecturer_names, 'profile_photo':profile_photo}
-    return render(request, 'home.html', context)
+    lecturers_count = User.objects.filter(user_position='lecturer').count()
+    others_count = User.objects.exclude(user_position='lecturer').count()
+    subjects_count = AllSubjects.objects.count()
+    students_count = AllBatches.objects.all().annotate(as_int=Cast('no_of_students', IntegerField())).aggregate(Sum('as_int'))
+    all_users = User.objects.all().order_by('id')
+    dashboard_context = {
+        'profile_photo':profile_photo,
+        'all_users':all_users,
+        'lecturers_count':lecturers_count,
+        'others_count':others_count,
+        'subjects_count':subjects_count,
+        'students_count':students_count,
+    }
+    return render(request, 'dashboard.html', dashboard_context)
 
-# Lecture hall adding function
+# Dashboard chart function
+def dashChart(request):
+    if request.method == 'GET':
+        labels = []
+        data_values = []
+
+        dataset = AllSubjects.objects.exclude(related_lecturer='Not assigned').values('related_lecturer').annotate(data_count = Count('related_lecturer')).order_by('-data_count')
+        for sub in dataset:
+            labels.append(sub['related_lecturer'])
+            data_values.append(sub['data_count'])
+        data = {
+            "labels": labels,
+            "data_values": data_values,
+        }
+        return JsonResponse(data)
+    else:
+        return redirect('dashboard')
+
+# Schedule page function
+def schedule(request):
+    if request.method == 'POST':
+        lec_name = request.POST['selected_lecturer']
+        sem = request.POST['selected_semester']
+        if (lec_name and sem) is not None:
+            out = run([sys.executable,'D://Web Projects//CIS_ALTG//altg//gAlgorithm.py',lec_name, sem],shell=False,stdout=PIPE)
+            byteVal = (out.stdout).strip()
+            data_list = ast.literal_eval(byteVal.decode())
+            data_table_row = []
+            for i in data_list:
+                data_table_row.append("<tr><td class='text-center'>"+i[0]+"</td><td>"+i[1]+"</td><td>"+i[2]+"</td><td>"+i[3]+"</td></tr>")
+            lecturer_names = User.objects.filter(user_position='lecturer')
+            semester_info = AllSemesters.objects.all()
+            profile_photo = Profiles.objects.filter(username=request.session['logged_username'])
+            context = {
+                'lecturer_names': lecturer_names, 
+                'profile_photo': profile_photo,
+                'schedule_data': data_table_row,
+                'lec_name': lec_name,
+                'semester_info': semester_info
+                }
+            return render(request, 'schedule.html', context)
+        else:
+            messages.error(request, 'Please select both fields!')
+            lecturer_names = User.objects.filter(user_position='lecturer')
+            semester_info = AllSemesters.objects.all()
+            profile_photo = Profiles.objects.filter(username=request.session['logged_username'])
+            context = {'lecturer_names': lecturer_names,'profile_photo': profile_photo, 'semester_info': semester_info}
+            return render(request, 'schedule.html', context)
+        return lec_name
+    else:
+        lecturer_names = User.objects.filter(user_position='lecturer')
+        semester_info = AllSemesters.objects.all()
+        profile_photo = Profiles.objects.filter(
+            username=request.session['logged_username'])
+        context = {'lecturer_names': lecturer_names,'profile_photo': profile_photo,'semester_info': semester_info}
+        return render(request, 'schedule.html', context)
+
+# Lecture hall page function
 def hall(request):
     if 'hall_add_btn' in request.POST:
         if request.method == 'POST':
@@ -108,6 +184,7 @@ def hall(request):
         hall_context = {'hall_form':hall_form, 'halls_data':halls_data, 'profile_photo':profile_photo, 'batch_data':batch_data}
         return render(request, 'hall.html', hall_context)
 
+# Lecturer-wise subject filter function
 def lecturerFilter(request):
     if request.method == 'GET':
         lecturerVal = request.GET['lecturerVal']
@@ -123,6 +200,7 @@ def lecturerFilter(request):
         print('Filtering failed')
         return redirect('subject')
 
+# Batch-wise subject filter function
 def subjectFilter(request):
     if request.method == 'GET':
         filterVal = request.GET['filterVal']
@@ -138,7 +216,7 @@ def subjectFilter(request):
         print('Filtering failed')
         return redirect('subject')
 
-# Subjects manage & subject page rendering function
+# Subjects manage & subject page function
 def subject(request):
     if 'subject_add_btn' in request.POST:
         if request.method == 'POST':
@@ -212,7 +290,7 @@ def subject(request):
         }
         return render(request, 'subject.html', subject_context)
 
-# Users manage and user page rendering function
+# Users manage and user page function
 def users(request):
     if 'user_add_btn' in request.POST:
         if request.method == 'POST':
@@ -228,6 +306,7 @@ def users(request):
                 password1 = reg_data.cleaned_data.get('password1')
                 password2 = reg_data.cleaned_data.get('password2')
                 user_type = reg_data.cleaned_data.get('user_type')
+                user_position = reg_data.cleaned_data.get('user_position')
                 default_profile_img = 'users/profile.jpg'
 
                 if password1 == password2:
@@ -242,12 +321,13 @@ def users(request):
                             password=password1, 
                             email=email,
                             is_active=True,
-                            is_staff=True
+                            is_staff=True,
+                            user_position=user_position
                         )
                         prof_img = Profiles(username=username, user_profile_img=default_profile_img)
                         user.save()
                         prof_img.save()
-                        messages.success(request, 'Lecturer was added successfully!')
+                        messages.success(request, 'User has been registered successfully!')
                         return redirect('users')
                     else:
                         user = User.objects.create_user(
@@ -260,12 +340,13 @@ def users(request):
                             password=password1, 
                             email=email,
                             is_active=True,
-                            is_staff=True
+                            is_staff=True,
+                            user_position=user_position
                         )
                         prof_img = Profiles(username=username, user_profile_img=default_profile_img)
                         user.save()
                         prof_img.save()
-                        messages.success(request, 'Lecturer was registered successfully!')
+                        messages.success(request, 'User has been registered successfully!')
                         return redirect('users')
                 else:
                     print('********************** Passwords are not same *************************')
@@ -273,7 +354,7 @@ def users(request):
                     return redirect('users')    
             else:
                 print('******** User Not Registered ********')
-                messages.error(request, 'Lecturer registration failed!')
+                messages.error(request, 'User registration failed!')
                 reg_data = AddUserForm()
                 return redirect('users')
         else:
@@ -290,12 +371,12 @@ def users(request):
         if request.method == 'POST':
             user_code = request.POST['user_code']
             User.objects.filter(Q(id=user_code)).delete()
-            messages.success(request, 'Lecturer deleted successfully!')
+            messages.success(request, 'User deleted successfully!')
             print(user_code)
             return redirect('users')
         else:
             print('------------------ Lecturer deletion failed -----------------')
-            messages.error(request, 'Lecturer deletion failed! Try again later.')
+            messages.error(request, 'User deletion failed! Try again later.')
             return redirect('users')
     else:
         lecturers_values = User.objects.all()
@@ -307,7 +388,7 @@ def users(request):
         reg_context = {'reg_form':reg_form, 'user_delete_form':user_delete_form, 'lecturers_values':lecturers_values, 'profile_photo':profile_photo, 'date':formatedDate}
         return render(request, 'users.html', reg_context)
 
-# Profile page rendering function
+# Profile page function
 def profile(request):
     if request.method == 'POST':
         user_update_form = UserUpdateForm(request.POST, instance=request.user)
@@ -390,32 +471,8 @@ def profile(request):
         }
         return render(request, 'profile.html', profile_context)
 
-# Help page rendering function
+# Help page  function
 def help(request):
     profile_photo = Profiles.objects.filter(username=request.session['logged_username'])
     help_context = {'profile_photo':profile_photo}
     return render(request, 'help.html', help_context)
-
-# Time table generation & visualization
-def table(request):
-    if request.method == 'POST':
-        data_form = DataForm(request.POST)
-        if data_form.is_valid():
-            name = data_form.cleaned_data.get('lecturer_name')
-            batch = data_form.cleaned_data['batch']
-            hall = data_form.cleaned_data['hall']
-            subject = data_form.cleaned_data['subject']
-            std_no = data_form.cleaned_data['students']
-            data_form.save()
-            data_form = DataForm()
-
-            data = {'name': name, 'batch': batch, 'hall': hall, 'subject': subject, 'std_no': std_no}
-            return render(request, 'table.html', data)
-        else:
-            print('********** Not validated **********')
-            data_form = DataForm()
-            return redirect('home')
-        
-        print(name, batch, hall, subject, std_no)
-    else:
-        return render(request, 'home.html')

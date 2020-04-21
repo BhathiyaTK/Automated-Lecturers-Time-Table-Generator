@@ -1,0 +1,172 @@
+{% extends 'base.html' %} {% block content %}{% load static %}
+<section>
+    <div class="row">
+        <div class="col-2 mh-100" id="side-panel">
+            {% if user.is_authenticated %}
+            <div class="profile-img-div fluid">
+                {% if profile_photo %} {% for photo in profile_photo %}
+                <img src="../media/{{photo.user_profile_img}}" alt="Your Profile Image"> {% endfor %} {% else %}
+                <img src="{% static 'images/profile.jpg' %}" alt="Profile Image"> {% endif %}
+                <p class="welcome-text pb-0 mb-0">Hi, welcome back!</p>
+                <p class="username">{{user.user_title}}. {{user.first_name}}</p>
+            </div>
+            <div class="signout-btn-div fluid mb-4">
+                <a href="../logout" class="btn btn-sm"><i class="fal fa-power-off"></i>&nbsp Log out</a>
+            </div>
+            {% else %}
+            <div class="profile-img-div fluid">
+                <img src="{% static 'images/profile.jpg' %}" alt="Profile Image">
+                <p class="welcome-text pb-0 mb-0">Please log in to continue.</p>
+            </div>
+            <div class="signin-btn-div fluid mb-4">
+                <a href="/" class="btn btn-sm"><i class="fal fa-sign-in-alt"></i>&nbsp Log in</a>
+            </div>
+            {% endif %}
+            <hr>
+            <ul class="menu-links">
+                {% if user.is_authenticated %}
+                <li><a href="../dashboard"><i class="fal fa-tachometer-alt-fast"></i>&nbsp&nbsp Dashboard</a></li>
+                <li class="active-link"><a href="."><i class="fal fa-calendar-alt"></i>&nbsp&nbsp Schedule</a></li>
+                {% if user.is_superuser %}
+                <button class="dropdown-btn"><i class="fal fa-sliders-h"></i>&nbsp&nbsp Manage<span class="float-right"><i class="fal fa-chevron-down"></i></span></button>
+                <div class="dropdown-container">
+                    <li><a href="../hall">&nbsp;<i class="fal fa-building fa-lg"></i>&nbsp;&nbsp; Lecture Halls</a></li>
+                    <li><a href="../subject">&nbsp;<i class="fal fa-book fa-lg"></i>&nbsp;&nbsp; Subjects</a></li>
+                    <li><a href="../users"><i class="fal fa-users fa-lg"></i>&nbsp;&nbsp; Users</a></li>
+                </div>
+                {% endif %}
+                <li><a href="../profile"><i class="fal fa-user-alt"></i>&nbsp&nbsp My Account</a></li>
+                {% endif %}
+                <li><a href="../help"><i class="fal fa-question-circle"></i>&nbsp&nbsp Help</a></li>
+            </ul>
+        </div>
+        <div class="col-10" id="main-panel">
+            <div class="main-panel-title py-3 pl-4 pr-3">
+                <div class="row justify-content-between">
+                    <div class="col-4 non-padding-cols">
+                        <h4>Schedules</h4>
+                        <small class="text-muted">Generate lecture schedules</small>
+                    </div>
+                    <div class="col-2 text-center right-padding-zero-cols">
+                        {% if user.is_authenticated %}
+                        <div class="alert alert-info px-0 mt-1 user_role_alert">
+                            {% if user.is_superuser %}
+                            <strong>Your Role : ADMIN </strong> {% else %}
+                            <strong>Your Role : GUEST </strong> {% endif %}
+                        </div>
+                        {% else %}
+                        <div class="alert alert-danger px-0 mt-1 user_role_alert">
+                            Please log in to continue
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="main-panel-content px-5 py-4">
+                <div class="section-div container px-5 pb-2 pt-4">
+                    {% if user.is_authenticated %}
+                    <form action="." method="POST">
+                        {% csrf_token %}
+                        <div class="generate-msg text-center">
+                            <h3 class="font-opensans mb-3">Let's get started.</h3>
+                            <p class="font-opensans mb-4 text-secondary" style="font-size: 14.5px;">
+                                Select the lecturer's name and the semester from the below <span class="badge badge-secondary">Select Boxes</span>. Then click the
+                                <span class="badge badge-secondary">Generate</span> button to see the result.
+                            </p>
+                        </div>
+                        <div class="text-center">
+
+                        </div>
+                        <div class="text-center w-50 mx-auto my-4">
+                            {% if messages %} {% for message in messages %}
+                            <div class="alert alert-danger alert-dismissable mb-4" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <i class="far fa-times-circle fa-lg"></i>&nbsp; <b>{{message}}</b>
+                            </div>
+                            {% endfor %} {% endif %}
+                            <div class="row">
+                                <div class="col-md-8 left-padding-zero-cols">
+                                    <select class="form-control form-control-sm mb-3" name="selected_lecturer">
+                                        <option value="">--- Lecturer ---</option>
+                                        {% for user in lecturer_names %}
+                                        <option value="{{user.lecturer_name}}">{{user.user_title}}. {{user.lecturer_name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-4 non-padding-cols">
+                                    <select class="form-control form-control-sm mb-3" name="selected_semester">
+                                        <option value="">--- Semester ---</option>
+                                        {% for sem in semester_info %}
+                                        <option value="{{sem.semester_no}}">{{sem.semester_no}}<sup>{{sem.semester_name_suffix}}</sup> semester</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <input type="submit" class="btn px-4 submit_btn bg-success" value="Generate" />
+                        </div>
+                    </form>
+                    {% else %}
+                    <div class="error-msg-div my-5 text-center">
+                        <p class="text-danger mb-4"><i class="fal fa-exclamation-triangle fa-5x"></i></p>
+                        <p class="text-danger font-opensans">You are not logged in. Please log in <a href="/">here</a>.</p>
+                    </div>
+                    {% endif %}
+                </div>
+                <br> {% if user.is_authenticated %}
+                <div class="table-section section-div container mb-2 px-0">
+                    {% if schedule_data %}
+                    <div class="row justify-content-between align-items-center py-3" style="font-size: 15px; background: rgb(228, 228, 228);">
+                        <div class="col-md-8 result_text">
+                            <div class="row align-items-center">
+                                <div class="col-md-1 result-icon non-padding-cols"><i class="fal fa-calendar-alt fa-2x"></i></div>
+                                <div class="col-md-11 non-padding-cols">Generated lecture schedule for <span class="result_lec_name">{{lec_name}}</span></div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-right px-4">
+                            <button type="button" class="btn btn-sm option-btn font-opensans" title="Save"><i class="fal fa-save fa-lg"></i></button> &nbsp;
+                            <button type="button" class="btn btn-sm option-btn font-opensans" title="Download"><i class="fal fa-download fa-lg"></i></button>
+                        </div>
+                    </div>
+                    <div class="table-div p-4">
+                        <table class="table table-bordered table-hover table-sm" id="schedule-table">
+                            <thead class="text-center">
+                                <th scope="col">#</th>
+                                <th scope="col">Subject (Subject code, no. of students)</th>
+                                <th scope="col">Lecture Hall</th>
+                                <th scope="col">Date & Time</th>
+                            </thead>
+                            <tbody class="bg-light">
+                                {% for schedule in schedule_data %} {{schedule|safe}} {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="p-4 text-center font-opensans">
+                        <small class="text-muted"><i class="fal fa-calendar-alt fa-lg"></i>&nbsp; Generated lecture schedule will display in here.</small>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--Time-Table Modal -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title font-opensans" id="staticBackdropLabel"> Generated Lecture Schedule</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fal fa-times-circle text-danger"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

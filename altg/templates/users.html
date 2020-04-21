@@ -10,29 +10,29 @@
                 <p class="welcome-text pb-0 mb-0">Hi, welcome back!</p>
                 <p class="username">{{user.user_title}}. {{user.first_name}}</p>
             </div>
-            <div class="signout-btn-div fluid">
-                <a href="logout" class="btn btn-sm"><i class="fal fa-power-off"></i>&nbsp Log out</a>
+            <div class="signout-btn-div fluid mb-4">
+                <a href="../logout" class="btn btn-sm"><i class="fal fa-power-off"></i>&nbsp Log out</a>
             </div>
             {% else %}
             <div class="profile-img-div fluid">
                 <img src="{% static 'images/profile.jpg' %}" alt="Profile Image">
                 <p class="welcome-text pb-0 mb-0">Please log in to continue.</p>
             </div>
-            <div class="signin-btn-div fluid">
+            <div class="signin-btn-div fluid mb-4">
                 <a href="/" class="btn btn-sm"><i class="fal fa-sign-in-alt"></i>&nbsp Log in</a>
             </div>
             {% endif %}
-            <br>
             <hr>
             <ul class="menu-links">
                 {% if user.is_authenticated %}
-                <li><a href="../home"><i class="fal fa-home-lg-alt"></i>&nbsp&nbsp Home</a></li>
+                <li><a href="../dashboard"><i class="fal fa-tachometer-alt-fast"></i>&nbsp&nbsp Dashboard</a></li>
+                <li><a href="../schedule"><i class="fal fa-calendar-alt"></i>&nbsp&nbsp Schedule</a></li>
                 {% if user.is_superuser %}
                 <button class="dropdown-btn active-link"><i class="fal fa-sliders-h"></i>&nbsp&nbsp Manage<span class="float-right"><i class="fal fa-chevron-down"></i></span></button>
                 <div class="dropdown-container">
                     <li><a href="../hall">&nbsp;<i class="fal fa-building fa-lg"></i>&nbsp;&nbsp; Lecture Halls</a></li>
                     <li><a href="../subject">&nbsp;<i class="fal fa-book fa-lg"></i>&nbsp;&nbsp; Subjects</a></li>
-                    <li class="active-link"><a href="."><i class="fal fa-users fa-lg"></i>&nbsp;&nbsp; Lecturers</a></li class="active-link">
+                    <li class="active-link"><a href="."><i class="fal fa-users fa-lg"></i>&nbsp;&nbsp; Users</a></li class="active-link">
                 </div>
                 {% endif %}
                 <li><a href="../profile"><i class="fal fa-user-alt"></i>&nbsp&nbsp My Account</a></li>
@@ -40,185 +40,200 @@
                 <li><a href="../help"><i class="fal fa-question-circle"></i>&nbsp&nbsp Help</a></li>
             </ul>
         </div>
-        <div class="col-10 p-5" id="main-panel">
-            <div class="main-panel-title">
+        <div class="col-10" id="main-panel">
+            <div class="main-panel-title py-3 pl-4 pr-3">
                 <div class="row justify-content-between">
-                    <div class="col-4">
-                        <h4>Lecturers</h4>
-                        <small class="text-muted">Manage lecturers data</small>
+                    <div class="col-4 non-padding-cols">
+                        <h4>Users</h4>
+                        <small class="text-muted">Manage users information</small>
                     </div>
-                    <div class="col-3 text-center right-padding-zero-cols">
+                    <div class="col-2 text-center right-padding-zero-cols">
                         {% if user.is_authenticated %}
-                        <div class="alert alert-info mb-4">
+                        <div class="alert alert-info px-0 mt-1 user_role_alert">
                             {% if user.is_superuser %}
                             <strong>Your Role : ADMIN </strong> {% else %}
                             <strong>Your Role : GUEST </strong> {% endif %}
                         </div>
                         {% else %}
-                        <div class="alert alert-danger mb-4">
+                        <div class="alert alert-danger px-0 mt-1 user_role_alert">
                             Please log in to continue
                         </div>
                         {% endif %}
                     </div>
                 </div>
             </div>
-            <div class="section-div container p-4 mb-4">
-                {% if messages %}
-                <ul class="messages">
-                    {% for message in messages %} {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-                    <div class="alert {{message.tags}} alert-dismissable mb-4" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <div class="main-panel-content px-5 py-4">
+                <div class="section-div container p-4 mb-4">
+                    {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %} {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                        <div class="alert {{message.tags}} alert-dismissable mb-4" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                        <i class="far fa-check-circle fa-lg"></i>&nbsp; <b>{{message}}</b>
-                    </div>
-                    {% else %}
-                    <div class="alert {{message.tags}} alert-dismissable mb-4" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <i class="far fa-check-circle fa-lg"></i>&nbsp; <b>{{message}}</b>
+                        </div>
+                        {% else %}
+                        <div class="alert {{message.tags}} alert-dismissable mb-4" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                        <i class="far fa-times-circle fa-lg"></i>&nbsp; <b>{{message}}</b>
+                            <i class="far fa-times-circle fa-lg"></i>&nbsp; <b>{{message}}</b>
+                        </div>
+                        {% endif %} {% endfor%}
+                    </ul>
+                    {% endif %} {% if user.is_authenticated %}
+                    <div class="section-sub-title font-opensans">
+                        <h6><b>Add New User</b></h6>
                     </div>
-                    {% endif %} {% endfor%}
-                </ul>
-                {% endif %} {% if user.is_authenticated %}
-                <div class="section-sub-title font-opensans">
-                    <h6><b>Add New Lecturer</b></h6>
-                </div>
-                <div class="horizontal-divider-common mt-3 mb-4"></div>
-                <form action="." method="POST">
-                    {% csrf_token %}
-                    <div class="row">
-                        <div class="col-md-2 left-padding-zero-cols">
-                            <div class="form-group">
-                                <label for="exampleInputName">Title</label>{{reg_form.user_title}}
+                    <div class="horizontal-divider-common mt-3 mb-4"></div>
+                    <form action="." method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-2 left-padding-zero-cols">
+                                <div class="form-group">
+                                    <label for="exampleInputName">Title</label>{{reg_form.user_title}}
+                                </div>
+                            </div>
+                            <div class="col-md-5 left-padding-zero-cols">
+                                <div class="form-group">
+                                    <label for="exampleInputName">First Name</label>{{reg_form.first_name}}
+                                </div>
+                            </div>
+                            <div class="col-md-5 non-padding-cols">
+                                <div class="form-group">
+                                    <label for="exampleInputName">Last Name</label>{{reg_form.last_name}}
+                                </div>
+                            </div>
+                            <div class="col-md-8 left-padding-zero-cols">
+                                <div class="form-group">
+                                    <label for="exampleInputName">Name with Initials</label>{{reg_form.lecturer_name}}
+                                </div>
+                            </div>
+                            <div class="col-md-4 non-padding-cols">
+                                <div class="form-group">
+                                    <label for="exampleInputName">User Code</label>{{reg_form.lecturer_code}}
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-5 left-padding-zero-cols">
-                            <div class="form-group">
-                                <label for="exampleInputName">First Name</label>{{reg_form.first_name}}
+                        <div class="row">
+                            <div class="col-md-7 left-padding-zero-cols">
+                                <div class="form-group">
+                                    <label for="exampleInputName">Email</label>{{reg_form.email}}
+                                </div>
+                            </div>
+                            <div class="col-md-3 left-padding-zero-cols">
+                                <div class="form-group">
+                                    <label for="exampleSelect">User Position</label>{{reg_form.user_position}}
+                                </div>
+                            </div>
+                            <div class="col-md-2 non-padding-cols">
+                                <div class="form-group">
+                                    <label for="exampleSelect">User Type</label>{{reg_form.user_type}}
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-5 non-padding-cols">
-                            <div class="form-group">
-                                <label for="exampleInputName">Last Name</label>{{reg_form.last_name}}
+                        <div class="row">
+                            <div class="col-md-4 left-padding-zero-cols">
+                                <div class="form-group">
+                                    <label for="exampleInputName">Username</label>{{reg_form.username}}
+                                </div>
+                            </div>
+                            <div class="col-md-4 left-padding-zero-cols">
+                                <div class="form-group">
+                                    <label for="exampleInputName">Password</label>{{reg_form.password1}}
+                                </div>
+                            </div>
+                            <div class="col-md-4 non-padding-cols">
+                                <div class="form-group">
+                                    <label for="exampleInputName">Confirm Password</label>{{reg_form.password2}}
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-8 left-padding-zero-cols">
-                            <div class="form-group">
-                                <label for="exampleInputName">Lecturer Name with Initials</label>{{reg_form.lecturer_name}}
-                            </div>
-                        </div>
-                        <div class="col-md-4 non-padding-cols">
-                            <div class="form-group">
-                                <label for="exampleInputName">Lecturer Code</label>{{reg_form.lecturer_code}}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-9 left-padding-zero-cols">
-                            <div class="form-group">
-                                <label for="exampleInputName">Email</label>{{reg_form.email}}
-                            </div>
-                        </div>
-                        <div class="col-md-3 non-padding-cols">
-                            <div class="form-group">
-                                <label for="exampleSelect">User Type</label>{{reg_form.user_type}}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4 left-padding-zero-cols">
-                            <div class="form-group">
-                                <label for="exampleInputName">Username</label>{{reg_form.username}}
-                            </div>
-                        </div>
-                        <div class="col-md-4 left-padding-zero-cols">
-                            <div class="form-group">
-                                <label for="exampleInputName">Password</label>{{reg_form.password1}}
-                            </div>
-                        </div>
-                        <div class="col-md-4 non-padding-cols">
-                            <div class="form-group">
-                                <label for="exampleInputName">Confirm Password</label>{{reg_form.password2}}
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-md-9 col-sm-12 left-padding-zero-cols">
+                        <br>
+                        <div class="row">
+                            <div class="col-md-9 col-sm-12 left-padding-zero-cols">
 
-                        </div>
-                        <div class="col-md-3 col-sm-12 right-padding-zero-cols">
-                            <div class="save-btn-div text-right">
-                                <input type="submit" class="btn px-4 submit_btn" value="Add Lecturer" name="user_add_btn">
+                            </div>
+                            <div class="col-md-3 col-sm-12 right-padding-zero-cols">
+                                <div class="save-btn-div text-right">
+                                    <input type="submit" class="btn px-4 submit_btn" value="Add Lecturer" name="user_add_btn">
+                                </div>
                             </div>
                         </div>
+                    </form>
+                    {% else %}
+                    <div class="error-msg-div my-5 text-center">
+                        <p class="text-danger mb-4"><i class="fal fa-exclamation-triangle fa-5x"></i></p>
+                        <p class="text-danger font-opensans">You are not logged in. Please log in <a href="/">here</a>.</p>
                     </div>
-                </form>
-                {% else %}
-                <div class="error-msg-div my-5 text-center">
-                    <p class="text-danger mb-4"><i class="fal fa-exclamation-triangle fa-5x"></i></p>
-                    <p class="text-danger font-opensans">You are not logged in. Please log in <a href="/">here</a>.</p>
+                    {% endif %}
+                </div>
+
+                {% if user.is_authenticated %}
+                <div class="section-div container p-4 mb-2">
+                    <div class="section-sub-title font-opensans">
+                        <h6><b>Users List</b></h6>
+                    </div>
+                    <div class="horizontal-divider-common mt-3 mb-4"></div>
+                    <div class="section-list-table table-responsive">
+                        {% if lecturers_values %}
+                        <table class="table table-sm font-opensans section-table" id="" style="background-color: rgba(0,0,0,0.025);">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Code</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Role</th>
+                                    <th scope="col">Profession</th>
+                                    <th scopr="col">Last Login</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in lecturers_values %}
+                                <tr>
+                                    <th style="font-weight: 400;">{{user.lecturer_code}}</th>
+                                    <td>{{user.user_title}}. {{user.lecturer_name}}</td>
+                                    <td>{{user.email}}</td>
+                                    <td class="text-center">
+                                        {% if user.is_superuser%} Admin {% else %} Guest {% endif %}
+                                    </td>
+
+                                    {% if user.user_position == 'lecturer' %}
+                                    <td class="text-center">Lecturer</td>
+                                    {% elif user.user_position == 'demo' %}
+                                    <td class="text-center">Demonstrator</td>
+                                    {% elif user.user_positionn == 'naStaff' %}
+                                    <td class="text-center">Non academic staff</td>
+                                    {% else %}
+                                    <td class="text-center">Other</td>
+                                    {% endif %} {% if user.last_login is None %}
+                                    <td class="text-muted text-center">Not Available</td>
+                                    {% else %}
+                                    <td class="text-center">{{user.last_login|date:'d/m/Y (P)'}}</td>
+                                    {% endif %}
+                                    <td class="text-center">
+                                        <form action="." method="POST">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="user_code" value="{{user.id}}">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" name="user_delete_btn" title="Delete user" style="font-size: 12px;" onclick="return confirm('Are you sure to delete this user?');">
+                                            <i class="fad fa-trash-alt fa-lg"></i>
+                                        </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% else %}
+                        <div class="text-danger text-center">
+                            <i class="fal fa-frown fa-lg"></i>&nbsp; No user found!
+                        </div> {% endif %}
+                    </div>
                 </div>
                 {% endif %}
             </div>
-
-            {% if user.is_authenticated %}
-            <div class="section-div container p-4 mb-5">
-                <div class="section-sub-title font-opensans">
-                    <h6><b>Lecturers List</b></h6>
-                </div>
-                <div class="horizontal-divider-common mt-3 mb-4"></div>
-                <div class="section-list-table table-responsive">
-                    {% if lecturers_values %}
-                    <table class="table table-sm font-opensans section-table" id="" style="background-color: rgba(0,0,0,0.025);">
-                        <thead>
-                            <tr>
-                                <th scope="col">Code</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Role</th>
-                                <th scope="col">Joined On</th>
-                                <th scopr="col">Last Login</th>
-                                <th scope="col">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for user in lecturers_values %}
-                            <tr>
-                                <th style="font-weight: 400;">{{user.lecturer_code}}</th>
-                                <td>{{user.user_title}}. {{user.lecturer_name}}</td>
-                                <td>{{user.email}}</td>
-                                <td class="text-center">
-                                    {% if user.is_superuser%} Admin {% else %} Guest {% endif %}
-                                </td>
-                                <td class="text-center">{{user.date_joined|date:'d.m.Y (P)'}}</td>
-                                {% if user.last_login is None %}
-                                <td class="text-muted text-center">Not Available</td>
-                                {% else %}
-                                <td class="text-center">{{user.last_login|date:'d/m/Y (P)'}}</td>
-                                {% endif %}
-                                <td class="text-center">
-                                    <form action="." method="POST">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="user_code" value="{{user.id}}">
-                                        <button type="submit" class="btn btn-sm btn-outline-danger" name="user_delete_btn" title="Delete user" style="font-size: 12px;" onclick="return confirm('Are you sure to delete this user?');">
-                                            <i class="fad fa-trash-alt fa-lg"></i>
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                    {% else %}
-                    <div class="text-danger text-center">
-                        <i class="fal fa-frown fa-lg"></i>&nbsp; No user found!
-                    </div> {% endif %}
-                </div>
-            </div>
-            {% endif %}
         </div>
     </div>
 </section>

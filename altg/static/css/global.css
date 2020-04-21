@@ -71,6 +71,11 @@
     # Common styles 
     ================================================================= */
 
+.bg-default {
+    background: #3B5998;
+    color: #fff;
+}
+
 .row {
     margin: 0 !important;
 }
@@ -166,6 +171,10 @@ h5 {
     transform: translate(0);
 }
 
+.user_role_alert {
+    font-size: 14px;
+}
+
 
 /* ==================================================================
     # Side Panel Styles
@@ -174,7 +183,7 @@ h5 {
 #side-panel {
     background: #3B5998;
     height: 100vh;
-    padding: 2rem 1rem;
+    padding: 1.5rem 1rem;
 }
 
 .profile-img-div,
@@ -185,7 +194,7 @@ h5 {
 
 .profile-img-div img {
     width: 60%;
-    margin: 0 auto 20px;
+    margin: 0 auto 10px;
     border-radius: 50%;
 }
 
@@ -200,7 +209,7 @@ h5 {
     font-family: "Open Sans";
     font-weight: 500;
     color: #fff;
-    font-size: 1.32em;
+    font-size: 1.22em;
 }
 
 .signout-btn-div,
@@ -297,7 +306,7 @@ h5 {
 }
 
 .dropdown-container li {
-    line-height: 30px;
+    line-height: 26px;
     padding: 0 20px;
     margin: 3px;
     border-radius: 7px;
@@ -334,13 +343,19 @@ h5 {
 
 #main-panel {
     height: 100vh;
-    overflow-y: scroll;
+    overflow-y: auto;
+    padding: 0;
+}
+
+.main-panel-title {
+    background: #fff;
+    box-shadow: 0 4px 6px -2px rgba(0, 0, 0, 0.15);
 }
 
 .main-panel-title h4 {
     font-family: "Open Sans";
     font-weight: 700;
-    margin-bottom: 0.3rem;
+    margin-bottom: 0rem;
 }
 
 label {
@@ -382,7 +397,146 @@ label {
 
 
 /* ==================================================================
-    # Home Page Styles
+    # Dashboard Page Styles
+    ================================================================= */
+
+.dashboard_content_div {
+    border-radius: 10px;
+    transition: 0.3s all;
+}
+
+.dashboard_content_div:hover {
+    box-shadow: 1px 4px 6px 1px rgba(0, 0, 0, 0.35);
+}
+
+.dashboard_content_div h5 {
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+#dashboard_content_div_1,
+#dashboard_content_div_2,
+#dashboard_content_div_3,
+#dashboard_content_div_4 {
+    overflow: hidden;
+    position: relative;
+}
+
+#dashboard_content_div_1:before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    left: 40%;
+    top: 10%;
+    width: 75%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0.20;
+    background-image: url('../images/teacher.png');
+    background-repeat: no-repeat;
+    background-position: 50% 0;
+    -ms-background-size: cover;
+    -o-background-size: cover;
+    -moz-background-size: cover;
+    -webkit-background-size: cover;
+    background-size: cover;
+}
+
+#dashboard_content_div_2:before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 0%;
+    width: 72%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0.20;
+    background-image: url('../images/service.png');
+    background-repeat: no-repeat;
+    background-position: 50% 0;
+    -ms-background-size: cover;
+    -o-background-size: cover;
+    -moz-background-size: cover;
+    -webkit-background-size: cover;
+    background-size: cover;
+}
+
+#dashboard_content_div_3:before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 0%;
+    width: 75%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0.20;
+    background-image: url('../images/book.png');
+    background-repeat: no-repeat;
+    background-position: 50% 0;
+    -ms-background-size: cover;
+    -o-background-size: cover;
+    -moz-background-size: cover;
+    -webkit-background-size: cover;
+    background-size: cover;
+}
+
+#dashboard_content_div_4:before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 10%;
+    width: 60%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0.20;
+    background-image: url('../images/team.png');
+    background-repeat: no-repeat;
+    background-position: 50% 0;
+    -ms-background-size: cover;
+    -o-background-size: cover;
+    -moz-background-size: cover;
+    -webkit-background-size: cover;
+    background-size: cover;
+}
+
+
+/* #pie-chart-div {} */
+
+#dashboard-profiles-div {
+    height: 70vh;
+    overflow-y: scroll;
+    padding: 15px 12px 10px 5px;
+}
+
+.dashboard-profie-imgs {
+    border-radius: 50%;
+}
+
+.dashboard-profie-data h6 {
+    font-size: 15.5px;
+    margin-bottom: 0;
+    font-family: "Open Sans";
+}
+
+.dashboard-prof-div {
+    padding: 10px 1rem;
+    box-shadow: 1px 3px 10px 1px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    margin-bottom: 15px !important;
+}
+
+.special-badge {
+    font-weight: 500;
+    padding: 0.37em 0.6em;
+}
+
+
+/* ==================================================================
+    # Schedule Page Styles
     ================================================================= */
 
 .table-section {
@@ -391,6 +545,7 @@ label {
 
 .result-icon {
     color: #3B5998;
+    text-align: center;
 }
 
 .result_text {
@@ -399,6 +554,21 @@ label {
 
 .result_lec_name {
     font-weight: 600;
+}
+
+#schedule-table thead {
+    background: rgba(0, 0, 0, 0.06) !important;
+}
+
+#schedule-table thead th {
+    font-family: "Open Sans" !important;
+    font-weight: 600 !important;
+    font-size: 14px;
+}
+
+#schedule-table tbody td {
+    font-size: 14px;
+    font-family: "Open Sans";
 }
 
 

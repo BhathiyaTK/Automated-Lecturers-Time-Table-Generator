@@ -1,5 +1,65 @@
 $(document).ready(function() {
     console.log("Jquery is working....");
+    var labels = [];
+    var data_set = [];
+    $.ajax({
+        method: "GET",
+        url: "/dashChart",
+        success: function(data) {
+            labels = data.labels;
+            data_set = data.data_values;
+            var customColors = [];
+            for (let i = 0; i < 14; i++) {
+                customColors.push(
+                    "rgba(" +
+                    Math.floor(Math.random() * 256 + 1).toString() +
+                    "," +
+                    Math.floor(Math.random() * 256 + 1).toString() +
+                    "," +
+                    Math.floor(Math.random() * 256 + 1).toString() +
+                    ",0.7)"
+                );
+            }
+            var ctx = $("#myChart");
+            var myChart = new Chart(ctx, {
+                type: "doughnut",
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: "# of Votes",
+                        data: data_set,
+                        backgroundColor: customColors,
+                        borderWidth: 1,
+                    }, ],
+                },
+                options: {
+                    legend: {
+                        display: false,
+                    },
+                    tooltips: {
+                        bodyFontSize: 14,
+                        callbacks: {
+                            title: function(tooltipItem, data) {
+                                return data["labels"][tooltipItem[0]["index"]];
+                            },
+                            label: function(tooltipItem, data) {
+                                return (
+                                    " Subjects : " +
+                                    data["datasets"][0]["data"][tooltipItem["index"]]
+                                );
+                            },
+                        },
+                        titleFontSize: 15,
+                    },
+                },
+            });
+            console.log("Chart generated successfully!");
+        },
+        error: function(error_data) {
+            console.log("Error has been occured!");
+            console.log(error_data);
+        }
+    });
 
     $("#lecturer_filter").change(function(el) {
         el.preventDefault();
@@ -100,6 +160,10 @@ $(document).ready(function() {
     });
 });
 
+$(function() {
+    $('[data-toggle="tooltip"]').tooltip();
+});
+
 window.addEventListener("load", function() {
     var loader = document.getElementById("se-pre-con");
     loader.style.display = "none";
@@ -175,3 +239,7 @@ window.addEventListener("load", function() {
 
 
 })(jQuery);
+
+// $(function() {
+
+// });

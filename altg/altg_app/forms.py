@@ -28,6 +28,13 @@ TITLES = (
     ('Mrs', 'Mrs'),
     ('Miss', 'Miss'),
 )
+POSITION = (
+    ('', '---- Choose ----'),
+    ('lecturer', 'Lecturer'),
+    ('demo', 'Demonstrator'),
+    ('naStaff', 'Non Acedamic Staff'),
+    ('other', 'Other'),
+)
 
 class DataForm(forms.Form):
     lecturer_name = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'class':'form-control form-control-sm', 'name':'lec_name'}), required=True)
@@ -47,6 +54,7 @@ class AddUserForm(forms.Form):
     password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control form-control-sm', 'name':'password1'}), required=True)
     password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control form-control-sm', 'name':'password2'}), required=True)
     user_type = forms.ChoiceField(choices=USER_ROLES, widget=forms.Select(attrs={'class':'form-control form-control-sm', 'name':'user_type'}), required=True)
+    user_position = forms.ChoiceField(choices=POSITION, widget=forms.Select(attrs={'class':'form-control form-control-sm', 'name':'user_position'}), required=True)
 
 class AddHallForm(forms.Form):
     hall_number = forms.CharField(max_length=224, widget=forms.TextInput(attrs={'class':'form-control form-control-sm', 'name':'hall_number'}), required=True)

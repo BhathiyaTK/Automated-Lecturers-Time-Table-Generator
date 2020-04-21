@@ -1,0 +1,166 @@
+{% extends 'base.html' %} {% block content %} {% load static %}
+
+<section>
+    <div class="row">
+        <div class="col-2 mh-100" id="side-panel">
+            {% if user.is_authenticated %}
+            <div class="profile-img-div fluid">
+                {% if profile_photo %} {% for photo in profile_photo %}
+                <img src="../media/{{photo.user_profile_img}}" alt="Your Profile Image"> {% endfor %} {% else %}
+                <img src="{% static 'images/profile.jpg' %}" alt="Profile Image"> {% endif %}
+                <p class="welcome-text pb-0 mb-0">Hi, welcome back!</p>
+                <p class="username">{{user.user_title}}. {{user.first_name}}</p>
+            </div>
+            <div class="signout-btn-div fluid mb-4">
+                <a href="../logout" class="btn btn-sm"><i class="fal fa-power-off"></i>&nbsp Log out</a>
+            </div>
+            {% else %}
+            <div class="profile-img-div fluid">
+                <img src="{% static 'images/profile.jpg' %}" alt="Profile Image">
+                <p class="welcome-text pb-0 mb-0">Please log in to continue.</p>
+            </div>
+            <div class="signin-btn-div fluid mb-4">
+                <a href="/" class="btn btn-sm"><i class="fal fa-sign-in-alt"></i>&nbsp Log in</a>
+            </div>
+            {% endif %}
+            <hr>
+            <ul class="menu-links">
+                {% if user.is_authenticated %}
+                <li class="active-link"><a href="."><i class="fal fa-tachometer-alt-fast"></i>&nbsp&nbsp Dashboard</a></li>
+                <li><a href="../schedule"><i class="fal fa-calendar-alt"></i>&nbsp&nbsp Schedule</a></li>
+                {% if user.is_superuser %}
+                <button class="dropdown-btn"><i class="fal fa-sliders-h"></i>&nbsp&nbsp Manage<span class="float-right"><i class="fal fa-chevron-down"></i></span></button>
+                <div class="dropdown-container">
+                    <li><a href="../hall">&nbsp;<i class="fal fa-building fa-lg"></i>&nbsp;&nbsp; Lecture Halls</a></li>
+                    <li><a href="../subject">&nbsp;<i class="fal fa-book fa-lg"></i>&nbsp;&nbsp; Subjects</a></li>
+                    <li><a href="../users"><i class="fal fa-users fa-lg"></i>&nbsp;&nbsp; Users</a></li>
+                </div>
+                {% endif %}
+                <li><a href="../profile"><i class="fal fa-user-alt"></i>&nbsp&nbsp My Account</a></li>
+                {% endif %}
+                <li><a href="../help"><i class="fal fa-question-circle"></i>&nbsp&nbsp Help</a></li>
+            </ul>
+        </div>
+        <div class="col-10" id="main-panel">
+            <div class="main-panel-title py-3 pl-4 pr-3">
+                <div class="row justify-content-between">
+                    <div class="col-4 non-padding-cols">
+                        <h4>Dashboard</h4>
+                        <small class="text-muted">Summerized view of all system data</small>
+                    </div>
+                    <div class="col-2 text-center right-padding-zero-cols">
+                        {% if user.is_authenticated %}
+                        <div class="alert alert-info px-0 mt-1 user_role_alert">
+                            {% if user.is_superuser %}
+                            <strong>Your Role : ADMIN </strong> {% else %}
+                            <strong>Your Role : GUEST </strong> {% endif %}
+                        </div>
+                        {% else %}
+                        <div class="alert alert-danger px-0 mt-1 user_role_alert">
+                            Please log in to continue
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="main-panel-content px-5 py-4">
+                <div class="section-div container px-5 pb-2 pt-4">
+                    {% if user.is_authenticated %}
+                    <div class="generate-msg text-center">
+                        <h2 class="font-opensans">Hello, {{user.first_name}}!</h2>
+                        <p class="font-opensans mt-3 text-secondary" style="font-size: 14.5px;">
+                            Welcome to the Automated Lecturers' Time-table Generator web platform. This is a web-based platform which mainly allows you to generate time-tables for the lecturers instantly without wasting time. You also allowed to view and download generated time-tables.
+                            You can find the options in the left side panel for manage users, subjects, lecture halls and also customize your profile info.
+                        </p>
+                    </div>
+                    <p class="text-center mt-3"><span class="text-muted ml-3" style="font-size: 12px;"><i>NOTE: Currently this is available for Department of Computing & Information Systems only.</i></span></p>
+                    {% else %}
+                    <div class="error-msg-div my-5 text-center">
+                        <p class="text-danger mb-4"><i class="fal fa-exclamation-triangle fa-5x"></i></p>
+                        <p class="text-danger font-opensans">You are not logged in. Please log in <a href="/">here</a>.</p>
+                    </div>
+                    {% endif %}
+                </div>
+                {% if user.is_authenticated %}
+                <br>
+                <div class="container px-0">
+                    <div class="row">
+                        <div class="col-md-3 left-padding-zero-cols">
+                            <div class="dashboard_content_div bg-default px-3 pb-3" id="dashboard_content_div_1">
+                                <h1 class="display-3">{{lecturers_count}}</h1>
+                                <h5 class="font-opensans">Lecturers</h5>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="dashboard_content_div bg-default px-3 pb-3" id="dashboard_content_div_2">
+                                <h1 class="display-3">{{others_count}}</h1>
+                                <h5 class="font-opensans">Other Users</h5>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="dashboard_content_div bg-default px-3 pb-3" id="dashboard_content_div_3">
+                                <h1 class="display-3">{{subjects_count}}</h1>
+                                <h5 class="font-opensans">Subjects</h5>
+                            </div>
+                        </div>
+                        <div class="col-md-3 right-padding-zero-cols">
+                            <div class="dashboard_content_div bg-default px-3 pb-3" id="dashboard_content_div_4">
+                                <h1 class="display-3">{{students_count.as_int__sum}}</h1>
+                                <h5 class="font-opensans">Students</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container px-0">
+                    <div class="row">
+                        <div class="col-md-6 left-padding-zero-cols">
+                            <div class="section-div container p-4 mt-4 mb-2">
+                                <div class="section-sub-title font-opensans">
+                                    <h6><b>Subjects spreadness among lecturers</b></h6>
+                                </div>
+                                <div class="horizontal-divider-common mt-3 mb-4"></div>
+                                <div id="pie-chart-div">
+                                    <canvas id="myChart" width="100%" height="100%" class="p-3" data-url="{% url 'dashboard' %}"></canvas>
+                                    <div class="font-opensans" style="font-size: 14px;">
+                                        <p class="mb-0"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 right-padding-zero-cols">
+                            <div class="section-div container p-4 mt-4 mb-2 font-opensans">
+                                <div class="section-sub-title font-opensans">
+                                    <h6><b>All authorized users</b></h6>
+                                </div>
+                                <div class="horizontal-divider-common mt-3 mb-0"></div>
+                                <div id="dashboard-profiles-div">
+                                    {% for users in all_users %}
+                                    <div class="row dashboard-prof-div  align-items-center">
+                                        <div class="col-md-3 left-padding-zero-cols text-right">
+                                            <img src="../media/{{users.get_profile_img}}" class="dashboard-profie-imgs" alt="" width="100%">
+                                        </div>
+                                        <div class="col-md-9 non-padding-cols dashboard-profie-data">
+                                            <h6><b>{{users.user_title}}. {{users.lecturer_name}}</b></h6>
+                                            <small class="text-muted">{{users.email}}</small>
+                                            <br>{% if users.user_position == 'lecturer' %}
+                                            <span class="badge badge-success special-badge">Lecturer</span> {% elif users.user_position == 'demo' %}
+                                            <span class="badge badge-warning special-badge">Demonstrator</span> {% elif users.user_position == 'naStaff' %}
+                                            <span class="badge badge-primary special-badge">Non Academic</span> {% else %}
+                                            <span class="badge badge-danger special-badge">Other</span> {% endif %} {% if users.last_login is None %}
+                                            <span class="badge badge-secondary special-badge">Last login : Not Available</span> {% else %}
+                                            <span class="badge badge-secondary special-badge">Last login : {{users.last_login|date:'d-m-Y'}}</span> {% endif %}
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

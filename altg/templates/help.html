@@ -11,29 +11,29 @@
                 <p class="welcome-text pb-0 mb-0">Hi, welcome back!</p>
                 <p class="username">{{user.user_title}}. {{user.first_name}}</p>
             </div>
-            <div class="signout-btn-div fluid">
-                <a href="logout" class="btn btn-sm"><i class="fal fa-power-off"></i>&nbsp Log out</a>
+            <div class="signout-btn-div fluid mb-4">
+                <a href="../logout" class="btn btn-sm"><i class="fal fa-power-off"></i>&nbsp Log out</a>
             </div>
             {% else %}
             <div class="profile-img-div fluid">
                 <img src="{% static 'images/profile.jpg' %}" alt="Profile Image">
                 <p class="welcome-text pb-0 mb-0">Please log in to continue.</p>
             </div>
-            <div class="signin-btn-div fluid">
+            <div class="signin-btn-div fluid mb-4">
                 <a href="/" class="btn btn-sm"><i class="fal fa-sign-in-alt"></i>&nbsp Log in</a>
             </div>
             {% endif %}
-            <br>
             <hr>
             <ul class="menu-links">
                 {% if user.is_authenticated %}
-                <li><a href="../home"><i class="fal fa-home-lg-alt"></i>&nbsp&nbsp Home</a></li>
+                <li><a href="../dashboard"><i class="fal fa-tachometer-alt-fast"></i>&nbsp&nbsp Dashboard</a></li>
+                <li><a href="../schedule"><i class="fal fa-calendar-alt"></i>&nbsp&nbsp Schedule</a></li>
                 {% if user.is_superuser %}
                 <button class="dropdown-btn"><i class="fal fa-sliders-h"></i>&nbsp&nbsp Manage<span class="float-right"><i class="fal fa-chevron-down"></i></span></button>
                 <div class="dropdown-container">
                     <li><a href="../hall">&nbsp;<i class="fal fa-building fa-lg"></i>&nbsp;&nbsp; Lecture Halls</a></li>
                     <li><a href="../subject">&nbsp;<i class="fal fa-book fa-lg"></i>&nbsp;&nbsp; Subjects</a></li>
-                    <li><a href="../users"><i class="fal fa-users fa-lg"></i>&nbsp;&nbsp; Lecturers</a></li class="active-link">
+                    <li><a href="../users"><i class="fal fa-users fa-lg"></i>&nbsp;&nbsp; Users</a></li class="active-link">
                 </div>
                 {% endif %}
                 <li><a href="../profile"><i class="fal fa-user-alt"></i>&nbsp&nbsp My Account</a></li>
@@ -41,39 +41,41 @@
                 <li class="active-link"><a href="."><i class="fal fa-question-circle"></i>&nbsp&nbsp Help</a></li>
             </ul>
         </div>
-        <div class="col-10 py-5 px-5" id="main-panel">
-            <div class="main-panel-title">
+        <div class="col-10" id="main-panel">
+            <div class="main-panel-title py-3 pl-4 pr-3">
                 <div class="row justify-content-between">
-                    <div class="col-4">
+                    <div class="col-4 non-padding-cols">
                         <h4>User Guide</h4>
                         <small class="text-muted">Help tips for use the system</small>
                     </div>
-                    <div class="col-3 text-center right-padding-zero-cols">
+                    <div class="col-2 text-center right-padding-zero-cols">
                         {% if user.is_authenticated %}
-                        <div class="alert alert-info mb-4">
+                        <div class="alert alert-info px-0 mt-1 user_role_alert">
                             {% if user.is_superuser %}
                             <strong>Your Role : ADMIN </strong> {% else %}
                             <strong>Your Role : GUEST </strong> {% endif %}
                         </div>
                         {% else %}
-                        <div class="alert alert-danger mb-4">
+                        <div class="alert alert-danger px-0 mt-1 user_role_alert">
                             Please log in to continue
                         </div>
                         {% endif %}
                     </div>
                 </div>
             </div>
-            <div class="section-div container py-5 px-5 font-opensans mb-5" style="font-size: 14px;">
-                <li>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque, cumque. Laudantium, eaque! Ipsum necessitatibus fugiat optio repudiandae omnis quos, obcaecati corporis tempora voluptate veritatis in earum autem ut. Facilis, dolore.</p>
-                </li>
-                <li>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio natus quas expedita vero maiores! Sapiente debitis minima saepe ut reprehenderit hic id et ad deleniti. Modi eos similique perspiciatis non?</p>
-                </li>
-                <br>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni fuga quo, molestiae voluptatum velit ut est adipisci laudantium libero. Quae velit repudiandae quisquam ratione explicabo soluta, unde qui autem officiis. Lorem ipsum, dolor
-                    sit amet consectetur adipisicing elit. Sequi distinctio tempore autem atque iste nesciunt, alias voluptatibus aperiam est inventore dolorum sed laudantium placeat soluta sint velit quis pariatur? Non? Lorem ipsum dolor sit amet consectetur,
-                    adipisicing elit. Quidem amet quam eaque, tempore dolor sed dolores nulla in adipisci, incidunt aperiam. Ea, reprehenderit. Facere, vitae inventore? Corporis ad blanditiis impedit?</p>
+            <div class="main-panel-content px-5 py-4">
+                <div class="section-div container py-5 px-5 font-opensans mb-5" style="font-size: 14px;">
+                    <li>
+                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque, cumque. Laudantium, eaque! Ipsum necessitatibus fugiat optio repudiandae omnis quos, obcaecati corporis tempora voluptate veritatis in earum autem ut. Facilis, dolore.</p>
+                    </li>
+                    <li>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio natus quas expedita vero maiores! Sapiente debitis minima saepe ut reprehenderit hic id et ad deleniti. Modi eos similique perspiciatis non?</p>
+                    </li>
+                    <br>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni fuga quo, molestiae voluptatum velit ut est adipisci laudantium libero. Quae velit repudiandae quisquam ratione explicabo soluta, unde qui autem officiis. Lorem ipsum,
+                        dolor sit amet consectetur adipisicing elit. Sequi distinctio tempore autem atque iste nesciunt, alias voluptatibus aperiam est inventore dolorum sed laudantium placeat soluta sint velit quis pariatur? Non? Lorem ipsum dolor sit
+                        amet consectetur, adipisicing elit. Quidem amet quam eaque, tempore dolor sed dolores nulla in adipisci, incidunt aperiam. Ea, reprehenderit. Facere, vitae inventore? Corporis ad blanditiis impedit?</p>
+                </div>
             </div>
         </div>
     </div>

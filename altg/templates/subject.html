@@ -10,29 +10,29 @@
                 <p class="welcome-text pb-0 mb-0">Hi, welcome back!</p>
                 <p class="username">{{user.user_title}}. {{user.first_name}}</p>
             </div>
-            <div class="signout-btn-div fluid">
-                <a href="logout" class="btn btn-sm"><i class="fal fa-power-off"></i>&nbsp Log out</a>
+            <div class="signout-btn-div fluid mb-4">
+                <a href="../logout" class="btn btn-sm"><i class="fal fa-power-off"></i>&nbsp Log out</a>
             </div>
             {% else %}
             <div class="profile-img-div fluid">
                 <img src="{% static 'images/profile.jpg' %}" alt="Profile Image">
                 <p class="welcome-text pb-0 mb-0">Please log in to continue.</p>
             </div>
-            <div class="signin-btn-div fluid">
+            <div class="signin-btn-div fluid mb-4">
                 <a href="/" class="btn btn-sm"><i class="fal fa-sign-in-alt"></i>&nbsp Log in</a>
             </div>
             {% endif %}
-            <br>
             <hr>
             <ul class="menu-links">
                 {% if user.is_authenticated %}
-                <li><a href="../home"><i class="fal fa-home-lg-alt"></i>&nbsp&nbsp Home</a></li>
+                <li><a href="../dashboard"><i class="fal fa-tachometer-alt-fast"></i>&nbsp&nbsp Dashboard</a></li>
+                <li><a href="../schedule"><i class="fal fa-calendar-alt"></i>&nbsp&nbsp Schedule</a></li>
                 {% if user.is_superuser %}
                 <button class="dropdown-btn active-link"><i class="fal fa-sliders-h"></i>&nbsp&nbsp Manage<span class="float-right"><i class="fal fa-chevron-down"></i></span></button>
                 <div class="dropdown-container">
                     <li><a href="../hall">&nbsp;<i class="fal fa-building fa-lg"></i>&nbsp;&nbsp; Lecture Halls</a></li>
                     <li class="active-link">&nbsp;<a href="."><i class="fal fa-book fa-lg"></i>&nbsp;&nbsp; Subjects</a></li>
-                    <li><a href="../users"><i class="fal fa-users fa-lg"></i>&nbsp;&nbsp; Lecturers</a></li class="active-link">
+                    <li><a href="../users"><i class="fal fa-users fa-lg"></i>&nbsp;&nbsp; Users</a></li class="active-link">
                 </div>
                 {% endif %}
                 <li><a href="../profile"><i class="fal fa-user-alt"></i>&nbsp&nbsp My Account</a></li>
@@ -40,259 +40,269 @@
                 <li><a href="../help"><i class="fal fa-question-circle"></i>&nbsp&nbsp Help</a></li>
             </ul>
         </div>
-        <div class="col-10 p-5" id="main-panel">
-            <div class="main-panel-title">
+        <div class="col-10" id="main-panel">
+            <div class="main-panel-title py-3 pl-4 pr-3">
                 <div class="row justify-content-between">
-                    <div class="col-4">
+                    <div class="col-4 non-padding-cols">
                         <h4>Subjects</h4>
                         <small class="text-muted">Manage added subjects</small>
                     </div>
-                    <div class="col-3 text-center right-padding-zero-cols">
+                    <div class="col-2 text-center right-padding-zero-cols">
                         {% if user.is_authenticated %}
-                        <div class="alert alert-info mb-4">
+                        <div class="alert alert-info px-0 mt-1 user_role_alert">
                             {% if user.is_superuser %}
                             <strong>Your Role : ADMIN </strong> {% else %}
                             <strong>Your Role : GUEST </strong> {% endif %}
                         </div>
                         {% else %}
-                        <div class="alert alert-danger mb-4">
+                        <div class="alert alert-danger px-0 mt-1 user_role_alert">
                             Please log in to continue
                         </div>
                         {% endif %}
                     </div>
                 </div>
             </div>
-            <div class="section-div container p-4 mb-5">
-                {% if messages %}
-                <ul class="messages">
-                    {% for message in messages %} {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-                    <div class="alert {{message.tags}} alert-dismissable mb-4" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <div class="main-panel-content px-5 py-4">
+                <div class="section-div container p-4 mb-4">
+                    {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %} {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                        <div class="alert {{message.tags}} alert-dismissable mb-4" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                        <i class="far fa-check-circle fa-lg"></i>&nbsp; <b>{{message}}</b>
-                    </div>
-                    {% else %}
-                    <div class="alert {{message.tags}} alert-dismissable mb-4" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <i class="far fa-check-circle fa-lg"></i>&nbsp; <b>{{message}}</b>
+                        </div>
+                        {% else %}
+                        <div class="alert {{message.tags}} alert-dismissable mb-4" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                        <i class="far fa-times-circle fa-lg"></i>&nbsp; <b>{{message}}</b>
+                            <i class="far fa-times-circle fa-lg"></i>&nbsp; <b>{{message}}</b>
+                        </div>
+                        {% endif %} {% endfor%}
+                    </ul>
+                    {% endif %} {% if user.is_authenticated %}
+                    <div class="section-sub-title font-opensans">
+                        <h6><b>Add New Subject</b></h6>
                     </div>
-                    {% endif %} {% endfor%}
-                </ul>
-                {% endif %} {% if user.is_authenticated %}
-                <div class="section-sub-title font-opensans">
-                    <h6><b>Add New Subject</b></h6>
-                </div>
-                <div class="horizontal-divider-common mt-3 mb-4"></div>
-                <form action="." method="POST">
-                    {% csrf_token %}
-                    <div class="row">
-                        <div class="col-md-2 left-padding-zero-cols">
-                            <div class="form-group">
-                                <label for="exampleSelect">Related Batch</label>
-                                <select name="related_batch" class="form-control form-control-sm">
+                    <div class="horizontal-divider-common mt-3 mb-4"></div>
+                    <form action="." method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-2 left-padding-zero-cols">
+                                <div class="form-group">
+                                    <label for="exampleSelect">Related Batch</label>
+                                    <select name="related_batch" class="form-control form-control-sm">
                                     <option value="">---- Choose ----</option>
                                     {% for batch in batch_data %}
                                     <option value="{{batch.batch_no}}">{{batch.batch_no}}<sup>{{batch.batch_name_suffix}}</sup> Year</option>
                                     {% endfor %}
                                 </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-2 non-padding-cols">
-                            <div class="form-group">
-                                <label for="exampleInputName">Subject Code</label>
-                                <input type="text" name="subject_code" class="form-control form-control-sm">
+                            <div class="col-md-2 non-padding-cols">
+                                <div class="form-group">
+                                    <label for="exampleInputName">Subject Code</label>
+                                    <input type="text" name="subject_code" class="form-control form-control-sm">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-8 right-padding-zero-cols">
-                            <div class="form-group">
-                                <label for="exampleInputName">Subject Name</label>
-                                <input type="text" name="subject_name" class="form-control form-control-sm">
+                            <div class="col-md-8 right-padding-zero-cols">
+                                <div class="form-group">
+                                    <label for="exampleInputName">Subject Name</label>
+                                    <input type="text" name="subject_name" class="form-control form-control-sm">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-2 left-padding-zero-cols">
-                            <div class="form-group">
-                                <label for="exampleInputName">Semester</label>
-                                <select name="semester" class="form-control form-control-sm">
+                            <div class="col-md-2 left-padding-zero-cols">
+                                <div class="form-group">
+                                    <label for="exampleInputName">Semester</label>
+                                    <select name="semester" class="form-control form-control-sm">
                                     <option value="">---- Choose ----</option>
                                     {% for semester in semester_data %}
                                     <option value="{{semester.semester_no}}">{{semester.semester_no}}<sup>{{semester.semester_name_suffix}}</sup> Semester</option>
                                     {% endfor %}
                                 </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-4 left-padding-zero-cols">
-                            <div class="form-group">
-                                <label for="exampleInputName">Related Lecturer</label>
-                                <select name="related_lecturer" class="form-control form-control-sm">
-                                    <option value="">---- Choose ----</option>
+                            <div class="col-md-4 left-padding-zero-cols">
+                                <div class="form-group">
+                                    <label for="exampleInputName">Related Lecturer</label>
+                                    <select name="related_lecturer" class="form-control form-control-sm">
+                                    <option value="Not assigned" selected>---- Choose ----</option>
                                     {% for user in lecturers_data %}
                                     <option value="{{user.lecturer_name}}">{{user.user_title}}. {{user.lecturer_name}}</option>
                                     {% endfor %}
                                 </select>
+                                </div>
                             </div>
                         </div>
+                        <div class="save-btn-div text-right">
+                            <input type="submit" class="btn px-4 submit_btn" value="Add Subject" name="subject_add_btn">
+                        </div>
+                    </form>
+                    {% else %}
+                    <div class="error-msg-div my-5 text-center">
+                        <p class="text-danger mb-4"><i class="fal fa-exclamation-triangle fa-5x"></i></p>
+                        <p class="text-danger font-opensans">You are not logged in. Please log in <a href="/">here</a>.</p>
                     </div>
-                    <div class="save-btn-div text-right">
-                        <input type="submit" class="btn px-4 submit_btn" value="Add Subject" name="subject_add_btn">
-                    </div>
-                </form>
-                {% else %}
-                <div class="error-msg-div my-5 text-center">
-                    <p class="text-danger mb-4"><i class="fal fa-exclamation-triangle fa-5x"></i></p>
-                    <p class="text-danger font-opensans">You are not logged in. Please log in <a href="/">here</a>.</p>
+                    {% endif %}
                 </div>
-                {% endif %}
-            </div>
 
-            {% if user.is_authenticated %}
-            <div class="section-div container p-4 mb-5">
-                <div class="section-sub-title font-opensans">
-                    <h6><b>Subjects List</b></h6>
-                </div>
-                <div class="horizontal-divider-common mt-3 mb-4"></div>
-                <div class="subject_filter_div mb-3">
-                    <div class="row justify-content-end">
-                        <div class="col-md-2 non-padding-cols font-opensans text-right" style="font-size: 14px; margin-top: 4px;">Apply filters : </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <select name="lecturer_filter" id="lecturer_filter" class="form-control form-control-sm">
+                {% if user.is_authenticated %}
+                <div class="section-div container p-4 mb-2">
+                    <div class="section-sub-title font-opensans">
+                        <h6><b>Subjects List</b></h6>
+                    </div>
+                    <div class="horizontal-divider-common mt-3 mb-4"></div>
+                    <div class="subject_filter_div mb-3">
+                        <div class="row justify-content-end">
+                            <div class="col-md-2 non-padding-cols font-opensans text-right" style="font-size: 14px; margin-top: 4px;">Apply filters : </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <select name="lecturer_filter" id="lecturer_filter" class="form-control form-control-sm">
                                     <option value="all" selected>All Lecturers</option>
                                     {% for lecturer in lecturers_data %}
                                     <option value="{{lecturer.lecturer_name}}">{{lecturer.lecturer_name}}</option>
                                     {% endfor %}
                                 </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-2 non-padding-cols">
-                            <div class="form-group">
-                                <select name="subject_filter" id="subject_filter" class="form-control form-control-sm">
+                            <div class="col-md-2 non-padding-cols">
+                                <div class="form-group">
+                                    <select name="subject_filter" id="subject_filter" class="form-control form-control-sm">
                                     <option value="all" selected>All Batches</option>
                                     {% for batch in batch_data %}
                                     <option value="{{batch.batch_no}}">{{batch.batch_no}}<sup>{{batch.batch_name_suffix}}</sup> Year</option>
                                     {% endfor %}
                                 </select>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="section-list-table" id="subject-table-div">
-                    {% if subjects_data %}
-                    <table class="table table-sm font-opensans section-table" id="subject-table" style="background-color: rgba(0,0,0,0.025);">
-                        <thead>
-                            <tr>
+                    <div class="section-list-table" id="subject-table-div">
+                        {% if subjects_data %}
+                        <table class="table table-sm font-opensans section-table" id="subject-table" style="background-color: rgba(0,0,0,0.025);">
+                            <thead>
                                 <th scope="col">Subject Code</th>
                                 <th scope="col">Subject</th>
                                 <th scope="col">Year</th>
                                 <th scope="col">Semester</th>
                                 <th scope="col">Lecturer</th>
                                 <th scope="col">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for subject in subjects_data %}
-                            <tr>
-                                <td>{{subject.subject_code}}</td>
-                                <td>{{subject.subject_name}}</td>
-                                <td class="text-center">{{subject.related_batch}}</td>
-                                <td class="text-center">{{subject.semester}}</td>
-                                <td>{{subject.related_lecturer}}</td>
-                                <td class="text-center">
-                                    <div class="row justify-content-center">
-                                        <div class="col-md-4 custom-left-padding-cols">
-                                            <button type="button" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#subjectEditModal{{subject.subject_code}}" title="Edit subject" style="font-size: 12px;"><i class="fad fa-marker fa-lg"></i></button>
-                                        </div>
-                                        <div class="col-md-4 custom-right-padding-cols">
-                                            <form action="." method="GET">
-                                                <input type="hidden" name="subject_code" value="{{subject.id}}">
-                                                <button type="submit" class="btn btn-sm btn-outline-danger" name="subject_delete_btn" title="Delete subject" style="font-size: 12px;" onclick="return confirm('Are you sure to delete this subject?');">
+                            </thead>
+                            <tbody>
+                                {% for subject in subjects_data %}
+                                <tr>
+                                    <td>{{subject.subject_code}}</td>
+                                    <td>{{subject.subject_name}}</td>
+                                    <td class="text-center">{{subject.related_batch}}</td>
+                                    <td class="text-center">{{subject.semester}}</td>
+                                    {% if subject.related_lecturer == 'Not assigned' %}
+                                    <td class="text-muted text-center" style="background: rgba(219, 219, 219, 0.822);">Not assigned</td>
+                                    {% else %}
+                                    <td>{{subject.related_lecturer}}</td>
+                                    {% endif %}
+                                    <td class="text-center">
+                                        <div class="row justify-content-center">
+                                            <div class="col-md-4 custom-left-padding-cols">
+                                                <button type="button" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#subjectEditModal{{subject.subject_code}}" title="Edit subject" style="font-size: 12px;"><i class="fad fa-marker fa-lg"></i></button>
+                                            </div>
+                                            <div class="col-md-4 custom-right-padding-cols">
+                                                <form action="." method="GET">
+                                                    <input type="hidden" name="subject_code" value="{{subject.subject_code}}">
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger" name="subject_delete_btn" title="Delete subject" style="font-size: 12px;" onclick="return confirm('Are you sure to delete this subject?');">
                                                     <i class="fad fa-trash-alt fa-lg"></i>
                                                 </button>
-                                            </form>
+                                                </form>
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <!--Time-Table Modal -->
-                            <div class="modal fade" id="subjectEditModal{{subject.subject_code}}" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="subjectEditModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header px-4" style="background-color: #f2f2f2;">
-                                            <h5 class="modal-title font-opensans" id="subjectEditModalLabel"> Edit subject : <b style="color: #3B5998;">{{subject.subject_name}}</b></h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    </td>
+                                </tr>
+                                <!--Time-Table Modal -->
+                                <div class="modal fade" id="subjectEditModal{{subject.subject_code}}" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="subjectEditModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header px-4" style="background-color: #f2f2f2;">
+                                                <h5 class="modal-title font-opensans" id="subjectEditModalLabel"> Edit subject : <b style="color: #3B5998;">{{subject.subject_name}}</b></h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <i class="fal fa-times-circle text-danger"></i>
                                         </button>
-                                        </div>
-                                        <div class="modal-body px-0 pb-0">
-                                            <form action="." method="POST">
-                                                {% csrf_token %}
-                                                <div class="row px-4 pb-3">
-                                                    <div class="col-md-3 left-padding-zero-cols">
-                                                        <div class="form-group">
-                                                            <label>Subject Code</label>
-                                                            <input type="text" name="new_subject_code" value="{{subject.subject_code}}" class="form-control form-control-sm">
+                                            </div>
+                                            <div class="modal-body px-0 pb-0">
+                                                <form action="." method="POST">
+                                                    {% csrf_token %}
+                                                    <div class="row px-4 pb-3">
+                                                        <div class="col-md-3 left-padding-zero-cols">
+                                                            <div class="form-group">
+                                                                <label>Subject Code</label>
+                                                                <input type="text" name="new_subject_code" value="{{subject.subject_code}}" class="form-control form-control-sm">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-9 non-padding-cols">
+                                                            <div class="form-group">
+                                                                <label>Subject Name</label>
+                                                                <input type="text" name="new_subject_name" value="{{subject.subject_name}}" class="form-control form-control-sm">
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-9 non-padding-cols">
-                                                        <div class="form-group">
-                                                            <label>Subject Name</label>
-                                                            <input type="text" name="new_subject_name" value="{{subject.subject_name}}" class="form-control form-control-sm">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row px-4 pb-3">
-                                                    <div class="col-md-5 left-padding-zero-cols">
-                                                        <div class="form-group">
-                                                            <label>Related Lecturer</label>
-                                                            <select name="new_related_lecturer" class="form-control form-control-sm">
+                                                    <div class="row px-4 pb-3">
+                                                        <div class="col-md-5 left-padding-zero-cols">
+                                                            <div class="form-group">
+                                                                <label>Related Lecturer</label>
+                                                                <select name="new_related_lecturer" class="form-control form-control-sm">
+                                                                {% if subject.related_lecturer == 'Not assigned' %}
+                                                                <option value="Not assigned" selected>---- Choose ----</option>{% for user in lecturers_data %}
+                                                                <option value="{{user.lecturer_name}}">{{user.user_title}}. {{user.lecturer_name}}</option>
+                                                                {% endfor %}
+                                                                {% else %}
                                                                 {% for user in lecturers_data %}
                                                                 <option value="{{user.lecturer_name}}" {% if user.lecturer_name == subject.related_lecturer %} selected {% endif %}>{{user.user_title}}. {{user.lecturer_name}}</option>
                                                                 {% endfor %}
+                                                                {% endif %}
                                                             </select>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-md-3 non-padding-cols">
-                                                        <div class="form-group">
-                                                            <label>Batch</label>
-                                                            <select name="new_batch" class="form-control form-control-sm">
+                                                        <div class="col-md-3 non-padding-cols">
+                                                            <div class="form-group">
+                                                                <label>Batch</label>
+                                                                <select name="new_batch" class="form-control form-control-sm">
                                                                 {% for batch in batch_data %}
                                                                 <option value="{{batch.batch_no}}" {% if batch.batch_no == subject.related_batch %} selected {% endif %}>{{batch.batch_no}}<sup>{{batch.batch_name_suffix}}</sup> Year</option>
                                                                 {% endfor %}
                                                             </select>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-md-3 right-padding-zero-cols">
-                                                        <div class="form-group">
-                                                            <label>Semester</label>
-                                                            <select name="new_semester" class="form-control form-control-sm">
+                                                        <div class="col-md-3 right-padding-zero-cols">
+                                                            <div class="form-group">
+                                                                <label>Semester</label>
+                                                                <select name="new_semester" class="form-control form-control-sm">
                                                                 {% for semester in semester_data %}
                                                                 <option value="{{semester.semester_no}}" {% if semester.semester_no == subject.semester %} selected {% endif %}>{{semester.semester_no}}<sup>{{semester.semester_name_suffix}}</sup> Semester</option>
                                                                 {% endfor %}
                                                             </select>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <input type="hidden" name="subject_code" value="{{subject.id}}">
-                                                <div class="text-right px-4 py-3" style="background-color: #f2f2f2;">
-                                                    <input type="submit" class="btn btn-success btn-sm" value="Save Changes" name="subject_edit_btn" style="font-family: 'Open Sans'; font-weight: 600;">
-                                                </div>
-                                            </form>
+                                                    <input type="hidden" name="subject_code" value="{{subject.id}}">
+                                                    <div class="text-right px-4 py-3" style="background-color: #f2f2f2;">
+                                                        <input type="submit" class="btn btn-success btn-sm" value="Save Changes" name="subject_edit_btn" style="font-family: 'Open Sans'; font-weight: 600;">
+                                                    </div>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                    {% else %}
-                    <div class="text-danger text-center">
-                        <i class="fal fa-frown fa-lg"></i>&nbsp; No subject found!
-                    </div> {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% else %}
+                        <div class="text-danger text-center">
+                            <i class="fal fa-frown fa-lg"></i>&nbsp; No subject found!
+                        </div> {% endif %}
+                    </div>
                 </div>
+                {% endif %}
             </div>
-            {% endif %}
         </div>
 </section>
 

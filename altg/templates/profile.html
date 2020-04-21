@@ -10,29 +10,29 @@
                 <p class="welcome-text pb-0 mb-0">Hi, welcome back!</p>
                 <p class="username">{{user.user_title}}. {{user.first_name}}</p>
             </div>
-            <div class="signout-btn-div fluid">
-                <a href="logout" class="btn btn-sm"><i class="fal fa-power-off"></i>&nbsp Log out</a>
+            <div class="signout-btn-div fluid mb-4">
+                <a href="../logout" class="btn btn-sm"><i class="fal fa-power-off"></i>&nbsp Log out</a>
             </div>
             {% else %}
             <div class="profile-img-div fluid">
                 <img src="{% static 'images/profile.jpg' %}" alt="Profile Image">
                 <p class="welcome-text pb-0 mb-0">Please log in to continue.</p>
             </div>
-            <div class="signin-btn-div fluid">
+            <div class="signin-btn-div fluid mb-4">
                 <a href="/" class="btn btn-sm"><i class="fal fa-sign-in-alt"></i>&nbsp Log in</a>
             </div>
             {% endif %}
-            <br>
             <hr>
             <ul class="menu-links">
                 {% if user.is_authenticated %}
-                <li><a href="../home"><i class="fal fa-home-lg-alt"></i>&nbsp&nbsp Home</a></li>
+                <li><a href="../dashboard"><i class="fal fa-tachometer-alt-fast"></i>&nbsp&nbsp Dashboard</a></li>
+                <li><a href="../schedule"><i class="fal fa-calendar-alt"></i>&nbsp&nbsp Schedule</a></li>
                 {% if user.is_superuser %}
                 <button class="dropdown-btn"><i class="fal fa-sliders-h"></i>&nbsp&nbsp Manage<span class="float-right"><i class="fal fa-chevron-down"></i></span></button>
                 <div class="dropdown-container">
                     <li><a href="../hall">&nbsp;<i class="fal fa-building fa-lg"></i>&nbsp;&nbsp; Lecture Halls</a></li>
                     <li><a href="../subject">&nbsp;<i class="fal fa-book fa-lg"></i>&nbsp;&nbsp; Subjects</a></li>
-                    <li><a href="../users"><i class="fal fa-users fa-lg"></i>&nbsp;&nbsp; Lecturers</a></li>
+                    <li><a href="../users"><i class="fal fa-users fa-lg"></i>&nbsp;&nbsp; Users</a></li>
                 </div>
                 {% endif %}
                 <li class="active-link"><a href="."><i class="fal fa-user-alt"></i>&nbsp&nbsp My Account</a></li class="active-link">
@@ -40,58 +40,58 @@
                 <li><a href="../help"><i class="fal fa-question-circle"></i>&nbsp&nbsp Help</a></li>
             </ul>
         </div>
-        <div class="col-10 p-5" id="main-panel">
-            <div class="main-panel-title">
+        <div class="col-10" id="main-panel">
+            <div class="main-panel-title py-3 pl-4 pr-3">
                 <div class="row justify-content-between">
-                    <div class="col-4">
+                    <div class="col-4 non-padding-cols">
                         <h4>User Profile</h4>
                         <small class="text-muted">Customize your profile details</small>
                     </div>
-                    <div class="col-3 text-center right-padding-zero-cols">
+                    <div class="col-2 text-center right-padding-zero-cols">
                         {% if user.is_authenticated %}
-                        <div class="alert alert-info mb-4">
+                        <div class="alert alert-info px-0 mt-1 user_role_alert">
                             {% if user.is_superuser %}
                             <strong>Your Role : ADMIN </strong> {% else %}
                             <strong>Your Role : GUEST </strong> {% endif %}
                         </div>
                         {% else %}
-                        <div class="alert alert-danger mb-4">
+                        <div class="alert alert-danger px-0 mt-1 user_role_alert">
                             Please log in to continue
                         </div>
                         {% endif %}
                     </div>
                 </div>
             </div>
-
-            <div class="section-div container p-4" id="profile-section">
-                {% if messages %}
-                <ul class="messages">
-                    {% for message in messages %} {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-                    <div class="alert {{message.tags}} alert-dismissable mb-4" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <div class="main-panel-content px-5 py-4">
+                <div class="section-div container p-4" id="profile-section">
+                    {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %} {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                        <div class="alert {{message.tags}} alert-dismissable mb-4" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <i class="far fa-check-circle fa-lg"></i>&nbsp; <b>{{message}}</b>
-                    </div>
-                    {% else %}
-                    <div class="alert {{message.tags}} alert-dismissable mb-4" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <i class="far fa-check-circle fa-lg"></i>&nbsp; <b>{{message}}</b>
+                        </div>
+                        {% else %}
+                        <div class="alert {{message.tags}} alert-dismissable mb-4" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                        <i class="far fa-times-circle fa-lg"></i>&nbsp; <b>{{message}}</b>
+                            <i class="far fa-times-circle fa-lg"></i>&nbsp; <b>{{message}}</b>
+                        </div>
+                        {% endif %} {% endfor%}
+                    </ul>
+                    {% endif %} {% if user.is_authenticated %}
+                    <div class="section-sub-title font-opensans">
+                        <h6><b>Your Personal Details</b></h6>
                     </div>
-                    {% endif %} {% endfor%}
-                </ul>
-                {% endif %} {% if user.is_authenticated %}
-                <div class="section-sub-title font-opensans">
-                    <h6><b>Your Personal Details</b></h6>
-                </div>
-                <div class="horizontal-divider-common mt-3 mb-4"></div>
-                <form action="." method="POST" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <div class="row">
-                        <div class="col-md-4 left-padding-zero-cols profile_image text-center">
-                            <label for="id_user_profile_img" class="m-0">
+                    <div class="horizontal-divider-common mt-3 mb-4"></div>
+                    <form action="." method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-4 left-padding-zero-cols profile_image text-center">
+                                <label for="id_user_profile_img" class="m-0">
                             {% if profile_photo %}
                                 {% for photo in profile_photo %}
                                     <img src="../media/{{photo.user_profile_img}}" id="prof_img">
@@ -100,113 +100,114 @@
                             <img src="{% static 'images/profile.jpg' %}">
                             {% endif %}
                             </label> {{profile_update_form.user_profile_img}}
-                            <div class="profile_image_bottom_div py-2 mt-2">
-                                <small id="imageHelp" class="form-text text-muted m-0"><i>Click on the image to upload new one.</i></small>
-                            </div>
-                        </div>
-                        <div class="col-md-8 non-padding-cols">
-                            <div class="row">
-                                <div class="col-md-2 left-padding-zero-cols">
-                                    <div class="form-group">
-                                        <label for="user_title">Title</label>{{user_update_form.user_title}}
-                                    </div>
-                                </div>
-                                <div class="col-md-5 left-padding-zero-cols">
-                                    <div class="form-group">
-                                        <label for="first_name">First Name</label>{{user_update_form.first_name}}
-                                    </div>
-                                </div>
-                                <div class="col-md-5 non-padding-cols">
-                                    <div class="form-group">
-                                        <label for="last_name">Last Name</label>{{user_update_form.last_name}}
-                                    </div>
+                                <div class="profile_image_bottom_div py-2 mt-2">
+                                    <small id="imageHelp" class="form-text text-muted m-0"><i>Click on the image to upload new one.</i></small>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-12 non-padding-cols">
-                                    <div class="form-group">
-                                        <label for="first_name">Name with Initials</label>{{user_update_form.lecturer_name}}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12 non-padding-cols">
-                                    <div class="form-group">
-                                        <label for="email">Email</label>{{user_update_form.email}}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 left-padding-zero-cols">
-                                    <div class="form-group">
-                                        <label for="username">Lecturer Code</label>{{user_update_form.lecturer_code}}
-                                    </div>
-                                </div>
-                                <div class="col-md-6 non-padding-cols">
-                                    <div class="form-group">
-                                        <label for="username">Username</label>{{user_update_form.username}}
-                                    </div>
-                                </div>
-                            </div>
-                            <br>
-                            <div class="save-btn-div text-right">
-                                {{user_update_form.id}}
-                                <input type="submit" class="btn px-4 submit_btn" value="Save Changes" />
-                            </div>
-                        </div>
-                    </div>
-                </form>
-                {% else %}
-                <div class="error-msg-div my-5 text-center">
-                    <p class="text-danger mb-4"><i class="fal fa-exclamation-triangle fa-5x"></i></p>
-                    <p class="text-danger font-opensans">You are not logged in. Please log in <a href="/">here</a>.</p>
-                </div>
-                {% endif %}
-            </div>
-            {% if user.is_authenticated %}
-            <br>
-            <div class="container px-0">
-                <div class="row">
-                    <div class="col-md-6 left-padding-zero-cols custom-left-padding-cols">
-                        <div class="section-div container p-4">
-                            <div class="section-sub-title font-opensans">
-                                <h6><b>Assigned Subjects</b></h6>
-                            </div>
-                            <div class="horizontal-divider-common mt-3">
-                                <ul class="font-opensans mt-3 mb-0 pl-3" style="font-size: 14px;">
-                                    {% for subjects in lecturers_subjects %}
-                                    <li>{{subjects.subject_name}} - <span class="text-muted">{{subjects.subject_code}}</span> <i>(Year {{subjects.related_batch}} Semester {{subjects.semester}})</i></li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 right-padding-zero-cols custom-right-padding-cols">
-                        <div class="section-div container p-4">
-                            <div class="section-sub-title font-opensans">
-                                <h6><b>Your Current Lecture Schedule</b></h6>
-                            </div>
-                            <div class="horizontal-divider-common mt-3 mb-4"></div>
-                            <div class="table-section">
-                                <div class="row generated-result align-items-center p-3">
-                                    <div class="col-md-8 result_text non-padding-cols">
-                                        <div class="row align-items-center">
-                                            <div class="col-md-1 left-padding-zero-cols result-icon"><i class="fal fa-calendar-alt fa-lg"></i></div>
-                                            <div class="col-md-11">Lecture schedule</div>
+                            <div class="col-md-8 non-padding-cols">
+                                <div class="row">
+                                    <div class="col-md-2 left-padding-zero-cols">
+                                        <div class="form-group">
+                                            <label for="user_title">Title</label>{{user_update_form.user_title}}
                                         </div>
                                     </div>
-                                    <div class="col-md-4 text-right non-padding-cols">
-                                        <button type="button" class="btn btn-sm btn-outline-primary font-opensans" data-toggle="modal" data-target="#staticBackdrop" title="View"><i class="fad fa-external-link fa-lg"></i></button>&nbsp;
-                                        <button type="button" class="btn btn-sm btn-outline-primary font-opensans" title="Download"><i class="fad fa-download fa-lg"></i></button>&nbsp;
-                                        <button type="button" class="btn btn-sm btn-outline-danger font-opensans" title="Delete"><i class="fad fa-trash-alt fa-lg"></i></button>
+                                    <div class="col-md-5 left-padding-zero-cols">
+                                        <div class="form-group">
+                                            <label for="first_name">First Name</label>{{user_update_form.first_name}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5 non-padding-cols">
+                                        <div class="form-group">
+                                            <label for="last_name">Last Name</label>{{user_update_form.last_name}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 non-padding-cols">
+                                        <div class="form-group">
+                                            <label for="first_name">Name with Initials</label>{{user_update_form.lecturer_name}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 non-padding-cols">
+                                        <div class="form-group">
+                                            <label for="email">Email</label>{{user_update_form.email}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 left-padding-zero-cols">
+                                        <div class="form-group">
+                                            <label for="username">Lecturer Code</label>{{user_update_form.lecturer_code}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 non-padding-cols">
+                                        <div class="form-group">
+                                            <label for="username">Username</label>{{user_update_form.username}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="save-btn-div text-right">
+                                    {{user_update_form.id}}
+                                    <input type="submit" class="btn px-4 submit_btn" value="Save Changes" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    {% else %}
+                    <div class="error-msg-div my-5 text-center">
+                        <p class="text-danger mb-4"><i class="fal fa-exclamation-triangle fa-5x"></i></p>
+                        <p class="text-danger font-opensans">You are not logged in. Please log in <a href="/">here</a>.</p>
+                    </div>
+                    {% endif %}
+                </div>
+                {% if user.is_authenticated and user.user_position == 'lecturer' %}
+                <br>
+                <div class="container px-0">
+                    <div class="row">
+                        <div class="col-md-6 left-padding-zero-cols custom-left-padding-cols">
+                            <div class="section-div container p-4">
+                                <div class="section-sub-title font-opensans">
+                                    <h6><b>Assigned Subjects</b></h6>
+                                </div>
+                                <div class="horizontal-divider-common mt-3">
+                                    <ul class="font-opensans mt-3 mb-0 pl-3" style="font-size: 14px;">
+                                        {% for subjects in lecturers_subjects %}
+                                        <li>{{subjects.subject_name}} - <span class="text-muted">{{subjects.subject_code}}</span> <i>(Year {{subjects.related_batch}} Semester {{subjects.semester}})</i></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 right-padding-zero-cols custom-right-padding-cols">
+                            <div class="section-div container p-4">
+                                <div class="section-sub-title font-opensans">
+                                    <h6><b>Your Current Lecture Schedule</b></h6>
+                                </div>
+                                <div class="horizontal-divider-common mt-3 mb-4"></div>
+                                <div class="table-section">
+                                    <div class="row generated-result align-items-center p-3">
+                                        <div class="col-md-8 result_text non-padding-cols">
+                                            <div class="row align-items-center">
+                                                <div class="col-md-1 left-padding-zero-cols result-icon"><i class="fal fa-calendar-alt fa-lg"></i></div>
+                                                <div class="col-md-11">Lecture schedule</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 text-right non-padding-cols">
+                                            <button type="button" class="btn btn-sm btn-outline-primary font-opensans" data-toggle="modal" data-target="#staticBackdrop" title="View"><i class="fad fa-external-link fa-lg"></i></button>&nbsp;
+                                            <button type="button" class="btn btn-sm btn-outline-primary font-opensans" title="Download"><i class="fad fa-download fa-lg"></i></button>&nbsp;
+                                            <button type="button" class="btn btn-sm btn-outline-danger font-opensans" title="Delete"><i class="fad fa-trash-alt fa-lg"></i></button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <br><br> {% endif %}
             </div>
-            <br><br> {% endif %}
         </div>
     </div>
 </section>

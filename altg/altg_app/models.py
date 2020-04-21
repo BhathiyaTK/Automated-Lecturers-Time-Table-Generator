@@ -15,6 +15,12 @@ class User(AbstractUser):
         ('Mrs', 'Mrs'),
         ('Miss', 'Miss'),
     )
+    POSITION = (
+        ('lecturer', 'Lecturer'),
+        ('demo', 'Demonstrator'),
+        ('naStaff', 'Non Acedamic Staff'),
+        ('other', 'Other'),
+    )
     user_title = models.CharField(max_length=30, choices=TITLES, default=None)
     first_name = models.CharField(max_length=224, default=None)
     last_name = models.CharField(max_length=224, default=None)
@@ -23,6 +29,13 @@ class User(AbstractUser):
     username = models.CharField(max_length=150, unique=True)
     password = models.CharField(max_length=100)
     lecturer_code = models.CharField(max_length=224)
+    user_position = models.CharField(max_length=30, choices=POSITION, default=None)
+
+    def get_profile_img(self):
+        try:
+            return Profiles.objects.filter(username=self.username).values_list('user_profile_img', flat=True)[0]
+        except:
+            return None
 
 class ProcessData(models.Model):
     BATCH = (
@@ -47,6 +60,7 @@ class ProcessData(models.Model):
 class AllLectureHalls(models.Model):
     hall_number = models.CharField(max_length=224)
     hall_name = models.CharField(max_length=224)
+    hall_capacity = models.IntegerField()
 
 class AllSubjects(models.Model):
     BATCH = (
@@ -64,6 +78,7 @@ class AllSubjects(models.Model):
     related_batch = models.CharField(max_length=20, choices=BATCH, default=None)
     semester = models.CharField(max_length=20, choices=SEMESTERS, default=None)
     related_lecturer = models.CharField(max_length=224, default='')
+    std_count = models.IntegerField()
 
 class AllBatches(models.Model):
     batch_no = models.CharField(max_length=20)

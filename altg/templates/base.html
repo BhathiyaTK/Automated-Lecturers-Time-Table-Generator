@@ -24,6 +24,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'vendor/animsition/css/animsition.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'vendor/select2/select2.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'vendor/daterangepicker/daterangepicker.css' %}">
+    <!-- Main CSS -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/global.css' %}">
 </head>
 
@@ -39,6 +40,10 @@
     <script src="{% static 'vendor/daterangepicker/moment.min.js' %}"></script>
     <script src="{% static 'vendor/daterangepicker/daterangepicker.js' %}"></script>
     <script src="{% static 'vendor/countdowntime/countdowntime.js' %}"></script>
+    <!-- Chart.js Plugins -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" />
     <!-- Main JS-->
     <script src="{% static 'js/global.js' %}"></script>
     {% endblock jquery %} {% block content %} {% endblock content %}
