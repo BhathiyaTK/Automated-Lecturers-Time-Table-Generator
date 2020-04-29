@@ -18,26 +18,7 @@ passed_val1 = '%s' % (sys.argv[1])
 passed_val2 = '%s' % (sys.argv[2])
 class Data:
     HALLS = AllLectureHalls.objects.all().values_list('hall_name', 'hall_capacity')
-    MEETING_TIMES = [["MT1", "Monday 08:00 - 10.00"],
-                     ["MT2", "Monday 10:00 - 12:00"],
-                     ["MT3", "Monday 01:00 - 03:00"],
-                     ["MT4", "Monday 03:00 - 05:00"],
-                     ["MT5", "Tuesday 08:00 - 10.00"],
-                     ["MT6", "Tuesday 10:00 - 12.00"],
-                     ["MT7", "Tuesday 01:00 - 03:00"],
-                     ["MT8", "Tuesday 03:00 - 05.00"],
-                     ["MT9", "Wednesday 08:00 - 10.00"],
-                     ["MT10", "Wednesday 10:00 - 12:00"],
-                     ["MT11", "Wednesday 01:00 - 03:00"],
-                     ["MT12", "Wednesday 03:00 - 05:00"],
-                     ["MT13", "Thursday 08:00 - 10.00"],
-                     ["MT14", "Thursday 10:00 - 12:00"],
-                     ["MT15", "Thursday 01:00 - 03:00"],
-                     ["MT16", "Thursday 03:00 - 05:00"],
-                     ["MT17", "Friday 08:00 - 10.00"],
-                     ["MT18", "Friday 10:00 - 12:00"],
-                     ["MT19", "Friday 01:00 - 03:00"],
-                     ["MT20", "Friday 03:00 - 05:00"]]
+    MEETING_TIMES = AllTimeSlots.objects.all().values_list('slot_id', 'time_slot')
     INSTRUCTORS = User.objects.filter(lecturer_name=passed_val1).values_list('lecturer_code', 'lecturer_name')
     COURSES = AllSubjects.objects.filter(related_lecturer=passed_val1, semester=passed_val2).values_list('subject_code', 'subject_name', 'related_lecturer', 'std_count')
     def __init__(self):

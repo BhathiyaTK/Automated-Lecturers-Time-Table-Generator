@@ -89,17 +89,9 @@ class AllSemesters(models.Model):
     semester_no = models.CharField(max_length=20)
     semester_name_suffix = models.CharField(max_length=20)
 
-class Batch(models.Model):
-    batch_no = models.CharField(max_length=50)
-    no_of_students = models.CharField(max_length=100)
-
-class TimeSlots(models.Model):
+class AllTimeSlots(models.Model):
+    slot_id = models.CharField(max_length=50)
     time_slot = models.CharField(max_length=100)
-    batch = models.CharField(max_length=50)
-
-class Days(models.Model):
-    days = models.CharField(max_length=150)
-    batch = models.CharField(max_length=50)
 
 class Profiles(models.Model):
     username = models.CharField(max_length=224)

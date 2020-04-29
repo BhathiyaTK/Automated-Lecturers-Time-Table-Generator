@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import make_password, check_password
 from django.http import HttpResponse, HttpResponseRedirect
 from .forms import DataForm, AddUserForm, AddHallForm, DeleteUserForm, UserUpdateForm, ProfileUpdateForm
-from .models import ProcessData, User, AllLectureHalls, AllSubjects, AllBatches, AllSemesters, Batch, TimeSlots, Days, Profiles
+from .models import ProcessData, User, AllLectureHalls, AllSubjects, AllBatches, AllSemesters, AllTimeSlots, Profiles
 from django.contrib import messages
 from django.db.models import Q
 from datetime import datetime
@@ -19,6 +19,7 @@ import sys
 from subprocess import run, PIPE
 from os import popen
 import ast
+import json
 
 # Login function
 def userLogin(request):
@@ -90,10 +91,11 @@ def schedule(request):
         if (lec_name and sem) is not None:
             out = run([sys.executable,'D://Web Projects//CIS_ALTG//altg//gAlgorithm.py',lec_name, sem],shell=False,stdout=PIPE)
             byteVal = (out.stdout).strip()
-            data_list = ast.literal_eval(byteVal.decode())
+            strVal = byteVal.decode()
+            data_list = ast.literal_eval(strVal)
             data_table_row = []
             for i in data_list:
-                data_table_row.append("<tr><td class='text-center'>"+i[0]+"</td><td>"+i[1]+"</td><td>"+i[2]+"</td><td>"+i[3]+"</td></tr>")
+                data_table_row.append("<tr><td>"+i[0]+"</td><td>"+i[1]+"</td><td>"+i[2]+"</td><td>"+i[3]+"</td></tr>")
             lecturer_names = User.objects.filter(user_position='lecturer')
             semester_info = AllSemesters.objects.all()
             profile_photo = Profiles.objects.filter(username=request.session['logged_username'])

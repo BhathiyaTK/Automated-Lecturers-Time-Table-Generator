@@ -1,5 +1,5 @@
 from django import forms
-from .models import ProcessData, User, AllLectureHalls, AllSubjects, AllBatches, AllSemesters, Batch, TimeSlots, Days, Profiles
+from .models import ProcessData, User, AllLectureHalls, AllSubjects, AllBatches, AllSemesters, AllTimeSlots, Profiles
 
 BATCH = (
     ('', '---- Choose ----'),
