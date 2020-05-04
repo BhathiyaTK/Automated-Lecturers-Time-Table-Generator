@@ -1,5 +1,50 @@
 $(document).ready(function() {
     console.log("Jquery is working....");
+
+    // Default visibilities
+    $("#external-color-circle1").addClass("active-color-circle");
+
+    // Morning, afternoon & evenning visualizing function
+    var thehours = new Date().getHours();
+    var themessage, climateIcon, subGreeting;
+    var morning = "Good Morning";
+    var afternoon = "Good Afternoon";
+    var evening = "Good Evening";
+    var morningSubGreeting = "Have a great day.";
+    var afternoonSubGreeting = "Be happy and enjoy the day.";
+    var eveningSubGreeting = "Wishing you a wonderful evening.";
+    var nightSubGreeting = "How was today? Get ready for tomorrow.";
+    var morningIcon = "/static/images/sunrise.png";
+    var afternoonIcon = "/static/images/sunshine.png";
+    var eveningIcon = "/static/images/sunset.png";
+    var nightIcon = "/static/images/night.png";
+
+    if (thehours >= 0 && thehours < 5) {
+        themessage = morning;
+        climateIcon = nightIcon;
+        subGreeting = morningSubGreeting;
+    } else if (thehours >= 5 && thehours < 12) {
+        themessage = morning;
+        climateIcon = morningIcon;
+        subGreeting = morningSubGreeting;
+    } else if (thehours >= 12 && thehours < 14) {
+        themessage = afternoon;
+        climateIcon = afternoonIcon;
+        subGreeting = afternoonSubGreeting;
+    } else if (thehours >= 14 && thehours < 19) {
+        themessage = evening;
+        climateIcon = eveningIcon;
+        subGreeting = eveningSubGreeting;
+    } else if (thehours >= 19 && thehours < 24) {
+        themessage = evening;
+        climateIcon = nightIcon;
+        subGreeting = nightSubGreeting;
+    }
+    $(".greeting").append(themessage);
+    $(".climate-icon").attr("src", climateIcon);
+    $(".sub-greeting").append(subGreeting);
+
+    // Chart generating function
     var labels = [];
     var data_set = [];
     $.ajax({
@@ -155,6 +200,32 @@ $(document).ready(function() {
                         '<i class="fad fa-trash-alt fa-lg"></i></button></form></div></div</td></tr>'
                     );
                 });
+            }
+        });
+    });
+
+    $("#table-save-form").on("submit", function(e2) {
+        e2.preventDefault();
+        var lecturer_name = $("#lecturer_name").val();
+        var semester = $("#semester").val();
+        var hall_n_time = $("#hall_n_time").val();
+        var data_str = $("#data_str").val();
+        $.ajax({
+            type: "GET",
+            url: "/scheduleSave",
+            data: {
+                lecturer_name: lecturer_name,
+                semester: semester,
+                hall_n_time: hall_n_time,
+                data_str: data_str
+            },
+            success: function(success) {
+                $("#save-success-msg").css('display', 'block');
+                $("#save-success-msg").html(save);
+            },
+            error: function(error) {
+                $("#save-error-msg").css('display', 'block');
+                $("#save-error-msg").html(save);
             }
         });
     });

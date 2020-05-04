@@ -22,7 +22,7 @@
                 <a href="/" class="btn btn-sm"><i class="fal fa-sign-in-alt"></i>&nbsp Log in</a>
             </div>
             {% endif %}
-            <hr>
+            <hr class="light-divider">
             <ul class="menu-links">
                 {% if user.is_authenticated %}
                 <li><a href="../dashboard"><i class="fal fa-tachometer-alt-fast"></i>&nbsp&nbsp Dashboard</a></li>
@@ -37,7 +37,7 @@
                 {% endif %}
                 <li><a href="../profile"><i class="fal fa-user-alt"></i>&nbsp&nbsp My Account</a></li>
                 {% endif %}
-                <li><a href="../help"><i class="fal fa-question-circle"></i>&nbsp&nbsp Help</a></li>
+                <li><a href="../settings"><i class="fal fa-wrench"></i>&nbsp&nbsp Settings</a></li>
             </ul>
         </div>
         <div class="col-10" id="main-panel">
@@ -88,7 +88,7 @@
                             {% endfor %} {% endif %}
                             <div class="row">
                                 <div class="col-md-8 left-padding-zero-cols">
-                                    <select class="form-control form-control-sm mb-3" name="selected_lecturer">
+                                    <select class="custom-select custom-select-sm mb-3" name="selected_lecturer">
                                         <option value="">--- Lecturer ---</option>
                                         {% for user in lecturer_names %}
                                         <option value="{{user.lecturer_name}}">{{user.user_title}}. {{user.lecturer_name}}</option>
@@ -96,7 +96,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-4 non-padding-cols">
-                                    <select class="form-control form-control-sm mb-3" name="selected_semester">
+                                    <select class="custom-select custom-select-sm mb-3" name="selected_semester">
                                         <option value="">--- Semester ---</option>
                                         {% for sem in semester_info %}
                                         <option value="{{sem.semester_no}}">{{sem.semester_no}}<sup>{{sem.semester_name_suffix}}</sup> semester</option>
@@ -115,6 +115,20 @@
                     {% endif %}
                 </div>
                 <br> {% if user.is_authenticated %}
+                <div class="container px-0">
+                    <div id="save-success-msg" class="alert alert-success alert-dismissible fade show mb-4" role="alert" style="font-size: 14px;;">
+                        <strong>Successfully saved!</strong> You can find your lectures schedule under <u><a href="../profile">My Account</a></u> section on left-side panel.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div id="save-error-msg" class="alert alert-danger alert-dismissible fade show mb-4" role="alert" style="font-size: 14px;;">
+                        <strong>Saving failed!</strong> Something went wrong. Your schedule saving has been failed. Try again shortly.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
                 <div class="table-section section-div container mb-2 px-0">
                     {% if schedule_data %}
                     <div class="row justify-content-between align-items-center py-3" style="font-size: 15px; background: rgb(228, 228, 228);">
@@ -124,9 +138,22 @@
                                 <div class="col-md-11 non-padding-cols">Generated lecture schedule for <span class="result_lec_name">{{lec_name}}</span></div>
                             </div>
                         </div>
-                        <div class="col-md-4 text-right px-4">
-                            <button type="button" class="btn btn-sm option-btn font-opensans" title="Save"><i class="fal fa-save fa-lg"></i></button> &nbsp;
-                            <button type="button" class="btn btn-sm option-btn font-opensans" title="Download"><i class="fal fa-download fa-lg"></i></button>
+                        <div class="col-md-2 text-right px-4">
+                            <div class="row justify-content-end">
+                                <div class="col-md-4 non-padding-cols">
+                                    <form id="table-save-form">
+                                        {% csrf_token %}
+                                        <input type="hidden" id="lecturer_name" name="lecturer_name" value="{{lec_name}}">
+                                        <input type="hidden" id="semester" name="semester" value="{{semester}}">
+                                        <input type="hidden" id="hall_n_time" name="hall_n_time" value="{{hall_n_time}}">
+                                        <input type="hidden" id="data_str" name="data_str" value="{{data_str}}">
+                                        <button id="save-btn" type="submit" class="btn btn-sm option-btn font-opensans" title="Save"><i class="fal fa-save fa-lg"></i></button>
+                                    </form>
+                                </div>
+                                <div class="col-md-4 custom-right-padding-cols ">
+                                    <button id="download-btn" type="button" class="btn btn-sm option-btn font-opensans" title="Download"><i class="fal fa-download fa-lg"></i></button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="table-div p-4">

@@ -23,23 +23,25 @@
                 <a href="/" class="btn btn-sm"><i class="fal fa-sign-in-alt"></i>&nbsp Log in</a>
             </div>
             {% endif %}
-            <hr>
-            <ul class="menu-links">
-                {% if user.is_authenticated %}
-                <li class="active-link"><a href="."><i class="fal fa-tachometer-alt-fast"></i>&nbsp&nbsp Dashboard</a></li>
-                <li><a href="../schedule"><i class="fal fa-calendar-alt"></i>&nbsp&nbsp Schedule</a></li>
-                {% if user.is_superuser %}
-                <button class="dropdown-btn"><i class="fal fa-sliders-h"></i>&nbsp&nbsp Manage<span class="float-right"><i class="fal fa-chevron-down"></i></span></button>
-                <div class="dropdown-container">
-                    <li><a href="../hall">&nbsp;<i class="fal fa-building fa-lg"></i>&nbsp;&nbsp; Lecture Halls</a></li>
-                    <li><a href="../subject">&nbsp;<i class="fal fa-book fa-lg"></i>&nbsp;&nbsp; Subjects</a></li>
-                    <li><a href="../users"><i class="fal fa-users fa-lg"></i>&nbsp;&nbsp; Users</a></li>
-                </div>
-                {% endif %}
-                <li><a href="../profile"><i class="fal fa-user-alt"></i>&nbsp&nbsp My Account</a></li>
-                {% endif %}
-                <li><a href="../help"><i class="fal fa-question-circle"></i>&nbsp&nbsp Help</a></li>
-            </ul>
+            <hr class="light-divider">
+            <div class="menu-links-div">
+                <ul class="menu-links">
+                    {% if user.is_authenticated %}
+                    <li class="active-link"><a href="."><i class="fal fa-tachometer-alt-fast"></i>&nbsp&nbsp Dashboard</a></li>
+                    <li><a href="../schedule"><i class="fal fa-calendar-alt"></i>&nbsp&nbsp Schedule</a></li>
+                    {% if user.is_superuser %}
+                    <button class="dropdown-btn"><i class="fal fa-sliders-h"></i>&nbsp&nbsp Manage<span class="float-right"><i class="fal fa-chevron-down"></i></span></button>
+                    <div class="dropdown-container">
+                        <li><a href="../hall">&nbsp;<i class="fal fa-building fa-lg"></i>&nbsp;&nbsp; Lecture Halls</a></li>
+                        <li><a href="../subject">&nbsp;<i class="fal fa-book fa-lg"></i>&nbsp;&nbsp; Subjects</a></li>
+                        <li><a href="../users"><i class="fal fa-users fa-lg"></i>&nbsp;&nbsp; Users</a></li>
+                    </div>
+                    {% endif %}
+                    <li><a href="../profile"><i class="fal fa-user-alt"></i>&nbsp&nbsp My Account</a></li>
+                    {% endif %}
+                    <li><a href="../settings"><i class="fal fa-wrench"></i>&nbsp&nbsp Settings</a></li>
+                </ul>
+            </div>
         </div>
         <div class="col-10" id="main-panel">
             <div class="main-panel-title py-3 pl-4 pr-3">
@@ -64,16 +66,20 @@
                 </div>
             </div>
             <div class="main-panel-content px-5 py-4">
-                <div class="section-div container px-5 pb-2 pt-4">
+                <div class="container p-0">
                     {% if user.is_authenticated %}
-                    <div class="generate-msg text-center">
-                        <h2 class="font-opensans">Hello, {{user.first_name}}!</h2>
-                        <p class="font-opensans mt-3 text-secondary" style="font-size: 14.5px;">
-                            Welcome to the Automated Lecturers' Time-table Generator web platform. This is a web-based platform which mainly allows you to generate time-tables for the lecturers instantly without wasting time. You also allowed to view and download generated time-tables.
-                            You can find the options in the left side panel for manage users, subjects, lecture halls and also customize your profile info.
-                        </p>
+                    <div class="jumbotron p-0">
+                        <div class="row justify-content-between">
+                            <div class="col-md-8 px-5 py-4">
+                                <h2 class="font-opensans-light"><span class="greeting"></span>! <b>{{user.first_name}}</b>.</h2>
+                                <p class="lead m-0 sub-greeting"></p>
+                            </div>
+                            <div class="col-md-4 text-right px-5 pt-0">
+                                <img class="climate-icon" src="" alt="" width="100%">
+                            </div>
+                        </div>
+
                     </div>
-                    <p class="text-center mt-3"><span class="text-muted ml-3" style="font-size: 12px;"><i>NOTE: Currently this is available for Department of Computing & Information Systems only.</i></span></p>
                     {% else %}
                     <div class="error-msg-div my-5 text-center">
                         <p class="text-danger mb-4"><i class="fal fa-exclamation-triangle fa-5x"></i></p>
@@ -82,7 +88,6 @@
                     {% endif %}
                 </div>
                 {% if user.is_authenticated %}
-                <br>
                 <div class="container px-0">
                     <div class="row">
                         <div class="col-md-3 left-padding-zero-cols">

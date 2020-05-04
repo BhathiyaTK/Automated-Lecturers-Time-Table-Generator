@@ -31,6 +31,11 @@
     font-family: "Open Sans";
 }
 
+.font-opensans-light {
+    font-family: "Open Sans";
+    font-weight: 300;
+}
+
 @font-face {
     font-family: Poppins-Regular;
     src: url('../fonts/poppins/Poppins-Regular.ttf');
@@ -111,10 +116,6 @@
 .custom-left-padding-cols {
     padding-right: 10px !important;
     padding-left: 0 !important;
-}
-
-hr {
-    background-color: rgba(255, 255, 255, 0.4);
 }
 
 #main-panel {
@@ -237,6 +238,11 @@ h5 {
     box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.25);
 }
 
+.menu-links-div {
+    height: 55vh;
+    overflow-y: auto;
+}
+
 .menu-links {
     list-style: none;
     text-align: left;
@@ -336,6 +342,10 @@ h5 {
     color: #fff;
 }
 
+.light-divider {
+    background: rgba(228, 219, 219, 0.521);
+}
+
 
 /* ==================================================================
     # Main Panel Styles
@@ -350,6 +360,8 @@ h5 {
 .main-panel-title {
     background: #fff;
     box-shadow: 0 4px 6px -2px rgba(0, 0, 0, 0.15);
+    z-index: 9999;
+    overflow: hidden;
 }
 
 .main-panel-title h4 {
@@ -373,14 +385,45 @@ label {
     font-size: 14px;
 }
 
-.section-div .option-btn {
-    background: #3b5998;
-    color: #fff;
+.modal-header,
+.custom-modal-footer {
+    background: rgb(224, 235, 245);
+}
+
+.custom-modal-footer {
+    border-top: 1px solid rgb(223, 224, 224);
+    border-radius: 0 0 6px 6px;
+}
+
+.custom-modal-footer .delete-btn {
+    font-size: 13px;
+    background: rgba(224, 58, 58, 0.521);
     transition: 0.2s;
 }
 
-.section-div form .submit_btn:hover,
-.section-div .option-btn:hover {
+.custom-modal-footer .delete-btn:hover {
+    background: rgb(224, 58, 58);
+    color: #fff;
+    mix-blend-mode: normal;
+    box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.25);
+}
+
+.section-div .option-btn,
+.custom-modal-footer .option-btn {
+    font-size: 13px;
+    background: rgba(59, 88, 152, 0.35);
+    transition: 0.2s;
+}
+
+.section-div .option-btn:hover,
+.custom-modal-footer .option-btn:hover {
+    background: #3B5998;
+    color: #fff;
+    mix-blend-mode: normal;
+    box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.25);
+}
+
+.section-div form .submit_btn:hover {
     mix-blend-mode: normal;
     box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.25);
 }
@@ -540,7 +583,7 @@ label {
     ================================================================= */
 
 .table-section {
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(243, 236, 236);
 }
 
 .result-icon {
@@ -569,6 +612,11 @@ label {
 #schedule-table tbody td {
     font-size: 14px;
     font-family: "Open Sans";
+}
+
+#save-success-msg,
+#save-error-msg {
+    display: none;
 }
 
 
@@ -609,5 +657,72 @@ label {
 
 
 /* ==================================================================
-    # Lecturers Page styles 
+    # Settings Page styles 
     ================================================================= */
+
+.help-div {
+    height: 50vh;
+    overflow-y: auto;
+}
+
+.setting-appearance-option-titles {
+    font-family: "Open Sans";
+    font-weight: 600;
+    margin-bottom: .5rem;
+}
+
+.custom-control label {
+    font-weight: 500;
+}
+
+.panel-color-div {
+    display: inline-flex;
+}
+
+.side-panel-color-circle {
+    width: 50px;
+    height: 25px;
+    border-radius: 6px;
+    text-align: center;
+    padding-top: 3px;
+}
+
+#circle-select-check {
+    color: #fff;
+    display: none;
+}
+
+.active-color-circle #circle-select-check {
+    display: block;
+}
+
+.side-panel-color-circle:hover {
+    cursor: pointer;
+}
+
+#color-circle1 {
+    background-color: #3B5998;
+}
+
+#color-circle2 {
+    background-color: #ad0057;
+}
+
+#color-circle3 {
+    background-color: #07864b;
+}
+
+#color-circle4 {
+    background-color: #5428a5;
+}
+
+.external-color-circle {
+    border: 4px solid transparent;
+    border-radius: 10px;
+    padding: 1px;
+    margin-right: 10px;
+}
+
+.active-color-circle {
+    border-color: rgb(20, 230, 73);
+}

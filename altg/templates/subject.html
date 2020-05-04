@@ -22,7 +22,7 @@
                 <a href="/" class="btn btn-sm"><i class="fal fa-sign-in-alt"></i>&nbsp Log in</a>
             </div>
             {% endif %}
-            <hr>
+            <hr class="light-divider">
             <ul class="menu-links">
                 {% if user.is_authenticated %}
                 <li><a href="../dashboard"><i class="fal fa-tachometer-alt-fast"></i>&nbsp&nbsp Dashboard</a></li>
@@ -37,7 +37,7 @@
                 {% endif %}
                 <li><a href="../profile"><i class="fal fa-user-alt"></i>&nbsp&nbsp My Account</a></li>
                 {% endif %}
-                <li><a href="../help"><i class="fal fa-question-circle"></i>&nbsp&nbsp Help</a></li>
+                <li><a href="../settings"><i class="fal fa-wrench"></i>&nbsp&nbsp Settings</a></li>
             </ul>
         </div>
         <div class="col-10" id="main-panel">

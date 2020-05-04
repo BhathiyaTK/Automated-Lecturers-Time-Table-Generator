@@ -120,3 +120,9 @@ class Profiles(models.Model):
             output_size = (300, 300)
             img.thumbnail(output_size)
             img.save(self.user_profile_img.path)
+
+class SavedSchedules(models.Model):
+    lecturer_name = models.CharField(max_length=224)
+    semester = models.CharField(max_length=20)
+    hall_n_time = models.CharField(max_length=1000)
+    schedule = models.CharField(max_length=1000)

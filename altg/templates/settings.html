@@ -1,0 +1,174 @@
+{% extends 'base.html' %} {% block content %} {% load static %}
+
+<section>
+    <div class="row">
+        <div class="col-2 mh-100" id="side-panel">
+            {% if user.is_authenticated %}
+            <div class="profile-img-div fluid">
+                {% if profile_photo %} {% for photo in profile_photo %}
+                <img src="../media/{{photo.user_profile_img}}" alt="Your Profile Image"> {% endfor %} {% else %}
+                <img src="{% static 'images/profile.jpg' %}" alt="Profile Image"> {% endif %}
+                <p class="welcome-text pb-0 mb-0">Hi, welcome back!</p>
+                <p class="username">{{user.user_title}}. {{user.first_name}}</p>
+            </div>
+            <div class="signout-btn-div fluid mb-4">
+                <a href="../logout" class="btn btn-sm"><i class="fal fa-power-off"></i>&nbsp Log out</a>
+            </div>
+            {% else %}
+            <div class="profile-img-div fluid">
+                <img src="{% static 'images/profile.jpg' %}" alt="Profile Image">
+                <p class="welcome-text pb-0 mb-0">Please log in to continue.</p>
+            </div>
+            <div class="signin-btn-div fluid mb-4">
+                <a href="/" class="btn btn-sm"><i class="fal fa-sign-in-alt"></i>&nbsp Log in</a>
+            </div>
+            {% endif %}
+            <hr class="light-divider">
+            <ul class="menu-links">
+                {% if user.is_authenticated %}
+                <li><a href="../dashboard"><i class="fal fa-tachometer-alt-fast"></i>&nbsp&nbsp Dashboard</a></li>
+                <li><a href="../schedule"><i class="fal fa-calendar-alt"></i>&nbsp&nbsp Schedule</a></li>
+                {% if user.is_superuser %}
+                <button class="dropdown-btn"><i class="fal fa-sliders-h"></i>&nbsp&nbsp Manage<span class="float-right"><i class="fal fa-chevron-down"></i></span></button>
+                <div class="dropdown-container">
+                    <li><a href="../hall">&nbsp;<i class="fal fa-building fa-lg"></i>&nbsp;&nbsp; Lecture Halls</a></li>
+                    <li><a href="../subject">&nbsp;<i class="fal fa-book fa-lg"></i>&nbsp;&nbsp; Subjects</a></li>
+                    <li><a href="../users"><i class="fal fa-users fa-lg"></i>&nbsp;&nbsp; Users</a></li class="active-link">
+                </div>
+                {% endif %}
+                <li><a href="../profile"><i class="fal fa-user-alt"></i>&nbsp&nbsp My Account</a></li>
+                {% endif %}
+                <li class="active-link"><a href="."><i class="fal fa-wrench"></i>&nbsp&nbsp Settings</a></li>
+            </ul>
+        </div>
+        <div class="col-10" id="main-panel">
+            <div class="main-panel-title py-3 pl-4 pr-3">
+                <div class="row justify-content-between">
+                    <div class="col-4 non-padding-cols">
+                        <h4>Preferences</h4>
+                        <small class="text-muted">Appearance, Tips & Tricks, About</small>
+                    </div>
+                    <div class="col-2 text-center right-padding-zero-cols">
+                        {% if user.is_authenticated %}
+                        <div class="alert alert-info px-0 mt-1 user_role_alert">
+                            {% if user.is_superuser %}
+                            <strong>Your Role : ADMIN </strong> {% else %}
+                            <strong>Your Role : GUEST </strong> {% endif %}
+                        </div>
+                        {% else %}
+                        <div class="alert alert-danger px-0 mt-1 user_role_alert">
+                            Please log in to continue
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="main-panel-content px-5 py-4">
+                <div class="container p-0">
+                    <div class="row">
+                        <div class="col-md-5 left-padding-zero-cols">
+                            <div class="section-div container px-4 py-3 font-opensans" style="font-size: 14px;">
+                                <div class="section-sub-title font-opensans">
+                                    <h6><b>Appearance</b></h6>
+                                </div>
+                                <div class="horizontal-divider-common mt-3 mb-4"></div>
+                                <div class="px-4 text-justify font-opensans">
+                                    <div class="mb-3">
+                                        <li class="setting-appearance-option-titles">Color Theme</li>
+                                        <div class="theme-btn-div ml-4">
+                                            <div class="custom-control custom-switch">
+                                                <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                                                <label class="custom-control-label" for="customSwitch1">Dark Mode</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <li class="setting-appearance-option-titles">Left Panel Color</li>
+                                        <div class="panel-color-div ml-4">
+                                            <div class="external-color-circle" id="external-color-circle1">
+                                                <div class=" side-panel-color-circle" id="color-circle1"><span id="circle-select-check"><i class="far fa-check fa-lg "></i></span></div>
+                                            </div>
+                                            <div class="external-color-circle" id="external-color-circle2">
+                                                <div class="side-panel-color-circle" id="color-circle2"><span id="circle-select-check"><i class="far fa-check fa-lg "></i></span></div>
+                                            </div>
+                                            <div class="external-color-circle" id="external-color-circle3">
+                                                <div class="side-panel-color-circle" id="color-circle3"><span id="circle-select-check"><i class="far fa-check fa-lg "></i></span></div>
+                                            </div>
+                                            <div class="external-color-circle" id="external-color-circle4">
+                                                <div class="side-panel-color-circle" id="color-circle4"><span id="circle-select-check"><i class="far fa-check fa-lg "></i></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7 non-padding-cols">
+                            <div class="section-div container px-4 py-3 font-opensans" style="font-size: 14px;">
+                                <div class="section-sub-title font-opensans">
+                                    <h6><b>About Platform</b></h6>
+                                </div>
+                                <div class="horizontal-divider-common mt-3 mb-3"></div>
+                                <p class="text-justify font-opensans">
+                                    Welcome to the Automated Lecturers' Time-table Generator web platform. This is a web-based platform which mainly allows you to generate time-tables for the lecturers instantly without wasting time. You also allowed to view and download generated time-tables.
+                                    You can find the options in the left side panel for manage users, subjects, lecture halls and also customize your profile info.
+                                </p>
+                                <p class="mt-2"><span class="text-muted" style="font-size: 13px;"><i>NOTE: Currently this is available for Department of Computing & Information Systems only.</i></span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+                <div class="section-div container p-4 font-opensans mb-5 " style="font-size: 14px; ">
+                    <div class="section-sub-title font-opensans ">
+                        <h6><b>Tips & Tricks</b></h6>
+                    </div>
+                    <div class="horizontal-divider-common mt-3 mb-4 "></div>
+                    <div class="help-div px-4 text-justify font-opensans ">
+                        <li>
+                            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque, cumque. Laudantium, eaque! Ipsum necessitatibus fugiat optio repudiandae omnis quos, obcaecati corporis tempora voluptate veritatis in earum autem ut. Facilis,
+                                dolore.
+                            </p>
+                        </li>
+                        <li>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio natus quas expedita vero maiores! Sapiente debitis minima saepe ut reprehenderit hic id et ad deleniti. Modi eos similique perspiciatis non?</p>
+                        </li>
+                        <br>
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni fuga quo, molestiae voluptatum velit ut est adipisci laudantium libero. Quae velit repudiandae quisquam ratione explicabo soluta, unde qui autem officiis. Lorem ipsum, dolor sit amet consectetur
+                            adipisicing elit. Sequi distinctio tempore autem atque iste nesciunt, alias voluptatibus aperiam est inventore dolorum sed laudantium placeat soluta sint velit quis pariatur? Non? Lorem ipsum dolor sit amet consectetur, adipisicing
+                            elit. Quidem amet quam eaque, tempore dolor sed dolores nulla in adipisci, incidunt aperiam. Ea, reprehenderit. Facere, vitae inventore? Corporis ad blanditiis impedit?
+                        </p>
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni fuga quo, molestiae voluptatum velit ut est adipisci laudantium libero. Quae velit repudiandae quisquam ratione explicabo soluta, unde qui autem officiis. Lorem ipsum, dolor sit amet consectetur
+                            adipisicing elit. Sequi distinctio tempore autem atque iste nesciunt, alias voluptatibus aperiam est inventore dolorum sed laudantium placeat soluta sint velit quis pariatur? Non? Lorem ipsum dolor sit amet consectetur, adipisicing
+                            elit. Quidem amet quam eaque, tempore dolor sed dolores nulla in adipisci, incidunt aperiam. Ea, reprehenderit. Facere, vitae inventore? Corporis ad blanditiis impedit?
+                        </p>
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni fuga quo, molestiae voluptatum velit ut est adipisci laudantium libero. Quae velit repudiandae quisquam ratione explicabo soluta, unde qui autem officiis. Lorem ipsum, dolor sit amet consectetur
+                            adipisicing elit. Sequi distinctio tempore autem atque iste nesciunt, alias voluptatibus aperiam est inventore dolorum sed laudantium placeat soluta sint velit quis pariatur? Non? Lorem ipsum dolor sit amet consectetur, adipisicing
+                            elit. Quidem amet quam eaque, tempore dolor sed dolores nulla in adipisci, incidunt aperiam. Ea, reprehenderit. Facere, vitae inventore? Corporis ad blanditiis impedit?
+                        </p>
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni fuga quo, molestiae voluptatum velit ut est adipisci laudantium libero. Quae velit repudiandae quisquam ratione explicabo soluta, unde qui autem officiis. Lorem ipsum, dolor sit amet consectetur
+                            adipisicing elit. Sequi distinctio tempore autem atque iste nesciunt, alias voluptatibus aperiam est inventore dolorum sed laudantium placeat soluta sint velit quis pariatur? Non? Lorem ipsum dolor sit amet consectetur, adipisicing
+                            elit. Quidem amet quam eaque, tempore dolor sed dolores nulla in adipisci, incidunt aperiam. Ea, reprehenderit. Facere, vitae inventore? Corporis ad blanditiis impedit?
+                        </p>
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni fuga quo, molestiae voluptatum velit ut est adipisci laudantium libero. Quae velit repudiandae quisquam ratione explicabo soluta, unde qui autem officiis. Lorem ipsum, dolor sit amet consectetur
+                            adipisicing elit. Sequi distinctio tempore autem atque iste nesciunt, alias voluptatibus aperiam est inventore dolorum sed laudantium placeat soluta sint velit quis pariatur? Non? Lorem ipsum dolor sit amet consectetur, adipisicing
+                            elit. Quidem amet quam eaque, tempore dolor sed dolores nulla in adipisci, incidunt aperiam. Ea, reprehenderit. Facere, vitae inventore? Corporis ad blanditiis impedit?
+                        </p>
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni fuga quo, molestiae voluptatum velit ut est adipisci laudantium libero. Quae velit repudiandae quisquam ratione explicabo soluta, unde qui autem officiis. Lorem ipsum, dolor sit amet consectetur
+                            adipisicing elit. Sequi distinctio tempore autem atque iste nesciunt, alias voluptatibus aperiam est inventore dolorum sed laudantium placeat soluta sint velit quis pariatur? Non? Lorem ipsum dolor sit amet consectetur, adipisicing
+                            elit. Quidem amet quam eaque, tempore dolor sed dolores nulla in adipisci, incidunt aperiam. Ea, reprehenderit. Facere, vitae inventore? Corporis ad blanditiis impedit?
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

@@ -22,7 +22,7 @@
                 <a href="/" class="btn btn-sm"><i class="fal fa-sign-in-alt"></i>&nbsp Log in</a>
             </div>
             {% endif %}
-            <hr>
+            <hr class="light-divider">
             <ul class="menu-links">
                 {% if user.is_authenticated %}
                 <li><a href="../dashboard"><i class="fal fa-tachometer-alt-fast"></i>&nbsp&nbsp Dashboard</a></li>
@@ -37,7 +37,7 @@
                 {% endif %}
                 <li class="active-link"><a href="."><i class="fal fa-user-alt"></i>&nbsp&nbsp My Account</a></li class="active-link">
                 {% endif %}
-                <li><a href="../help"><i class="fal fa-question-circle"></i>&nbsp&nbsp Help</a></li>
+                <li><a href="../settings"><i class="fal fa-wrench"></i>&nbsp&nbsp Settings</a></li>
             </ul>
         </div>
         <div class="col-10" id="main-panel">
@@ -167,38 +167,47 @@
                 <br>
                 <div class="container px-0">
                     <div class="row">
-                        <div class="col-md-6 left-padding-zero-cols custom-left-padding-cols">
+                        <div class="col-md-8 left-padding-zero-cols custom-left-padding-cols">
                             <div class="section-div container p-4">
                                 <div class="section-sub-title font-opensans">
                                     <h6><b>Assigned Subjects</b></h6>
                                 </div>
-                                <div class="horizontal-divider-common mt-3">
-                                    <ul class="font-opensans mt-3 mb-0 pl-3" style="font-size: 14px;">
-                                        {% for subjects in lecturers_subjects %}
-                                        <li>{{subjects.subject_name}} - <span class="text-muted">{{subjects.subject_code}}</span> <i>(Year {{subjects.related_batch}} Semester {{subjects.semester}})</i></li>
-                                        {% endfor %}
-                                    </ul>
+                                <div class="horizontal-divider-common my-3"></div>
+                                <div class="table-div">
+                                    <table class="table table-bordered table-hover table-sm" id="schedule-table">
+                                        <thead class="text-center">
+                                            <th scope="col">Subject Code</th>
+                                            <th scope="col">Subject Name</th>
+                                            <th scope="col">Year</th>
+                                            <th scope="col">Semester</th>
+                                        </thead>
+                                        <tbody class="bg-light text-center">
+                                            {% for subjects in lecturers_subjects %}
+                                            <tr>
+                                                <td>{{subjects.subject_code}}</td>
+                                                <td class="text-left px-3">{{subjects.subject_name}}</td>
+                                                <td>{{subjects.related_batch}}</td>
+                                                <td>{{subjects.semester}}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 right-padding-zero-cols custom-right-padding-cols">
+                        <div class="col-md-4 right-padding-zero-cols custom-right-padding-cols">
                             <div class="section-div container p-4">
                                 <div class="section-sub-title font-opensans">
-                                    <h6><b>Your Current Lecture Schedule</b></h6>
+                                    <h6><b>Current Lecture Schedule</b></h6>
                                 </div>
                                 <div class="horizontal-divider-common mt-3 mb-4"></div>
                                 <div class="table-section">
-                                    <div class="row generated-result align-items-center p-3">
-                                        <div class="col-md-8 result_text non-padding-cols">
+                                    <div class="generated-result align-items-center p-3">
+                                        <div class="result_text">
                                             <div class="row align-items-center">
-                                                <div class="col-md-1 left-padding-zero-cols result-icon"><i class="fal fa-calendar-alt fa-lg"></i></div>
-                                                <div class="col-md-11">Lecture schedule</div>
+                                                <div class="col-md-9 non-padding-cols">Schedule</div>
+                                                <div class="col-md-3 non-padding-cols text-right"><button type="button" class="btn btn-sm option-btn font-opensans" data-toggle="modal" data-target="#staticBackdrop" title="View"><i class="fal fa-external-link fa-lg"></i></button></div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-4 text-right non-padding-cols">
-                                            <button type="button" class="btn btn-sm btn-outline-primary font-opensans" data-toggle="modal" data-target="#staticBackdrop" title="View"><i class="fad fa-external-link fa-lg"></i></button>&nbsp;
-                                            <button type="button" class="btn btn-sm btn-outline-primary font-opensans" title="Download"><i class="fad fa-download fa-lg"></i></button>&nbsp;
-                                            <button type="button" class="btn btn-sm btn-outline-danger font-opensans" title="Delete"><i class="fad fa-trash-alt fa-lg"></i></button>
                                         </div>
                                     </div>
                                 </div>
@@ -216,62 +225,35 @@
 <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title font-opensans" id="staticBackdropLabel">Your Lecture schedule</h5>
+            <div class="modal-header px-4">
+                <h5 class="modal-title font-opensans" id="staticBackdropLabel"><i class="fal fa-calendar-alt fa-lg"></i>&nbsp;&nbsp;&nbsp;Your Lecture schedule</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="fal fa-times-circle text-danger"></i>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body px-4">
                 <div class="table-div">
-                    <table class="table table-bordered table-hover">
-                        <thead class="text-center bg-dark text-white">
-                            <th>Time</th>
-                            <th>Monday</th>
-                            <th>Tuesday</th>
-                            <th>Wednesday</th>
-                            <th>Thursday</th>
-                            <th>Friday</th>
+                    <table class="table table-bordered table-hover table-sm" id="schedule-table">
+                        <thead class="text-center">
+                            <th scope="col">#</th>
+                            <th scope="col">Subject (Subject code, no. of students)</th>
+                            <th scope="col">Lecture Hall</th>
+                            <th scope="col">Date & Time</th>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td class="font-italic bg-light align-middle">8.00 A.M. - 10.00 A.M</td>
-                                <td>Hall 1<br><small>Subject Name</small></td>
-                                <td>Hall 2<br><small>Subject Name</small></td>
-                                <td>Hall 3<br><small>Subject Name</small></td>
-                                <td>Hall 4<br><small>Subject Name</small></td>
-                                <td>Hall 5<br><small>Subject Name</small></td>
-                            </tr>
-                            <tr>
-                                <td class="font-italic bg-light align-middle">10.00 A.M. - 12.00 A.M</td>
-                                <td>Hall 1<br><small>Subject Name</small></td>
-                                <td>Hall 2<br><small>Subject Name</small></td>
-                                <td>Hall 3<br><small>Subject Name</small></td>
-                                <td>Hall 4<br><small>Subject Name</small></td>
-                                <td>Hall 5<br><small>Subject Name</small></td>
-                            </tr>
-                            <tr class="text-muted bg-light align-middle">
-                                <td class="font-italic">12.00 A.M. - 1.00 P.M</td>
-                                <td colspan="5" class="text-center">Lunch Time</td>
-                            </tr>
-                            <tr>
-                                <td class="font-italic bg-light align-middle">1.00 P.M. - 3.00 P.M</td>
-                                <td>Hall 1<br><small>Subject Name</small></td>
-                                <td>Hall 2<br><small>Subject Name</small></td>
-                                <td>Hall 3<br><small>Subject Name</small></td>
-                                <td>Hall 4<br><small>Subject Name</small></td>
-                                <td>Hall 5<br><small>Subject Name</small></td>
-                            </tr>
-                            <tr>
-                                <td class="font-italic bg-light align-middle">3.00 P.M. - 5.00 P.M</td>
-                                <td>Hall 1<br><small>Subject Name</small></td>
-                                <td>Hall 2<br><small>Subject Name</small></td>
-                                <td>Hall 3<br><small>Subject Name</small></td>
-                                <td>Hall 4<br><small>Subject Name</small></td>
-                                <td>Hall 5<br><small>Subject Name</small></td>
-                            </tr>
+                        <tbody class="bg-light text-center">
+                            {% for schedule in schedule_info %} {{schedule|safe}} {% endfor %}
                         </tbody>
                     </table>
+                </div>
+            </div>
+            <div class="custom-modal-footer px-4 py-3">
+                <div class="row">
+                    <div class="col-md-6 text-left non-padding-cols">
+                        <button type="button" class="btn btn-sm option-btn font-opensans" title="Download Schedule"><i class="fal fa-download fa-lg"></i>&nbsp;&nbsp;Download</button>
+                    </div>
+                    <div class="col-md-6 text-right non-padding-cols">
+                        <button type="button" class="btn btn-sm delete-btn font-opensans" title="Delete Schedule"><i class="fal fa-trash-alt fa-lg"></i>&nbsp;&nbsp;Delete</button>
+                    </div>
                 </div>
             </div>
         </div>

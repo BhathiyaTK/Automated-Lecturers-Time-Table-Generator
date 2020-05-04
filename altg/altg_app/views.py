@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import make_password, check_password
 from django.http import HttpResponse, HttpResponseRedirect
 from .forms import DataForm, AddUserForm, AddHallForm, DeleteUserForm, UserUpdateForm, ProfileUpdateForm
-from .models import ProcessData, User, AllLectureHalls, AllSubjects, AllBatches, AllSemesters, AllTimeSlots, Profiles
+from .models import ProcessData, User, AllLectureHalls, AllSubjects, AllBatches, AllSemesters, AllTimeSlots, Profiles, SavedSchedules
 from django.contrib import messages
 from django.db.models import Q
 from datetime import datetime
@@ -93,9 +93,13 @@ def schedule(request):
             byteVal = (out.stdout).strip()
             strVal = byteVal.decode()
             data_list = ast.literal_eval(strVal)
+            # data_list_str = str(data_list).strip('[]')
+            # print(type(data_list_str))
             data_table_row = []
+            hall_n_time = []
             for i in data_list:
                 data_table_row.append("<tr><td>"+i[0]+"</td><td>"+i[1]+"</td><td>"+i[2]+"</td><td>"+i[3]+"</td></tr>")
+                hall_n_time.append(i[2]+","+i[3])
             lecturer_names = User.objects.filter(user_position='lecturer')
             semester_info = AllSemesters.objects.all()
             profile_photo = Profiles.objects.filter(username=request.session['logged_username'])
@@ -103,7 +107,10 @@ def schedule(request):
                 'lecturer_names': lecturer_names, 
                 'profile_photo': profile_photo,
                 'schedule_data': data_table_row,
+                'hall_n_time': hall_n_time,
+                'data_str': data_list,
                 'lec_name': lec_name,
+                'semester': sem,
                 'semester_info': semester_info
                 }
             return render(request, 'schedule.html', context)
@@ -114,7 +121,6 @@ def schedule(request):
             profile_photo = Profiles.objects.filter(username=request.session['logged_username'])
             context = {'lecturer_names': lecturer_names,'profile_photo': profile_photo, 'semester_info': semester_info}
             return render(request, 'schedule.html', context)
-        return lec_name
     else:
         lecturer_names = User.objects.filter(user_position='lecturer')
         semester_info = AllSemesters.objects.all()
@@ -122,6 +128,27 @@ def schedule(request):
             username=request.session['logged_username'])
         context = {'lecturer_names': lecturer_names,'profile_photo': profile_photo,'semester_info': semester_info}
         return render(request, 'schedule.html', context)
+
+# Schedule save function
+def scheduleSave(request):
+    # pass
+    if request.method == 'GET':
+        lec_name = request.GET['lecturer_name']
+        sem = request.GET['semester']
+        hall_time = request.GET['hall_n_time']
+        lec_schedule = request.GET['data_str']
+        if (lec_name and sem and hall_time and lec_schedule) is not None:
+            schedule = SavedSchedules(lecturer_name=lec_name, semester=sem, hall_n_time=hall_time, schedule=lec_schedule)
+            schedule.save()
+
+            print('Saving successfull')
+            return JsonResponse({'success': 'Lecture Schedule Saved Successfully.'})
+        else:
+            print('Saving failed')
+            return JsonResponse({'error': 'Schedule Saving Failed.'})
+    else:
+        print('Saving failed')
+        return redirect('schedule')
 
 # Lecture hall page function
 def hall(request):
@@ -460,21 +487,32 @@ def profile(request):
         user_update_form = UserUpdateForm(instance=request.user)
         profile_update_form = ProfileUpdateForm(instance=Profiles)
         profile_photo = Profiles.objects.filter(username=request.session['logged_username'])
+
         profile_values = User.objects.filter(username=request.session['logged_username'])
         p = profile_values.values('lecturer_name')
         for lec in p:
             lecturers_subjects = AllSubjects.objects.filter(related_lecturer=lec['lecturer_name'])
+
+        lec_name = str(list(profile_values.values_list('lecturer_name', flat=True))).strip("['']")
+        schedule_data = SavedSchedules.objects.filter(lecturer_name=lec_name).values_list('schedule', flat=True)
+        s_data_list = str(list(schedule_data)).strip('[]')
+        convert_list = ast.literal_eval(json.loads(s_data_list))
+        s_data_table_row = []
+        for i in convert_list:
+            s_data_table_row.append("<tr><td>"+i[0]+"</td><td>"+i[1]+"</td><td>"+i[2]+"</td><td>"+i[3]+"</td></tr>")
+        
         profile_context = {
             'profile_values':profile_values,
             'profile_photo':profile_photo,
             'user_update_form':user_update_form,
             'lecturers_subjects':lecturers_subjects,
-            'profile_update_form':profile_update_form
+            'profile_update_form':profile_update_form,
+            'schedule_info':s_data_table_row
         }
         return render(request, 'profile.html', profile_context)
 
 # Help page  function
-def help(request):
+def settings(request):
     profile_photo = Profiles.objects.filter(username=request.session['logged_username'])
     help_context = {'profile_photo':profile_photo}
-    return render(request, 'help.html', help_context)
+    return render(request, 'settings.html', help_context)
