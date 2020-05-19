@@ -23,7 +23,7 @@
                 <a href="/" class="btn btn-sm"><i class="fal fa-sign-in-alt"></i>&nbsp Log in</a>
             </div>
             {% endif %}
-            <hr>
+            <hr class="light-divider">
             <ul class="menu-links">
                 {% if user.is_authenticated %}
                 <li><a href="../dashboard"><i class="fal fa-tachometer-alt-fast"></i>&nbsp&nbsp Dashboard</a></li>
@@ -45,8 +45,8 @@
             <div class="main-panel-title py-3 pl-4 pr-3">
                 <div class="row justify-content-between">
                     <div class="col-4 non-padding-cols">
-                        <h4>User Guide</h4>
-                        <small class="text-muted">Help tips for use the system</small>
+                        <h4>Help</h4>
+                        <small class="text-muted">Tips & Tricks, About</small>
                     </div>
                     <div class="col-2 text-center right-padding-zero-cols">
                         {% if user.is_authenticated %}
@@ -64,17 +64,97 @@
                 </div>
             </div>
             <div class="main-panel-content px-5 py-4">
-                <div class="section-div container py-5 px-5 font-opensans mb-5" style="font-size: 14px;">
-                    <li>
-                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque, cumque. Laudantium, eaque! Ipsum necessitatibus fugiat optio repudiandae omnis quos, obcaecati corporis tempora voluptate veritatis in earum autem ut. Facilis, dolore.</p>
-                    </li>
-                    <li>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio natus quas expedita vero maiores! Sapiente debitis minima saepe ut reprehenderit hic id et ad deleniti. Modi eos similique perspiciatis non?</p>
-                    </li>
-                    <br>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni fuga quo, molestiae voluptatum velit ut est adipisci laudantium libero. Quae velit repudiandae quisquam ratione explicabo soluta, unde qui autem officiis. Lorem ipsum,
-                        dolor sit amet consectetur adipisicing elit. Sequi distinctio tempore autem atque iste nesciunt, alias voluptatibus aperiam est inventore dolorum sed laudantium placeat soluta sint velit quis pariatur? Non? Lorem ipsum dolor sit
-                        amet consectetur, adipisicing elit. Quidem amet quam eaque, tempore dolor sed dolores nulla in adipisci, incidunt aperiam. Ea, reprehenderit. Facere, vitae inventore? Corporis ad blanditiis impedit?</p>
+                <div class="container p-0">
+                    <div class="section-div container px-4 py-3 font-opensans" style="font-size: 14px;">
+                        <div class="row">
+                            <div class="col-md-8 non-padding-cols">
+                                <div class="section-sub-title font-opensans mt-2">
+                                    <h6><b>About Platform</b></h6>
+                                </div>
+                                <div class="horizontal-divider-common mt-3 mb-3"></div>
+                                <p class="font-opensans">
+                                    Welcome to Online Automated Lecture Schedule Generator. This is a web-based platform which mainly provides a service you to generate lecture schedules for the lecturers instantly without wasting more time like creating them manually. And this allows you
+                                    to save generated lecture schedules for future or download instantly for present use.
+                                </p>
+                                <p class="font-opensans">
+                                    You can find the options in the left side panel for manage users, subjects, lecture halls and also customize your profile info.
+                                </p>
+                                <p class="mb-0">
+                                    <span class="text-muted" style="font-size: 13px;"><i>NOTE: Currently this is available for Department of Computing & Information Systems only.</i></span>
+                                </p>
+                            </div>
+                            <div class="col-md-4 non-padding-cols">
+                                <img src="{% static 'images/about.png' %}" alt="About Platform" width="100%">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+                <div class="section-div container p-4 font-opensans mb-3" style="font-size: 14px; ">
+                    <div class="section-sub-title font-opensans ">
+                        <h6><b>Tips & Tricks</b></h6>
+                    </div>
+                    <div class="horizontal-divider-common mt-3 mb-4 "></div>
+                    <div class="help-div px-4 font-opensans">
+                        <p><span style="border-bottom: 2px solid rgb(58, 57, 57); padding-bottom: 2px;"><b>Side panel options :</b></span></p>
+                        <ul>
+                            <li>
+                                <p class="mb-2">
+                                    <span class="theme-font-color"><b>Dashboard</b></span> : Displays summerized view of the system data.
+                                </p>
+                            </li>
+                            <li>
+                                <p class="mb-2">
+                                    <span class="theme-font-color"><b>Schedule</b></span> : In there, users can generate lecture schedule instantly within one click. Then users have been facilitated to save or/and download generated lecture schedules.
+                                </p>
+                            </li>
+                            <li>
+                                <p class="mb-1">
+                                    <span class="theme-font-color"><b>Manage</b></span> <span class="text-muted">[Only for Administrators]</span>
+                                    <ul>
+                                        <li><span class="theme-font-color"><b>Lecture Halls</b></span> : This section allows administrators to add, edit and remove lecture halls as well as batch details.
+                                        </li>
+                                        <li><span class="theme-font-color"><b>Subjects</b></span> : This section allows administrators to add new subjects, edit and remove added subjects.</li>
+                                        <li><span class="theme-font-color"><b>Users</b></span> : This section allows administrators to add new users, edit and remove registered users in the system.
+                                        </li>
+                                    </ul>
+                                </p>
+                            </li>
+                            <li>
+                                <p class="mb-2">
+                                    <span class="theme-font-color"><b>My Account</b></span> : This is the profile section which facilitates to update user's personal info. Additionaly this section provides assigned subjects and user's lecture schedule
+                                    if the user is a lecturer.
+                                </p>
+                            </li>
+                            <li>
+                                <p class="mb-2">
+                                    <span class="theme-font-color"><b>Help</b></span> : This section contains the system details and help tips.
+                                </p>
+                            </li>
+                        </ul>
+                        <p><span style="border-bottom: 2px solid rgb(58, 57, 57); padding-bottom: 2px;"><b>How to generate a lecture schedule?</b></span></p>
+                        <p>
+                            Tap on the <span class="theme-font-color"><b>Schedule</b></span> link in left-side panel. Then select the "<i>lecturer name</i>" and the "<i>semester</i>" from the <span class="badge badge-info special-badge" style="font-size: 12px;">select boxes</span>                            and press <span class="badge badge-success special-badge" style="font-size: 12px;">Generate</span> button. Generated lecture schedule displays as a table below to the top section in same <span class="theme-font-color"><b>Schedule</b></span>                            page.
+                        </p>
+                        <p><span style="border-bottom: 2px solid rgb(58, 57, 57); padding-bottom: 2px;"><b>How to save generated lecture schedule?</b></span></p>
+                        <p>
+                            When lecture schedule generated, There is a button at the top right corner of the displayed lecture shedule section.
+                            <ul>
+                                <li>Click <i class="fal fa-save fa-lg"></i> button to <b>save</b> the generated lecture schedule.</li>
+                            </ul>
+                        </p>
+                        <p><span style="border-bottom: 2px solid rgb(58, 57, 57); padding-bottom: 2px;"><b>How can I find my current lecture schedule?</b></span></p>
+                        <p>
+                            Tap on the <span class="theme-font-color"><b>My Account</b></span> link on left-side panel. Scroll to the bottom of the page and click <i class="fal fa-external-link fa-lg"></i> button under <span class="badge badge-secondary special-badge">Current Lecture Schedule</span>                            section in right-side corner. Then it will show a pop-up window with your current lecture schedule as a table. <br>At the botton left and right corners of the pop-up window has <b>download</b> and <b>delete</b> buttons for
+                            download and delete the lecture schedule respectively.
+                        </p>
+                        <p><span style="border-bottom: 2px solid rgb(58, 57, 57); padding-bottom: 2px;"><b>How can I upload a new image for profile picture?</b></span></p>
+                        <p>
+                            Tap on the <span class="theme-font-color"><b>My Account</b></span> link on left-side panel. Click on the square shape profile image on the page. Select a photo which you willing to upload as your profile picture from opened
+                            window and click <span class="badge badge-light special-badge">Open</span>. Then click <span class="badge badge-primary special-badge">Save Changes</span> button on the page to save selected profile photo. <span class="text-muted">[NOTE : Upload a clear, yourself in the middle image as the profile picture.]</span>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

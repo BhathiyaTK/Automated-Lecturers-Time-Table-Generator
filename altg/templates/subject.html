@@ -37,7 +37,7 @@
                 {% endif %}
                 <li><a href="../profile"><i class="fal fa-user-alt"></i>&nbsp&nbsp My Account</a></li>
                 {% endif %}
-                <li><a href="../settings"><i class="fal fa-wrench"></i>&nbsp&nbsp Settings</a></li>
+                <li><a href="../help"><i class="fal fa-question-circle"></i>&nbsp&nbsp Help</a></li>
             </ul>
         </div>
         <div class="col-10" id="main-panel">
@@ -93,7 +93,7 @@
                             <div class="col-md-2 left-padding-zero-cols">
                                 <div class="form-group">
                                     <label for="exampleSelect">Related Batch</label>
-                                    <select name="related_batch" class="form-control form-control-sm">
+                                    <select name="related_batch" class="form-control form-control-sm" required>
                                     <option value="">---- Choose ----</option>
                                     {% for batch in batch_data %}
                                     <option value="{{batch.batch_no}}">{{batch.batch_no}}<sup>{{batch.batch_name_suffix}}</sup> Year</option>
@@ -104,19 +104,19 @@
                             <div class="col-md-2 non-padding-cols">
                                 <div class="form-group">
                                     <label for="exampleInputName">Subject Code</label>
-                                    <input type="text" name="subject_code" class="form-control form-control-sm">
+                                    <input type="text" name="subject_code" class="form-control form-control-sm" required>
                                 </div>
                             </div>
                             <div class="col-md-8 right-padding-zero-cols">
                                 <div class="form-group">
                                     <label for="exampleInputName">Subject Name</label>
-                                    <input type="text" name="subject_name" class="form-control form-control-sm">
+                                    <input type="text" name="subject_name" class="form-control form-control-sm" required>
                                 </div>
                             </div>
                             <div class="col-md-2 left-padding-zero-cols">
                                 <div class="form-group">
                                     <label for="exampleInputName">Semester</label>
-                                    <select name="semester" class="form-control form-control-sm">
+                                    <select name="semester" class="form-control form-control-sm" required>
                                     <option value="">---- Choose ----</option>
                                     {% for semester in semester_data %}
                                     <option value="{{semester.semester_no}}">{{semester.semester_no}}<sup>{{semester.semester_name_suffix}}</sup> Semester</option>
@@ -126,9 +126,9 @@
                             </div>
                             <div class="col-md-4 left-padding-zero-cols">
                                 <div class="form-group">
-                                    <label for="exampleInputName">Related Lecturer</label>
-                                    <select name="related_lecturer" class="form-control form-control-sm">
-                                    <option value="Not assigned" selected>---- Choose ----</option>
+                                    <label for="exampleInputName">Related Lecturer</label> <span style="color: #7a7a7a;">(Optional)</span>
+                                    <select name="related_lecturer" class="form-control form-control-sm" required>
+                                    <option value="Not assigned" selected>Not Assigned (Default)</option>
                                     {% for user in lecturers_data %}
                                     <option value="{{user.lecturer_name}}">{{user.user_title}}. {{user.lecturer_name}}</option>
                                     {% endfor %}

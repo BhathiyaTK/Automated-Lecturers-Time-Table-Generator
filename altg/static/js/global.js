@@ -1,9 +1,6 @@
 $(document).ready(function() {
     console.log("Jquery is working....");
 
-    // Default visibilities
-    $("#external-color-circle1").addClass("active-color-circle");
-
     // Morning, afternoon & evenning visualizing function
     var thehours = new Date().getHours();
     var themessage, climateIcon, subGreeting;
@@ -67,7 +64,7 @@ $(document).ready(function() {
             }
             var ctx = $("#myChart");
             var myChart = new Chart(ctx, {
-                type: "doughnut",
+                type: "horizontalBar",
                 data: {
                     labels: labels,
                     datasets: [{
@@ -80,6 +77,13 @@ $(document).ready(function() {
                 options: {
                     legend: {
                         display: false,
+                    },
+                    scales: {
+                        xAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
                     },
                     tooltips: {
                         bodyFontSize: 14,
@@ -94,7 +98,7 @@ $(document).ready(function() {
                                 );
                             },
                         },
-                        titleFontSize: 15,
+                        titleFontSize: 14,
                     },
                 },
             });
@@ -228,6 +232,45 @@ $(document).ready(function() {
                 $("#save-error-msg").html(save);
             }
         });
+    });
+
+    $("#schedule_download_btn").click(function() {
+        var name = $("#schedule_owner_name").val();
+
+        var doc = new jsPDF("l", "pt", "a4");
+        var elem = $("#schedule-table-div table").clone();
+        var res = doc.autoTableHtmlToJson(elem.get(0));
+        doc.setFontSize(18);
+        doc.text("Department of Computing & Information Systems", 225, 40);
+        doc.setFontSize(15.5);
+        doc.text("Faculty of Applied Sciences, SUSL", 303, 65);
+        doc.setFontSize(13.5);
+        doc.text("Lecture Schedule", 370, 90);
+
+        doc.setFontSize(11);
+        doc.text("Lecturer : " + name, 25, 140);
+
+        doc.autoTable(res.columns, res.data, {
+            theme: "grid",
+            margin: { top: 160, right: 25, bottom: 30, left: 25 },
+            bodyStyles: { rowHeight: 20, halign: "left" },
+            styles: {
+                tableWidth: "auto",
+                cellWidth: "wrap",
+                font: "helvetica",
+                fontSize: 10.5,
+                overflow: "linebreak",
+                halign: "center",
+                valign: "middle",
+            },
+            columnStyles: {
+                0: { halign: "center" },
+                1: { halign: "center" },
+                2: { halign: "center" },
+                3: { halign: "center" },
+            },
+        });
+        doc.save("Lecture_Schedule.pdf");
     });
 });
 

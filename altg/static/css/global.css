@@ -81,6 +81,10 @@
     color: #fff;
 }
 
+.theme-font-color {
+    color: #5c86e0;
+}
+
 .row {
     margin: 0 !important;
 }
@@ -546,13 +550,10 @@ label {
     background-size: cover;
 }
 
-
-/* #pie-chart-div {} */
-
 #dashboard-profiles-div {
-    height: 70vh;
+    height: 72vh;
     overflow-y: scroll;
-    padding: 15px 12px 10px 5px;
+    padding: 15px 12px 5px 5px;
 }
 
 .dashboard-profie-imgs {
@@ -583,7 +584,7 @@ label {
     ================================================================= */
 
 .table-section {
-    background-color: rgb(243, 236, 236);
+    background-color: rgba(243, 243, 243, 0.288);
 }
 
 .result-icon {
@@ -600,7 +601,7 @@ label {
 }
 
 #schedule-table thead {
-    background: rgba(0, 0, 0, 0.06) !important;
+    background: rgb(238, 238, 238) !important;
 }
 
 #schedule-table thead th {
@@ -657,72 +658,10 @@ label {
 
 
 /* ==================================================================
-    # Settings Page styles 
+    # Help Page styles 
     ================================================================= */
 
 .help-div {
-    height: 50vh;
+    height: 60vh;
     overflow-y: auto;
-}
-
-.setting-appearance-option-titles {
-    font-family: "Open Sans";
-    font-weight: 600;
-    margin-bottom: .5rem;
-}
-
-.custom-control label {
-    font-weight: 500;
-}
-
-.panel-color-div {
-    display: inline-flex;
-}
-
-.side-panel-color-circle {
-    width: 50px;
-    height: 25px;
-    border-radius: 6px;
-    text-align: center;
-    padding-top: 3px;
-}
-
-#circle-select-check {
-    color: #fff;
-    display: none;
-}
-
-.active-color-circle #circle-select-check {
-    display: block;
-}
-
-.side-panel-color-circle:hover {
-    cursor: pointer;
-}
-
-#color-circle1 {
-    background-color: #3B5998;
-}
-
-#color-circle2 {
-    background-color: #ad0057;
-}
-
-#color-circle3 {
-    background-color: #07864b;
-}
-
-#color-circle4 {
-    background-color: #5428a5;
-}
-
-.external-color-circle {
-    border: 4px solid transparent;
-    border-radius: 10px;
-    padding: 1px;
-    margin-right: 10px;
-}
-
-.active-color-circle {
-    border-color: rgb(20, 230, 73);
 }

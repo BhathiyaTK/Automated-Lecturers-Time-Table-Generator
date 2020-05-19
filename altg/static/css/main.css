@@ -153,35 +153,35 @@ textarea:focus:-ms-input-placeholder {
 }
 
 input::-webkit-input-placeholder {
-    color: #999999;
+    color: #5e5e5e;
 }
 
 input:-moz-placeholder {
-    color: #999999;
+    color: #5e5e5e;
 }
 
 input::-moz-placeholder {
-    color: #999999;
+    color: #5e5e5e;
 }
 
 input:-ms-input-placeholder {
-    color: #999999;
+    color: #5e5e5e;
 }
 
 textarea::-webkit-input-placeholder {
-    color: #999999;
+    color: #5e5e5e;
 }
 
 textarea:-moz-placeholder {
-    color: #999999;
+    color: #5e5e5e;
 }
 
 textarea::-moz-placeholder {
-    color: #999999;
+    color: #5e5e5e;
 }
 
 textarea:-ms-input-placeholder {
-    color: #999999;
+    color: #5e5e5e;
 }
 
 label {
@@ -228,6 +228,19 @@ iframe {
     color: #999999;
 }
 
+.txt3 {
+    font-family: Montserrat-Regular;
+    font-size: 13px;
+    line-height: 1.4;
+    color: #6675df;
+    padding: 1.5px 1px 3px;
+}
+
+.txt3:hover {
+    border-top: 1px solid #6675df;
+    border-bottom: 1px solid #6675df;
+}
+
 
 /*==================================================================
 [ Size ]*/
@@ -262,7 +275,7 @@ iframe {
 [ login ]*/
 
 .login100-more .login-title {
-    background-color: rgba(59, 89, 152, 0.95);
+    background-color: rgb(59, 88, 152);
 }
 
 .login100-more .login-title h2 {
@@ -275,7 +288,7 @@ iframe {
     width: 100%;
     position: absolute;
     bottom: 0em;
-    background-color: rgba(59, 89, 152, 0.95);
+    background-color: rgb(59, 88, 152);
     color: #fff;
     font-size: 1rem;
     font-family: Montserrat-Regular;
@@ -366,6 +379,14 @@ iframe {
     padding: 120px 100px 55px;
 }
 
+.login100-form-reset {
+    width: 560px;
+    min-height: 100vh;
+    display: block;
+    background-color: #f7f7f7;
+    padding: 80px 100px 55px;
+}
+
 .login100-form-title {
     width: 100%;
     display: block;
@@ -374,6 +395,12 @@ iframe {
     color: #333333;
     line-height: 1.2;
     text-align: center;
+}
+
+.reset-title-divider {
+    border-top: 3px solid #6675df;
+    width: 20%;
+    margin: 25px auto;
 }
 
 
@@ -641,7 +668,7 @@ input.input100 {
     background-color: #fff;
     border: 1px solid #c80000;
     border-radius: 2px;
-    padding: 4px 25px 4px 10px;
+    padding: 4px 35px 4px 10px;
     top: 50%;
     -webkit-transform: translateY(-50%);
     -moz-transform: translateY(-50%);
@@ -664,13 +691,13 @@ input.input100 {
 }
 
 .alert-validate::after {
-    content: "\f12a";
+    content: "\f06a";
     font-family: FontAwesome;
     display: block;
     position: absolute;
     z-index: 110;
     color: #c80000;
-    font-size: 16px;
+    font-size: 21px;
     top: 50%;
     -webkit-transform: translateY(-50%);
     -moz-transform: translateY(-50%);

@@ -37,7 +37,7 @@
                 {% endif %}
                 <li class="active-link"><a href="."><i class="fal fa-user-alt"></i>&nbsp&nbsp My Account</a></li class="active-link">
                 {% endif %}
-                <li><a href="../settings"><i class="fal fa-wrench"></i>&nbsp&nbsp Settings</a></li>
+                <li><a href="../help"><i class="fal fa-question-circle"></i>&nbsp&nbsp Help</a></li>
             </ul>
         </div>
         <div class="col-10" id="main-panel">
@@ -101,7 +101,10 @@
                             {% endif %}
                             </label> {{profile_update_form.user_profile_img}}
                                 <div class="profile_image_bottom_div py-2 mt-2">
-                                    <small id="imageHelp" class="form-text text-muted m-0"><i>Click on the image to upload new one.</i></small>
+                                    <small id="imageHelp" class="form-text m-0">
+                                        <i>Click on the image to upload new one.</i> 
+                                        <i class="fal fa-info-circle fa-lg" data-toggle="tooltip" data-placement="right" title="Upload yourself centered image to make your profile image better."></i>
+                                    </small>
                                 </div>
                             </div>
                             <div class="col-md-8 non-padding-cols">
@@ -151,7 +154,7 @@
                                 <br>
                                 <div class="save-btn-div text-right">
                                     {{user_update_form.id}}
-                                    <input type="submit" class="btn px-4 submit_btn" value="Save Changes" />
+                                    <input type="submit" name="lecturer_bio_update_btn" class="btn px-4 submit_btn" value="Save Changes" />
                                 </div>
                             </div>
                         </div>
@@ -201,6 +204,10 @@
                                     <h6><b>Current Lecture Schedule</b></h6>
                                 </div>
                                 <div class="horizontal-divider-common mt-3 mb-4"></div>
+                                {% if schedule_info == "0" %}
+                                <span class="font-opensans text-danger" style="font-size: 13px;">
+                                    <i class="fal fa-times-circle fa-lg"></i>&nbsp; You don't have any lecture schedule yet.
+                                </span> {% else %}
                                 <div class="table-section">
                                     <div class="generated-result align-items-center p-3">
                                         <div class="result_text">
@@ -211,11 +218,12 @@
                                         </div>
                                     </div>
                                 </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
                 </div>
-                <br><br> {% endif %}
+                {% endif %}
             </div>
         </div>
     </div>
@@ -232,7 +240,7 @@
                 </button>
             </div>
             <div class="modal-body px-4">
-                <div class="table-div">
+                <div class="table-div" id="schedule-table-div">
                     <table class="table table-bordered table-hover table-sm" id="schedule-table">
                         <thead class="text-center">
                             <th scope="col">#</th>
@@ -249,10 +257,15 @@
             <div class="custom-modal-footer px-4 py-3">
                 <div class="row">
                     <div class="col-md-6 text-left non-padding-cols">
-                        <button type="button" class="btn btn-sm option-btn font-opensans" title="Download Schedule"><i class="fal fa-download fa-lg"></i>&nbsp;&nbsp;Download</button>
+                        <input type="hidden" name="schedule_owner_name" id="schedule_owner_name" value="{{user.user_title}}. {{user.lecturer_name}}">
+                        <button type="button" id="schedule_download_btn" class="btn btn-sm option-btn font-opensans" title="Download Schedule"><i class="fal fa-download fa-lg"></i>&nbsp;&nbsp;Download</button>
                     </div>
                     <div class="col-md-6 text-right non-padding-cols">
-                        <button type="button" class="btn btn-sm delete-btn font-opensans" title="Delete Schedule"><i class="fal fa-trash-alt fa-lg"></i>&nbsp;&nbsp;Delete</button>
+                        <form action="." method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="schedule_owner" value="{{user.lecturer_name}}">
+                            <button type="submit" name="schedule_delete_btn" class="btn btn-sm delete-btn font-opensans" title="Delete Schedule"><i class="fal fa-trash-alt fa-lg"></i>&nbsp;&nbsp;Delete</button>
+                        </form>
                     </div>
                 </div>
             </div>

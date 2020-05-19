@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, auth
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from .forms import DataForm, AddUserForm, AddHallForm, DeleteUserForm, UserUpdateForm, ProfileUpdateForm
 from .models import ProcessData, User, AllLectureHalls, AllSubjects, AllBatches, AllSemesters, AllTimeSlots, Profiles, SavedSchedules
@@ -20,6 +21,19 @@ from subprocess import run, PIPE
 from os import popen
 import ast
 import json
+
+# Reset function
+def reset(request):
+    if request.method == 'POST':
+        reset_email = request.POST['email']
+        if reset_email == '':
+            messages.error(request, 'Email field is empty!')
+            return redirect('reset')
+        else:
+            messages.success(request, 'Email is : '+reset_email)
+            return redirect('reset')
+    else:
+        return render(request, 'reset.html')
 
 # Login function
 def userLogin(request):
@@ -43,11 +57,16 @@ def userLogin(request):
 
 # Logout function
 def userLogout(request):
-    logout(request)
-    print('------------- User logged out successfully -------------')
+    try:
+        del request.session['logged_username']
+        logout(request)
+        print('------------- User logged out successfully -------------')
+    except:
+        pass
     return redirect('/')
 
 # Dashboard page functions
+@login_required(login_url='/')
 def dashboard(request):
     profile_photo = Profiles.objects.filter(username=request.session['logged_username'])
     lecturers_count = User.objects.filter(user_position='lecturer').count()
@@ -66,6 +85,7 @@ def dashboard(request):
     return render(request, 'dashboard.html', dashboard_context)
 
 # Dashboard chart function
+@login_required(login_url='/')
 def dashChart(request):
     if request.method == 'GET':
         labels = []
@@ -84,6 +104,7 @@ def dashChart(request):
         return redirect('dashboard')
 
 # Schedule page function
+@login_required(login_url='/')
 def schedule(request):
     if request.method == 'POST':
         lec_name = request.POST['selected_lecturer']
@@ -93,8 +114,6 @@ def schedule(request):
             byteVal = (out.stdout).strip()
             strVal = byteVal.decode()
             data_list = ast.literal_eval(strVal)
-            # data_list_str = str(data_list).strip('[]')
-            # print(type(data_list_str))
             data_table_row = []
             hall_n_time = []
             for i in data_list:
@@ -130,8 +149,8 @@ def schedule(request):
         return render(request, 'schedule.html', context)
 
 # Schedule save function
+@login_required(login_url='/')
 def scheduleSave(request):
-    # pass
     if request.method == 'GET':
         lec_name = request.GET['lecturer_name']
         sem = request.GET['semester']
@@ -151,6 +170,7 @@ def scheduleSave(request):
         return redirect('schedule')
 
 # Lecture hall page function
+@login_required(login_url='/')
 def hall(request):
     if 'hall_add_btn' in request.POST:
         if request.method == 'POST':
@@ -213,7 +233,8 @@ def hall(request):
         hall_context = {'hall_form':hall_form, 'halls_data':halls_data, 'profile_photo':profile_photo, 'batch_data':batch_data}
         return render(request, 'hall.html', hall_context)
 
-# Lecturer-wise subject filter function
+# Lecturer-wise subject filter function 
+@login_required(login_url='/')
 def lecturerFilter(request):
     if request.method == 'GET':
         lecturerVal = request.GET['lecturerVal']
@@ -230,6 +251,7 @@ def lecturerFilter(request):
         return redirect('subject')
 
 # Batch-wise subject filter function
+@login_required(login_url='/')
 def subjectFilter(request):
     if request.method == 'GET':
         filterVal = request.GET['filterVal']
@@ -246,6 +268,7 @@ def subjectFilter(request):
         return redirect('subject')
 
 # Subjects manage & subject page function
+@login_required(login_url='/')
 def subject(request):
     if 'subject_add_btn' in request.POST:
         if request.method == 'POST':
@@ -320,6 +343,7 @@ def subject(request):
         return render(request, 'subject.html', subject_context)
 
 # Users manage and user page function
+@login_required(login_url='/')
 def users(request):
     if 'user_add_btn' in request.POST:
         if request.method == 'POST':
@@ -418,71 +442,92 @@ def users(request):
         return render(request, 'users.html', reg_context)
 
 # Profile page function
+@login_required(login_url='/')
 def profile(request):
-    if request.method == 'POST':
-        user_update_form = UserUpdateForm(request.POST, instance=request.user)
-        profile_update_form = ProfileUpdateForm()
-        if user_update_form.is_valid() or profile_update_form.is_valid():
-            profile_image = request.FILES.get('user_profile_img')
-            new_user_title = request.POST['user_title']
-            profile_id = request.POST['id']
-            new_first_name = request.POST['first_name']
-            new_last_name = request.POST['last_name']
-            new_lecturer_name = request.POST['lecturer_name']
-            new_email = request.POST['email']
-            new_lecturer_code = request.POST['lecturer_code']
-            new_username = request.POST['username']
+    if 'lecturer_bio_update_btn' in request.POST:
+        if request.method == 'POST':
+            user_update_form = UserUpdateForm(request.POST, instance=request.user)
+            profile_update_form = ProfileUpdateForm()
+            if user_update_form.is_valid() or profile_update_form.is_valid():
+                profile_image = request.FILES.get('user_profile_img')
+                new_user_title = request.POST['user_title']
+                profile_id = request.POST['id']
+                new_first_name = request.POST['first_name']
+                new_last_name = request.POST['last_name']
+                new_lecturer_name = request.POST['lecturer_name']
+                new_email = request.POST['email']
+                new_lecturer_code = request.POST['lecturer_code']
+                new_username = request.POST['username']
 
-            if profile_image is None:
-                User.objects.filter(Q(id=profile_id)).update(
-                    user_title=new_user_title,
-                    first_name=new_first_name,
-                    last_name=new_last_name,
-                    lecturer_name=new_lecturer_name,
-                    email=new_email,
-                    lecturer_code=new_lecturer_code,
-                    username=new_username
-                )
-                exist_profile = Profiles.objects.filter(username=request.session['logged_username'])
-                exist_profile_path = Profiles.objects.get(username=request.session['logged_username'])
-                if exist_profile is not None:
-                    Profiles.objects.filter(username=request.session['logged_username']).delete()
-                    updated_profile_img = Profiles(username=request.session['logged_username'], user_profile_img=exist_profile_path.user_profile_img)
-                    updated_profile_img.save()
+                if profile_image is None:
+                    User.objects.filter(Q(id=profile_id)).update(
+                        user_title=new_user_title,
+                        first_name=new_first_name,
+                        last_name=new_last_name,
+                        lecturer_name=new_lecturer_name,
+                        email=new_email,
+                        lecturer_code=new_lecturer_code,
+                        username=new_username
+                    )
+                    exist_profile = Profiles.objects.filter(
+                        username=request.session['logged_username'])
+                    exist_profile_path = Profiles.objects.get(
+                        username=request.session['logged_username'])
+                    if exist_profile is not None:
+                        Profiles.objects.filter(username=request.session['logged_username']).delete()
+                        updated_profile_img = Profiles(username=request.session['logged_username'], user_profile_img=exist_profile_path.user_profile_img)
+                        updated_profile_img.save()
+                        messages.success(request, 'Your profile updated successfully!')
+                        return redirect('profile')
+                    else:
+                        updated_profile_img = Profiles(username=request.session['logged_username'], user_profile_img=exist_profile_path.user_profile_img)
+                        updated_profile_img.save()
+                        messages.success(request, 'Your profile updated successfully!')
+                        return redirect('profile')
                     messages.success(request, 'Your profile updated successfully!')
                     return redirect('profile')
                 else:
-                    updated_profile_img = Profiles(username=request.session['logged_username'], user_profile_img=exist_profile_path.user_profile_img)
-                    updated_profile_img.save()
-                    messages.success(request, 'Your profile updated successfully!')
-                    return redirect('profile')
-                messages.success(request, 'Your profile updated successfully!')
-                return redirect('profile')
+                    User.objects.filter(Q(id=profile_id)).update(
+                        user_title=new_user_title,
+                        first_name=new_first_name,
+                        last_name=new_last_name,
+                        lecturer_name=new_lecturer_name,
+                        email=new_email,
+                        lecturer_code=new_lecturer_code,
+                        username=new_username
+                    )
+                    exist_profile = Profiles.objects.filter(
+                        username=request.session['logged_username'])
+                    if exist_profile is not None:
+                        Profiles.objects.filter(username=request.session['logged_username']).delete()
+                        updated_profile_img = Profiles(username=request.session['logged_username'], user_profile_img=profile_image)
+                        updated_profile_img.save()
+                        messages.success(request, 'Your profile updated successfully!')
+                        return redirect('profile')
+                    else:
+                        updated_profile_img = Profiles(username=request.session['logged_username'], user_profile_img=profile_image)
+                        updated_profile_img.save()
+                        messages.success(request, 'Your profile updated successfully!')
+                        return redirect('profile')
             else:
-                User.objects.filter(Q(id=profile_id)).update(
-                    user_title=new_user_title,
-                    first_name=new_first_name,
-                    last_name=new_last_name,
-                    lecturer_name=new_lecturer_name,
-                    email=new_email,
-                    lecturer_code=new_lecturer_code,
-                    username=new_username
-                )
-                exist_profile = Profiles.objects.filter(username=request.session['logged_username'])
-                if exist_profile is not None:
-                    Profiles.objects.filter(username=request.session['logged_username']).delete()
-                    updated_profile_img = Profiles(username=request.session['logged_username'], user_profile_img=profile_image)
-                    updated_profile_img.save()
-                    messages.success(request, 'Your profile updated successfully!')
-                    return redirect('profile')
-                else:
-                    updated_profile_img = Profiles(username=request.session['logged_username'], user_profile_img=profile_image)
-                    updated_profile_img.save()
-                    messages.success(request, 'Your profile updated successfully!')
-                    return redirect('profile')
+                messages.error(request, 'Profile updating process failed! Something went wrong. Try again.')
+                return redirect('profile')
         else:
-            messages.error(request, 'Profile updating process failed! Something went wrong. Try again.')
+            print('------------------ User data updating failed -----------------')
+            messages.error(request, 'Updating failed! Something went wrong. Try again.')
             return redirect('profile')
+
+    elif 'schedule_delete_btn' in request.POST:
+        schedule_owner = request.POST['schedule_owner']
+        if schedule_owner is not None:
+            SavedSchedules.objects.filter(Q(lecturer_name=schedule_owner)).delete()
+            messages.success(request, 'Schedule deleted successfully!')
+            return redirect('profile')
+        else:
+            print('------------------ User data updating failed -----------------')
+            messages.error(request, 'Schedule deleting failed! Something went wrong. Try again.')
+            return redirect('profile')
+
     else:
         user_update_form = UserUpdateForm(instance=request.user)
         profile_update_form = ProfileUpdateForm(instance=Profiles)
@@ -493,26 +538,48 @@ def profile(request):
         for lec in p:
             lecturers_subjects = AllSubjects.objects.filter(related_lecturer=lec['lecturer_name'])
 
-        lec_name = str(list(profile_values.values_list('lecturer_name', flat=True))).strip("['']")
-        schedule_data = SavedSchedules.objects.filter(lecturer_name=lec_name).values_list('schedule', flat=True)
-        s_data_list = str(list(schedule_data)).strip('[]')
-        convert_list = ast.literal_eval(json.loads(s_data_list))
-        s_data_table_row = []
-        for i in convert_list:
-            s_data_table_row.append("<tr><td>"+i[0]+"</td><td>"+i[1]+"</td><td>"+i[2]+"</td><td>"+i[3]+"</td></tr>")
+        lec_position = str(list(profile_values.values_list('user_position', flat=True))).strip("['']")
+        if lec_position == 'lecturer':
+            lec_name = str(list(profile_values.values_list('lecturer_name', flat=True))).strip("['']")
+            schedule_data = SavedSchedules.objects.filter(lecturer_name=lec_name).values_list('schedule', flat=True)
+            s_data_list = str(list(schedule_data)).strip('[]')
+            if not s_data_list:
+                schedule_info = "0"
+                profile_context = {
+                    'profile_values': profile_values,
+                    'profile_photo': profile_photo,
+                    'user_update_form': user_update_form,
+                    'lecturers_subjects': lecturers_subjects,
+                    'profile_update_form': profile_update_form,
+                    'schedule_info': schedule_info
+                }
+            else:
+                convert_list = ast.literal_eval(json.loads(s_data_list))
+                s_data_table_row = []
+                for i in convert_list:
+                    s_data_table_row.append("<tr><td>"+i[0]+"</td><td>"+i[1]+"</td><td>"+i[2]+"</td><td>"+i[3]+"</td></tr>")
+
+                profile_context = {
+                    'profile_values': profile_values,
+                    'profile_photo': profile_photo,
+                    'user_update_form': user_update_form,
+                    'lecturers_subjects': lecturers_subjects,
+                    'profile_update_form': profile_update_form,
+                    'schedule_info': s_data_table_row
+                }
+        else:
+            profile_context = {
+                'profile_values': profile_values,
+                'profile_photo': profile_photo,
+                'user_update_form': user_update_form,
+                'profile_update_form': profile_update_form
+            }
         
-        profile_context = {
-            'profile_values':profile_values,
-            'profile_photo':profile_photo,
-            'user_update_form':user_update_form,
-            'lecturers_subjects':lecturers_subjects,
-            'profile_update_form':profile_update_form,
-            'schedule_info':s_data_table_row
-        }
         return render(request, 'profile.html', profile_context)
 
-# Help page  function
-def settings(request):
+# Help page function
+@login_required(login_url='/')
+def help(request):
     profile_photo = Profiles.objects.filter(username=request.session['logged_username'])
     help_context = {'profile_photo':profile_photo}
-    return render(request, 'settings.html', help_context)
+    return render(request, 'help.html', help_context)
