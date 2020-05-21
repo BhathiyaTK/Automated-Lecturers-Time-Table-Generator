@@ -274,10 +274,6 @@ iframe {
 /*//////////////////////////////////////////////////////////////////
 [ login ]*/
 
-.login100-more .login-title {
-    background-color: rgb(59, 88, 152);
-}
-
 .login100-more .login-title h2 {
     text-align: center;
     font-family: Poppins-SemiBold;
@@ -288,7 +284,6 @@ iframe {
     width: 100%;
     position: absolute;
     bottom: 0em;
-    background-color: rgb(59, 88, 152);
     color: #fff;
     font-size: 1rem;
     font-family: Montserrat-Regular;
