@@ -22,16 +22,51 @@ from os import popen
 import ast
 import json
 
+# User verification function before password reset
+def verify(request):
+    if request.method == 'POST':
+        verify_email = request.POST['email']
+        verify_lec_code = request.POST['lec_code']
+        verify_lec_name = request.POST['lec_name']
+        if (verify_email and verify_lec_code and verify_lec_name) is None:
+            messages.error(request, 'All the fields are required!')
+            return redirect('verify')
+        else:
+            verified_response = User.objects.filter(email=verify_email)
+            verified_email = str(
+                list(verified_response.values_list('email', flat=True))).strip("['']")
+            verified_lec_code = str(list(verified_response.values_list(
+                'lecturer_code', flat=True))).strip("['']")
+            verified_lec_name = str(list(verified_response.values_list(
+                'lecturer_name', flat=True))).strip("['']")
+
+            if (verified_email == verify_email) and (verified_lec_code == verify_lec_code) and (verified_lec_name == verify_lec_name):
+                return redirect('reset')
+            else:
+                messages.error(request, 'Verification failed!')
+                return redirect('verify')
+    else:
+        return render(request, 'verify.html')
+
 # Reset function
 def reset(request):
     if request.method == 'POST':
-        reset_email = request.POST['email']
-        if reset_email == '':
-            messages.error(request, 'Email field is empty!')
+        reset_password = request.POST['new_password']
+        reset_conf_password = request.POST['conf_new_password']
+        if (reset_password and reset_conf_password) is None:
+            messages.error(request, 'All the fields are required!')
             return redirect('reset')
         else:
-            messages.success(request, 'Email is : '+reset_email)
-            return redirect('reset')
+            if reset_password == reset_conf_password:
+                if len(reset_password)>=6 and len(reset_conf_password)>=6:
+                    messages.success(request, 'Password changed successfully!')
+                    return redirect('reset')
+                else:
+                    messages.error(request, 'Passwords must have at least 8 characters!')
+                    return redirect('reset')
+            else:
+                messages.error(request, 'Passwords are different!')
+                return redirect('reset')
     else:
         return render(request, 'reset.html')
 

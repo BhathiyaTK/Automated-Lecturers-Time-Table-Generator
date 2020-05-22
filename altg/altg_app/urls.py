@@ -17,5 +17,6 @@ urlpatterns = [
     path('lecturerFilter/', views.lecturerFilter, name='lecturerFilter'),
     path('dashChart/', views.dashChart, name='dashChart'),
     path('scheduleSave/', views.scheduleSave, name='scheduleSave'),
+    path('verify/', views.verify, name='verify'),
     path('reset/', views.reset, name='reset'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

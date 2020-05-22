@@ -289,21 +289,6 @@ iframe {
     font-family: Montserrat-Regular;
 }
 
-
-/* 
-.angle-div-left {
-    height: 70px;
-    background: linear-gradient(4.7deg, rgba(59, 89, 152, 0) 50%, rgba(59, 89, 152, 0.95) 50%);
-}
-
-.angle-div-right {
-    position: absolute;
-    bottom: 58px;
-    width: 100%;
-    height: 70px;
-    background: linear-gradient(184.7deg, rgba(59, 89, 152, 0) 50%, rgba(59, 89, 152, 0.95) 50%);
-} */
-
 .limiter {
     width: 100%;
     margin: 0 auto;
@@ -366,7 +351,7 @@ iframe {
 /*==================================================================
 [ Form ]*/
 
-.login100-form {
+.login100-form-div {
     width: 560px;
     min-height: 100vh;
     display: block;
@@ -374,7 +359,7 @@ iframe {
     padding: 120px 100px 55px;
 }
 
-.login100-form-reset {
+.reset100-form-div {
     width: 560px;
     min-height: 100vh;
     display: block;
