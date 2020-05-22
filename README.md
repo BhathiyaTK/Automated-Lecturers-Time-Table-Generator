@@ -1,14 +1,29 @@
 # Automated Lecturers Time Table Generator:100:
-I am doing this project as my mini-poject in the university:mortar_board:. This is a web-based automated lecturers time-tables 
-generator using genetic algorithms for Department of Computing & Information Systems in Sabaragamuwa University. The main goal of 
-doing this is automate the manual process which is using to create lecturers time-tables:dart:.
+This project is developing as an university project:mortar_board:. This is a web-based automated lecture schedules 
+generator developed using custom-created python-based genetic algorithm. 
+
+:dart:The main goal of this project is to automate the time-wasting, document-based, manual process which is using to create lecture schedules.
+
+### Project functionalities & Features
+- Login pages.
+- Password reset option with user verification.
+- Dashboard with fully summerized details of the system data.
+- Lecture-wise lecture schedules generator.
+- Lecture halls and batches details management section.
+- Subjects management section.
+- Users management section.
+- User profile section for update user's personal info and profile image.
+- Helps and tips section.
 
 ### Using Technologies
 - Python
 - Django web framework
+- Bootstrap
 - CSS3
 - JavaScript
 - JQuery
-- PostgreSQL
+- PostgreSQL (as Relational-DBMS)
 
-:bulb: **Hope to implement this for entire faculty using machine learning technologies**:wink:
+*NOTE: Curently this is only available for a single department of the faculty.*
+
+:bulb: **willing to implement this for the entire faculty and the university.**
