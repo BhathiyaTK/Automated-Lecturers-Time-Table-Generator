@@ -32,53 +32,55 @@
         <div class="container-login100">
             <div class="wrap-login100">
                 <div class="reset100-form-div">
-                    <span class="login100-form-title">
-                        <h2 style="font-family: 'Open Sans'; font-weight: 600;">Reset Password</h2>
-                    </span>
-                    <div class="reset-title-divider"></div>
-                    <form id="password-reset-form" class="login100-form validate-form" action="." method="POST">
-                        {% csrf_token %}
-                        <p class="mb-4 text-center">
-                            Enter your new passwords below and they must have at least 6 characters per each
-                        </p>
-                        <div class="wrap-input100 validate-input" data-validate="This field is required.">
-                            <input class="input100 reset-passwords" type="password" name="new_password" placeholder="New password">
+                    <div class="reset100-form-div-content">
+                        <span class="login100-form-title">
+                            <h2 style="font-family: 'Open Sans'; font-weight: 600;">Reset Password</h2>
+                        </span>
+                        <div class="reset-title-divider"></div>
+                        <form id="password-reset-form" class="login100-form validate-form" action="." method="POST">
+                            {% csrf_token %}
+                            <p class="mb-4 text-center">
+                                Enter your new passwords below and they must have at least 6 characters per each
+                            </p>
+                            <div class="wrap-input100 validate-input" data-validate="This field is required.">
+                                <input class="input100 reset-passwords" type="password" name="new_password" placeholder="New password">
+                            </div>
+                            <div class="wrap-input100 validate-input" data-validate="This filed is required.">
+                                <input class="input100 reset-passwords" type="password" name="conf_new_password" placeholder="Confirm new password">
+                            </div>
+                            <div class="contact100-form-checkbox p-t-3 p-b-32">
+                                <input class="input-checkbox100" id="passwords-show" type="checkbox" name="passwords-show">
+                                <label class="label-checkbox100" for="passwords-show">Show Passwords</label>
+                            </div>
+                            <div class="container-login100-form-btn mb-4">
+                                <input id="password-reset-btn" class="login100-form-btn" type="submit" value="Reset">
+                            </div>
+                        </form>
+                        {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %} {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                            <div class="alert {{message.tags}} alert-dismissable mb-4" role="alert" style="font-size: 13px; font-family: 'Open Sans';">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <i class="far fa-check-circle fa-lg"></i>&nbsp; {{message}}
+                            </div>
+                            {% else %}
+                            <div class="alert {{message.tags}} alert-dismissable mb-4" role="alert" style="font-size: 13px; font-family: 'Open Sans';">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <i class="far fa-times-circle fa-lg"></i>&nbsp; {{message}}
+                            </div>
+                            {% endif %} {% endfor%}
+                        </ul>
+                        {% endif %}
+                        <div class="text-center">
+                            <a href="../" class="txt3">Return to Login</a>
                         </div>
-                        <div class="wrap-input100 validate-input" data-validate="This filed is required.">
-                            <input class="input100 reset-passwords" type="password" name="conf_new_password" placeholder="Confirm new password">
-                        </div>
-                        <div class="contact100-form-checkbox p-t-3 p-b-32">
-                            <input class="input-checkbox100" id="passwords-show" type="checkbox" name="passwords-show">
-                            <label class="label-checkbox100" for="passwords-show">Show Passwords</label>
-                        </div>
-                        <div class="container-login100-form-btn mb-4">
-                            <input id="password-reset-btn" class="login100-form-btn" type="submit" value="Reset">
-                        </div>
-                    </form>
-                    {% if messages %}
-                    <ul class="messages">
-                        {% for message in messages %} {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-                        <div class="alert {{message.tags}} alert-dismissable mb-4" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <i class="far fa-check-circle fa-lg"></i>&nbsp; <b>{{message}}</b>
-                        </div>
-                        {% else %}
-                        <div class="alert {{message.tags}} alert-dismissable mb-4" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <i class="far fa-times-circle fa-lg"></i>&nbsp; <b>{{message}}</b>
-                        </div>
-                        {% endif %} {% endfor%}
-                    </ul>
-                    {% endif %}
-                    <div class="text-center">
-                        <a href="../" class="txt3">Return to Login</a>
                     </div>
                 </div>
-                <div class="login100-more" style="background-color:rgb(59, 88, 152);background-image: url('../static/images/password_reset.png');"></div>
+                <div class="login100-more" style="background-color:#3b5898; background-image: url('../static/images/password_reset.png');"></div>
             </div>
         </div>
     </div>

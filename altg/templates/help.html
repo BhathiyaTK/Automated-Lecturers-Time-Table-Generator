@@ -30,10 +30,12 @@
                 <li><a href="../schedule"><i class="fal fa-calendar-alt"></i>&nbsp&nbsp Schedule</a></li>
                 {% if user.is_superuser %}
                 <button class="dropdown-btn"><i class="fal fa-sliders-h"></i>&nbsp&nbsp Manage<span class="float-right"><i class="fal fa-chevron-down"></i></span></button>
-                <div class="dropdown-container">
-                    <li><a href="../hall">&nbsp;<i class="fal fa-building fa-lg"></i>&nbsp;&nbsp; Lecture Halls</a></li>
-                    <li><a href="../subject">&nbsp;<i class="fal fa-book fa-lg"></i>&nbsp;&nbsp; Subjects</a></li>
-                    <li><a href="../users"><i class="fal fa-users fa-lg"></i>&nbsp;&nbsp; Users</a></li class="active-link">
+                <div class="dropdown-div">
+                    <div class="dropdown-container">
+                        <li><a href="../hall">&nbsp;<i class="fal fa-building fa-lg"></i>&nbsp;&nbsp; Lecture Halls</a></li>
+                        <li><a href="../subject">&nbsp;<i class="fal fa-book fa-lg"></i>&nbsp;&nbsp; Subjects</a></li>
+                        <li><a href="../users"><i class="fal fa-users fa-lg"></i>&nbsp;&nbsp; Users</a></li class="active-link">
+                    </div>
                 </div>
                 {% endif %}
                 <li><a href="../profile"><i class="fal fa-user-alt"></i>&nbsp&nbsp My Account</a></li>
@@ -63,20 +65,20 @@
                     </div>
                 </div>
             </div>
-            <div class="main-panel-content px-5 py-4">
+            <div class="main-panel-content px-5 pt-4 pb-3">
                 <div class="container p-0">
-                    <div class="section-div container px-4 py-3 font-opensans" style="font-size: 14px;">
+                    <div class="section-div container px-4 py-3 font-opensans" style="font-size: 14px; background-image: url('../static/images/about.png'); background-position: right; background-size: contain; background-repeat:no-repeat;">
                         <div class="row">
                             <div class="col-md-8 non-padding-cols">
                                 <div class="section-sub-title font-opensans mt-2">
                                     <h6><b>About Platform</b></h6>
                                 </div>
                                 <div class="horizontal-divider-common mt-3 mb-3"></div>
-                                <p class="font-opensans">
+                                <p class="font-opensans text-justify">
                                     Welcome to Online Automated Lecture Schedule Generator. This is a web-based platform which mainly provides a service you to generate lecture schedules for the lecturers instantly without wasting more time like creating them manually. And this allows you
                                     to save generated lecture schedules for future or download instantly for present use.
                                 </p>
-                                <p class="font-opensans">
+                                <p class="font-opensans text-justify">
                                     You can find the options in the left side panel for manage users, subjects, lecture halls and also customize your profile info.
                                 </p>
                                 <p class="mb-0">
@@ -84,7 +86,7 @@
                                 </p>
                             </div>
                             <div class="col-md-4 non-padding-cols">
-                                <img src="{% static 'images/about.jpg' %}" alt="About Platform" width="100%">
+                                <!-- <img src="{% static 'images/about.jpg' %}" alt="About Platform" width="100%"> -->
                             </div>
                         </div>
                     </div>
@@ -146,16 +148,24 @@
                         </p>
                         <p><span style="border-bottom: 2px solid rgb(58, 57, 57); padding-bottom: 2px;"><b>How can I find my current lecture schedule?</b></span></p>
                         <p>
-                            Tap on the <span class="theme-font-color"><b>My Account</b></span> link on left-side panel. Scroll to the bottom of the page and click <i class="fal fa-external-link fa-lg"></i> button under <span class="badge badge-secondary special-badge">Current Lecture Schedule</span>                            section in right-side corner. Then it will show a pop-up window with your current lecture schedule as a table. <br>At the botton left and right corners of the pop-up window has <b>download</b> and <b>delete</b> buttons for
-                            download and delete the lecture schedule respectively.
+                            Tap on the <span class="theme-font-color"><b>My Account</b></span> link on left-side panel. Scroll to the bottom of the page and click <i class="fal fa-external-link fa-lg"></i> button under <span class="badge badge-secondary special-badge">Current Lecture Schedule</span>                            section in left-side bottom corner. Then it will show a pop-up window with your current lecture schedule as a table. <br>At the botton left and right corners of the pop-up window has <b>download</b> and <b>delete</b> buttons
+                            for download and delete the lecture schedule respectively.
                         </p>
                         <p><span style="border-bottom: 2px solid rgb(58, 57, 57); padding-bottom: 2px;"><b>How can I upload a new image for profile picture?</b></span></p>
                         <p>
                             Tap on the <span class="theme-font-color"><b>My Account</b></span> link on left-side panel. Click on the square shape profile image on the page. Select a photo which you willing to upload as your profile picture from opened
-                            window and click <span class="badge badge-light special-badge">Open</span>. Then click <span class="badge badge-primary special-badge">Save Changes</span> button on the page to save selected profile photo. <span class="text-muted">[NOTE : Upload a clear, yourself in the middle image as the profile picture.]</span>
+                            window and click <span class="badge badge-secondary special-badge">Open</span>. Then click <span class="badge badge-primary special-badge">Save Changes</span> button on the page to save selected profile photo. <span class="text-muted">[NOTE : Upload a clear, yourself in the middle image as the profile picture.]</span>
+                        </p>
+                        <p><span style="border-bottom: 2px solid rgb(58, 57, 57); padding-bottom: 2px;"><b>How to change my current password?</b></span></p>
+                        <p>
+                            Tap on the <span class="theme-font-color"><b>My Account</b></span> link on left-side panel. Then click on the <span class="badge badge-secondary special-badge">Show more options</span> section. It will appear a section with
+                            the options for change the current password.
                         </p>
                     </div>
                 </div>
+            </div>
+            <div class="copyright-div">
+                <p>Copyright &copy; 2020 Department of Computing & Information Systems. All Rights Reserved.</p>
             </div>
         </div>
     </div>

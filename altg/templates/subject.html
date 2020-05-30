@@ -29,10 +29,12 @@
                 <li><a href="../schedule"><i class="fal fa-calendar-alt"></i>&nbsp&nbsp Schedule</a></li>
                 {% if user.is_superuser %}
                 <button class="dropdown-btn active-link"><i class="fal fa-sliders-h"></i>&nbsp&nbsp Manage<span class="float-right"><i class="fal fa-chevron-down"></i></span></button>
-                <div class="dropdown-container">
-                    <li><a href="../hall">&nbsp;<i class="fal fa-building fa-lg"></i>&nbsp;&nbsp; Lecture Halls</a></li>
-                    <li class="active-link">&nbsp;<a href="."><i class="fal fa-book fa-lg"></i>&nbsp;&nbsp; Subjects</a></li>
-                    <li><a href="../users"><i class="fal fa-users fa-lg"></i>&nbsp;&nbsp; Users</a></li class="active-link">
+                <div class="dropdown-div">
+                    <div class="dropdown-container">
+                        <li><a href="../hall">&nbsp;<i class="fal fa-building fa-lg"></i>&nbsp;&nbsp; Lecture Halls</a></li>
+                        <li class="active-link">&nbsp;<a href="."><i class="fal fa-book fa-lg"></i>&nbsp;&nbsp; Subjects</a></li>
+                        <li><a href="../users"><i class="fal fa-users fa-lg"></i>&nbsp;&nbsp; Users</a></li class="active-link">
+                    </div>
                 </div>
                 {% endif %}
                 <li><a href="../profile"><i class="fal fa-user-alt"></i>&nbsp&nbsp My Account</a></li>
@@ -69,83 +71,91 @@
                         {% for message in messages %} {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
                         <div class="alert {{message.tags}} alert-dismissable mb-4" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                             <i class="far fa-check-circle fa-lg"></i>&nbsp; <b>{{message}}</b>
                         </div>
                         {% else %}
                         <div class="alert {{message.tags}} alert-dismissable mb-4" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                             <i class="far fa-times-circle fa-lg"></i>&nbsp; <b>{{message}}</b>
                         </div>
                         {% endif %} {% endfor%}
                     </ul>
                     {% endif %} {% if user.is_authenticated %}
-                    <div class="section-sub-title font-opensans">
-                        <h6><b>Add New Subject</b></h6>
-                    </div>
-                    <div class="horizontal-divider-common mt-3 mb-4"></div>
-                    <form action="." method="POST">
-                        {% csrf_token %}
-                        <div class="row">
-                            <div class="col-md-2 left-padding-zero-cols">
-                                <div class="form-group">
-                                    <label for="exampleSelect">Related Batch</label>
-                                    <select name="related_batch" class="form-control form-control-sm" required>
-                                    <option value="">---- Choose ----</option>
-                                    {% for batch in batch_data %}
-                                    <option value="{{batch.batch_no}}">{{batch.batch_no}}<sup>{{batch.batch_name_suffix}}</sup> Year</option>
-                                    {% endfor %}
-                                </select>
-                                </div>
+                    <div class="row">
+                        <div class="col-md-6 left-padding-zero-cols">
+                            <div class="section-sub-title font-opensans">
+                                <h6><b>Add New Subject</b></h6>
                             </div>
-                            <div class="col-md-2 non-padding-cols">
-                                <div class="form-group">
-                                    <label for="exampleInputName">Subject Code</label>
-                                    <input type="text" name="subject_code" class="form-control form-control-sm" required>
+                            <div class="horizontal-divider-common mt-3 mb-4"></div>
+                            <form action="." method="POST">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-5 left-padding-zero-cols">
+                                        <div class="form-group">
+                                            <label for="exampleSelect">Related Batch</label>
+                                            <select name="related_batch" class="form-control form-control-sm" required>
+                                                <option value="">---- Choose ----</option>
+                                                {% for batch in batch_data %}
+                                                <option value="{{batch.batch_no}}">{{batch.batch_no}}<sup>{{batch.batch_name_suffix}}</sup> Year</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 non-padding-cols">
+                                        <div class="form-group">
+                                            <label for="exampleInputName">Subject Code</label>
+                                            <input type="text" name="subject_code" class="form-control form-control-sm" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 non-padding-cols">
+                                        <div class="form-group">
+                                            <label for="exampleInputName">Subject Name</label>
+                                            <input type="text" name="subject_name" class="form-control form-control-sm" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5 left-padding-zero-cols">
+                                        <div class="form-group">
+                                            <label for="exampleInputName">Semester</label>
+                                            <select name="semester" class="form-control form-control-sm" required>
+                                                <option value="">---- Choose ----</option>
+                                                {% for semester in semester_data %}
+                                                <option value="{{semester.semester_no}}">{{semester.semester_no}}<sup>{{semester.semester_name_suffix}}</sup> Semester</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 non-padding-cols">
+                                        <div class="form-group">
+                                            <label for="exampleInputName">Related Lecturer</label> <span style="color: #7a7a7a;">(Optional)</span>
+                                            <select name="related_lecturer" class="form-control form-control-sm" required>
+                                                <option value="Not assigned" selected>Not Assigned (Default)</option>
+                                                {% for user in lecturers_data %}
+                                                <option value="{{user.lecturer_name}}">{{user.user_title}}. {{user.lecturer_name}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-8 right-padding-zero-cols">
-                                <div class="form-group">
-                                    <label for="exampleInputName">Subject Name</label>
-                                    <input type="text" name="subject_name" class="form-control form-control-sm" required>
+                                <br>
+                                <div class="save-btn-div text-left">
+                                    <input type="submit" class="btn px-4 submit_btn" value="Add Subject" name="subject_add_btn">
                                 </div>
+                            </form>
+                            {% else %}
+                            <div class="error-msg-div my-5 text-center">
+                                <p class="text-danger mb-4"><i class="fal fa-exclamation-triangle fa-5x"></i></p>
+                                <p class="text-danger font-opensans">You are not logged in. Please log in <a href="/">here</a>.</p>
                             </div>
-                            <div class="col-md-2 left-padding-zero-cols">
-                                <div class="form-group">
-                                    <label for="exampleInputName">Semester</label>
-                                    <select name="semester" class="form-control form-control-sm" required>
-                                    <option value="">---- Choose ----</option>
-                                    {% for semester in semester_data %}
-                                    <option value="{{semester.semester_no}}">{{semester.semester_no}}<sup>{{semester.semester_name_suffix}}</sup> Semester</option>
-                                    {% endfor %}
-                                </select>
-                                </div>
-                            </div>
-                            <div class="col-md-4 left-padding-zero-cols">
-                                <div class="form-group">
-                                    <label for="exampleInputName">Related Lecturer</label> <span style="color: #7a7a7a;">(Optional)</span>
-                                    <select name="related_lecturer" class="form-control form-control-sm" required>
-                                    <option value="Not assigned" selected>Not Assigned (Default)</option>
-                                    {% for user in lecturers_data %}
-                                    <option value="{{user.lecturer_name}}">{{user.user_title}}. {{user.lecturer_name}}</option>
-                                    {% endfor %}
-                                </select>
-                                </div>
-                            </div>
+                            {% endif %}
                         </div>
-                        <div class="save-btn-div text-right">
-                            <input type="submit" class="btn px-4 submit_btn" value="Add Subject" name="subject_add_btn">
+                        <div class="col-md-6 non-padding-cols text-center align-items-center">
+                            <img src="{% static 'images/subject_add.png' %}" alt="" width="100%">
                         </div>
-                    </form>
-                    {% else %}
-                    <div class="error-msg-div my-5 text-center">
-                        <p class="text-danger mb-4"><i class="fal fa-exclamation-triangle fa-5x"></i></p>
-                        <p class="text-danger font-opensans">You are not logged in. Please log in <a href="/">here</a>.</p>
                     </div>
-                    {% endif %}
                 </div>
 
                 {% if user.is_authenticated %}
@@ -302,6 +312,9 @@
                     </div>
                 </div>
                 {% endif %}
+            </div>
+            <div class="copyright-div">
+                <p>Copyright &copy; 2020 Department of Computing & Information Systems. All Rights Reserved.</p>
             </div>
         </div>
 </section>

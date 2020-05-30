@@ -180,6 +180,25 @@ h5 {
     font-size: 14px;
 }
 
+.copyright-div {
+    background-color: rgba(26, 28, 31, 0.822);
+    color: #fff;
+    text-align: center;
+    width: 100%;
+    font-family: "Open Sans";
+    font-size: 0.8rem;
+    padding: 10px 0;
+}
+
+.copyright-div-scroll-position {
+    position: absolute;
+    bottom: 0;
+}
+
+.copyright-div p {
+    margin: 0;
+}
+
 
 /* ==================================================================
     # Side Panel Styles
@@ -306,8 +325,11 @@ h5 {
     color: white;
 }
 
-.dropdown-container {
+.dropdown-div {
     display: none;
+}
+
+.dropdown-container {
     border-radius: 7px;
     margin-bottom: 15px;
     background-color: #fff;
@@ -645,7 +667,6 @@ label {
 
 .profile_image_bottom_div {
     background: rgb(235, 228, 228);
-    /* margin: 0 2px; */
     border-radius: 7px;
 }
 
@@ -654,6 +675,69 @@ label {
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 7px;
     background: rgba(0, 0, 0, 0.04);
+}
+
+#advanced-option-div .advanced-option-link {
+    font-size: 14px;
+    color: #6675df;
+}
+
+#advanced-option-div .advanced-option-link:hover {
+    cursor: pointer;
+}
+
+.advanced-option-div-content {
+    display: none;
+}
+
+
+/*[ Restyle Checkbox ]*/
+
+.input-checkbox100 {
+    display: none;
+}
+
+.label-checkbox100 {
+    font-family: "Open Sans";
+    font-weight: 500;
+    font-size: 13px;
+    color: #999999;
+    line-height: 1.4;
+    display: block;
+    position: relative;
+    padding-left: 26px;
+    cursor: pointer;
+}
+
+.label-checkbox100::before {
+    content: "\f00c";
+    font-family: FontAwesome;
+    font-size: 13px;
+    color: transparent;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    background: #fff;
+    border: 1px solid #6675df;
+    left: 0;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.input-checkbox100:checked+.label-checkbox100::before {
+    color: #6675df;
 }
 
 

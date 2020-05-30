@@ -29,10 +29,12 @@
                 <li><a href="../schedule"><i class="fal fa-calendar-alt"></i>&nbsp&nbsp Schedule</a></li>
                 {% if user.is_superuser %}
                 <button class="dropdown-btn active-link"><i class="fal fa-sliders-h"></i>&nbsp&nbsp Manage<span class="float-right"><i class="fal fa-chevron-down"></i></span></button>
-                <div class="dropdown-container">
-                    <li><a href="../hall">&nbsp;<i class="fal fa-building fa-lg"></i>&nbsp;&nbsp; Lecture Halls</a></li>
-                    <li><a href="../subject">&nbsp;<i class="fal fa-book fa-lg"></i>&nbsp;&nbsp; Subjects</a></li>
-                    <li class="active-link"><a href="."><i class="fal fa-users fa-lg"></i>&nbsp;&nbsp; Users</a></li class="active-link">
+                <div class="dropdown-div">
+                    <div class="dropdown-container">
+                        <li><a href="../hall">&nbsp;<i class="fal fa-building fa-lg"></i>&nbsp;&nbsp; Lecture Halls</a></li>
+                        <li><a href="../subject">&nbsp;<i class="fal fa-book fa-lg"></i>&nbsp;&nbsp; Subjects</a></li>
+                        <li class="active-link"><a href="."><i class="fal fa-users fa-lg"></i>&nbsp;&nbsp; Users</a></li class="active-link">
+                    </div>
                 </div>
                 {% endif %}
                 <li><a href="../profile"><i class="fal fa-user-alt"></i>&nbsp&nbsp My Account</a></li>
@@ -83,91 +85,91 @@
                         {% endif %} {% endfor%}
                     </ul>
                     {% endif %} {% if user.is_authenticated %}
-                    <div class="section-sub-title font-opensans">
-                        <h6><b>Add New User</b></h6>
-                    </div>
-                    <div class="horizontal-divider-common mt-3 mb-4"></div>
-                    <form action="." method="POST">
-                        {% csrf_token %}
-                        <div class="row">
-                            <div class="col-md-2 left-padding-zero-cols">
-                                <div class="form-group">
-                                    <label for="exampleInputName">Title</label>{{reg_form.user_title}}
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="section-sub-title font-opensans">
+                                <h6><b>Add New User</b></h6>
+                            </div>
+                            <div class="horizontal-divider-common mt-3 mb-4"></div>
+                            <form action="." method="POST">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-3 left-padding-zero-cols">
+                                        <div class="form-group">
+                                            <label for="exampleInputName">Title</label>{{reg_form.user_title}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 left-padding-zero-cols">
+                                        <div class="form-group">
+                                            <label for="exampleInputName">First Name</label>{{reg_form.first_name}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5 non-padding-cols">
+                                        <div class="form-group">
+                                            <label for="exampleInputName">Last Name</label>{{reg_form.last_name}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 left-padding-zero-cols">
+                                        <div class="form-group">
+                                            <label for="exampleInputName">Name with Initials</label>{{reg_form.lecturer_name}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 non-padding-cols">
+                                        <div class="form-group">
+                                            <label for="exampleInputName">User Code</label>{{reg_form.lecturer_code}}
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-5 left-padding-zero-cols">
-                                <div class="form-group">
-                                    <label for="exampleInputName">First Name</label>{{reg_form.first_name}}
+                                <div class="row">
+                                    <div class="col-md-12 non-padding-cols">
+                                        <div class="form-group">
+                                            <label for="exampleInputName">Email</label>{{reg_form.email}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 left-padding-zero-cols">
+                                        <div class="form-group">
+                                            <label for="exampleSelect">User Position</label>{{reg_form.user_position}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 non-padding-cols">
+                                        <div class="form-group">
+                                            <label for="exampleSelect">User Type</label>{{reg_form.user_type}}
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-5 non-padding-cols">
-                                <div class="form-group">
-                                    <label for="exampleInputName">Last Name</label>{{reg_form.last_name}}
+                                <div class="row">
+                                    <div class="col-md-4 left-padding-zero-cols">
+                                        <div class="form-group">
+                                            <label for="exampleInputName">Username</label>{{reg_form.username}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 left-padding-zero-cols">
+                                        <div class="form-group">
+                                            <label for="exampleInputName">Password</label>{{reg_form.password1}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 non-padding-cols">
+                                        <div class="form-group">
+                                            <label for="exampleInputName">Confirm Password</label>{{reg_form.password2}}
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-8 left-padding-zero-cols">
-                                <div class="form-group">
-                                    <label for="exampleInputName">Name with Initials</label>{{reg_form.lecturer_name}}
-                                </div>
-                            </div>
-                            <div class="col-md-4 non-padding-cols">
-                                <div class="form-group">
-                                    <label for="exampleInputName">User Code</label>{{reg_form.lecturer_code}}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-7 left-padding-zero-cols">
-                                <div class="form-group">
-                                    <label for="exampleInputName">Email</label>{{reg_form.email}}
-                                </div>
-                            </div>
-                            <div class="col-md-3 left-padding-zero-cols">
-                                <div class="form-group">
-                                    <label for="exampleSelect">User Position</label>{{reg_form.user_position}}
-                                </div>
-                            </div>
-                            <div class="col-md-2 non-padding-cols">
-                                <div class="form-group">
-                                    <label for="exampleSelect">User Type</label>{{reg_form.user_type}}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4 left-padding-zero-cols">
-                                <div class="form-group">
-                                    <label for="exampleInputName">Username</label>{{reg_form.username}}
-                                </div>
-                            </div>
-                            <div class="col-md-4 left-padding-zero-cols">
-                                <div class="form-group">
-                                    <label for="exampleInputName">Password</label>{{reg_form.password1}}
-                                </div>
-                            </div>
-                            <div class="col-md-4 non-padding-cols">
-                                <div class="form-group">
-                                    <label for="exampleInputName">Confirm Password</label>{{reg_form.password2}}
-                                </div>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-md-9 col-sm-12 left-padding-zero-cols">
-
-                            </div>
-                            <div class="col-md-3 col-sm-12 right-padding-zero-cols">
-                                <div class="save-btn-div text-right">
+                                <br>
+                                <div class="save-btn-div text-left">
                                     <input type="submit" class="btn px-4 submit_btn" value="Add Lecturer" name="user_add_btn">
                                 </div>
+                            </form>
+                            {% else %}
+                            <div class="error-msg-div my-5 text-center">
+                                <p class="text-danger mb-4"><i class="fal fa-exclamation-triangle fa-5x"></i></p>
+                                <p class="text-danger font-opensans">You are not logged in. Please log in <a href="/">here</a>.</p>
                             </div>
+                            {% endif %}
                         </div>
-                    </form>
-                    {% else %}
-                    <div class="error-msg-div my-5 text-center">
-                        <p class="text-danger mb-4"><i class="fal fa-exclamation-triangle fa-5x"></i></p>
-                        <p class="text-danger font-opensans">You are not logged in. Please log in <a href="/">here</a>.</p>
+                        <div class="col-md-4 non-padding-cols text-center align-items-center">
+                            <img src="{% static 'images/user_add.png' %}" alt="" width="100%">
+                        </div>
                     </div>
-                    {% endif %}
                 </div>
 
                 {% if user.is_authenticated %}
@@ -233,6 +235,9 @@
                     </div>
                 </div>
                 {% endif %}
+            </div>
+            <div class="copyright-div">
+                <p>Copyright &copy; 2020 Department of Computing & Information Systems. All Rights Reserved.</p>
             </div>
         </div>
     </div>

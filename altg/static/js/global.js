@@ -1,6 +1,26 @@
+window.addEventListener("load", function() {
+    var loader = document.getElementById("se-pre-con");
+    loader.style.display = "none";
+
+    // Copyright div positioning
+    var mp_h = $("#main-panel").innerHeight();
+    var mp_t_h = $(".main-panel-title").innerHeight();
+    var mp_c_h = $(".main-panel-content").innerHeight();
+    var scroll_active_height = mp_h - mp_t_h;
+    if (scroll_active_height <= mp_c_h) {
+        $(".copyright-div").removeClass("copyright-div-scroll-position");
+    } else {
+        $(".copyright-div").addClass("copyright-div-scroll-position");
+    }
+});
+
 $(document).ready(function() {
     console.log("Jquery is working....");
 
+    $(".dropdown-btn").click(function() {
+        $(".dropdown-div").slideToggle('fast');
+        $(".dropdown-btn span i").toggleClass("fa-chevron-down fa-chevron-up");
+    });
     // Morning, afternoon & evenning visualizing function
     var thehours = new Date().getHours();
     var themessage, climateIcon, subGreeting;
@@ -41,75 +61,7 @@ $(document).ready(function() {
     $(".climate-icon").attr("src", climateIcon);
     $(".sub-greeting").append(subGreeting);
 
-    // Chart generating function
-    var labels = [];
-    var data_set = [];
-    $.ajax({
-        method: "GET",
-        url: "/dashChart",
-        success: function(data) {
-            labels = data.labels;
-            data_set = data.data_values;
-            var customColors = [];
-            for (let i = 0; i < 14; i++) {
-                customColors.push(
-                    "rgba(" +
-                    Math.floor(Math.random() * 256 + 1).toString() +
-                    "," +
-                    Math.floor(Math.random() * 256 + 1).toString() +
-                    "," +
-                    Math.floor(Math.random() * 256 + 1).toString() +
-                    ",0.7)"
-                );
-            }
-            var ctx = $("#myChart");
-            var myChart = new Chart(ctx, {
-                type: "horizontalBar",
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: "# of Votes",
-                        data: data_set,
-                        backgroundColor: customColors,
-                        borderWidth: 1,
-                    }, ],
-                },
-                options: {
-                    legend: {
-                        display: false,
-                    },
-                    scales: {
-                        xAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
-                    },
-                    tooltips: {
-                        bodyFontSize: 14,
-                        callbacks: {
-                            title: function(tooltipItem, data) {
-                                return data["labels"][tooltipItem[0]["index"]];
-                            },
-                            label: function(tooltipItem, data) {
-                                return (
-                                    " Subjects : " +
-                                    data["datasets"][0]["data"][tooltipItem["index"]]
-                                );
-                            },
-                        },
-                        titleFontSize: 14,
-                    },
-                },
-            });
-            console.log("Chart generated successfully!");
-        },
-        error: function(error_data) {
-            console.log("Error has been occured!");
-            console.log(error_data);
-        }
-    });
-
+    // Lecturers filter function
     $("#lecturer_filter").change(function(el) {
         el.preventDefault();
         var lecturerVal = $(this).val();
@@ -159,6 +111,7 @@ $(document).ready(function() {
         });
     });
 
+    // Subject filter function
     $("#subject_filter").change(function(e) {
         e.preventDefault();
         var filterVal = $(this).val();
@@ -208,6 +161,7 @@ $(document).ready(function() {
         });
     });
 
+    // Generated schedule save to databse function
     $("#table-save-form").on("submit", function(e2) {
         e2.preventDefault();
         var lecturer_name = $("#lecturer_name").val();
@@ -234,6 +188,7 @@ $(document).ready(function() {
         });
     });
 
+    // Lecture schedule download button function
     $("#schedule_download_btn").click(function() {
         var name = $("#schedule_owner_name").val();
 
@@ -272,15 +227,27 @@ $(document).ready(function() {
         });
         doc.save("Lecture_Schedule.pdf");
     });
+
+    $(".advanced-option-link").click(function() {
+        $(".advanced-option-div-content").slideToggle();
+        $(".span1 .span1-text").text(
+            $(".span1 .span1-text").text() == "Show more options" ?
+            "Hide more options" :
+            "Show more options"
+        );
+        $(".span2 i").toggleClass("fa-chevron-down fa-chevron-up");
+    });
+
+    $("#change-passwords-show").click(function() {
+        $(this).is(":checked") ?
+            $(".change-passwords").attr("type", "text") :
+            $(".change-passwords").attr("type", "password");
+    });
+
 });
 
 $(function() {
     $('[data-toggle="tooltip"]').tooltip();
-});
-
-window.addEventListener("load", function() {
-    var loader = document.getElementById("se-pre-con");
-    loader.style.display = "none";
 });
 
 (function($) {

@@ -29,10 +29,12 @@
                 <li><a href="../schedule"><i class="fal fa-calendar-alt"></i>&nbsp&nbsp Schedule</a></li>
                 {% if user.is_superuser %}
                 <button class="dropdown-btn"><i class="fal fa-sliders-h"></i>&nbsp&nbsp Manage<span class="float-right"><i class="fal fa-chevron-down"></i></span></button>
-                <div class="dropdown-container">
-                    <li><a href="../hall">&nbsp;<i class="fal fa-building fa-lg"></i>&nbsp;&nbsp; Lecture Halls</a></li>
-                    <li><a href="../subject">&nbsp;<i class="fal fa-book fa-lg"></i>&nbsp;&nbsp; Subjects</a></li>
-                    <li><a href="../users"><i class="fal fa-users fa-lg"></i>&nbsp;&nbsp; Users</a></li>
+                <div class="dropdown-div">
+                    <div class="dropdown-container">
+                        <li><a href="../hall">&nbsp;<i class="fal fa-building fa-lg"></i>&nbsp;&nbsp; Lecture Halls</a></li>
+                        <li><a href="../subject">&nbsp;<i class="fal fa-book fa-lg"></i>&nbsp;&nbsp; Subjects</a></li>
+                        <li><a href="../users"><i class="fal fa-users fa-lg"></i>&nbsp;&nbsp; Users</a></li>
+                    </div>
                 </div>
                 {% endif %}
                 <li class="active-link"><a href="."><i class="fal fa-user-alt"></i>&nbsp&nbsp My Account</a></li class="active-link">
@@ -63,6 +65,7 @@
                 </div>
             </div>
             <div class="main-panel-content px-5 py-4">
+                {% if user.is_authenticated %}
                 <div class="section-div container p-4" id="profile-section">
                     {% if messages %}
                     <ul class="messages">
@@ -82,7 +85,7 @@
                         </div>
                         {% endif %} {% endfor%}
                     </ul>
-                    {% endif %} {% if user.is_authenticated %}
+                    {% endif %}
                     <div class="section-sub-title font-opensans">
                         <h6><b>Your Personal Details</b></h6>
                     </div>
@@ -90,23 +93,6 @@
                     <form action="." method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="row">
-                            <div class="col-md-4 left-padding-zero-cols profile_image text-center">
-                                <label for="id_user_profile_img" class="m-0">
-                            {% if profile_photo %}
-                                {% for photo in profile_photo %}
-                                    <img src="../media/{{photo.user_profile_img}}" id="prof_img">
-                                {% endfor %}
-                            {% else %}
-                            <img src="{% static 'images/profile.jpg' %}">
-                            {% endif %}
-                            </label> {{profile_update_form.user_profile_img}}
-                                <div class="profile_image_bottom_div py-2 mt-2">
-                                    <small id="imageHelp" class="form-text m-0">
-                                        <i>Click on the image to upload new one.</i> 
-                                        <i class="fal fa-info-circle fa-lg" data-toggle="tooltip" data-placement="right" title="Upload yourself centered image to make your profile image better."></i>
-                                    </small>
-                                </div>
-                            </div>
                             <div class="col-md-8 non-padding-cols">
                                 <div class="row">
                                     <div class="col-md-2 left-padding-zero-cols">
@@ -152,25 +138,97 @@
                                     </div>
                                 </div>
                                 <br>
-                                <div class="save-btn-div text-right">
+                                <div class="save-btn-div text-left">
                                     {{user_update_form.id}}
                                     <input type="submit" name="lecturer_bio_update_btn" class="btn px-4 submit_btn" value="Save Changes" />
                                 </div>
                             </div>
+                            <div class="col-md-4 right-padding-zero-cols profile_image text-center" data-toggle="tooltip" data-placement="bottom" title="Upload yourself centered image to make your profile image more better">
+                                <label for="id_user_profile_img" class="m-0">
+                                {% if profile_photo %}
+                                    {% for photo in profile_photo %}
+                                        <img src="../media/{{photo.user_profile_img}}" id="prof_img">
+                                    {% endfor %}
+                                {% else %}
+                                <img src="{% static 'images/profile.jpg' %}">
+                                {% endif %}
+                                </label> {{profile_update_form.user_profile_img}}
+                                <div class="profile_image_bottom_div py-2 mt-2">
+                                    <small id="imageHelp" class="form-text m-0">
+                                        <i>Click on the image to upload new one.</i> 
+                                        <i class="fal fa-info-circle fa-lg"></i>
+                                    </small>
+                                </div>
+                            </div>
                         </div>
                     </form>
-                    {% else %}
-                    <div class="error-msg-div my-5 text-center">
-                        <p class="text-danger mb-4"><i class="fal fa-exclamation-triangle fa-5x"></i></p>
-                        <p class="text-danger font-opensans">You are not logged in. Please log in <a href="/">here</a>.</p>
-                    </div>
-                    {% endif %}
                 </div>
-                {% if user.is_authenticated and user.user_position == 'lecturer' %}
                 <br>
                 <div class="container px-0">
                     <div class="row">
-                        <div class="col-md-8 left-padding-zero-cols custom-left-padding-cols">
+                        <div class="col-md-4 non-padding-cols">
+                            <div class="section-div container px-4 py-3 font-opensans" id="advanced-option-div">
+                                <div class="advanced-option-link">
+                                    <span class="span1"><i class="fal fa-bars"></i>&nbsp;&nbsp; <span class="span1-text">Show more options</span></span>
+                                    <span class="span2" style="float: right;"><i class="fal fa-chevron-down"></i></span>
+                                </div>
+                                <div class="advanced-option-div-content">
+                                    <hr>
+                                    <div class="section-sub-title font-opensans">
+                                        <h6><b>Change Current Password</b></h6>
+                                    </div>
+                                    <div class="horizontal-divider-common my-3"></div>
+                                    <form action="." method="POST">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <input class="form-control form-control-sm change-passwords" type="password" name="old_password" placeholder="Current Password">
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control form-control-sm change-passwords" type="password" name="new_password" placeholder="New Password">
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control form-control-sm change-passwords" type="password" name="conf_new_password" placeholder="Confirm New Password">
+                                        </div>
+                                        <div class="contact100-form-checkbox my-3">
+                                            <input class="input-checkbox100" id="change-passwords-show" type="checkbox" name="change-passwords-show">
+                                            <label class="label-checkbox100" for="change-passwords-show">Show Passwords</label>
+                                        </div>
+                                        <input type="hidden" name="change_user_id" value="{{user.id}}">
+                                        <div class="mb-2">
+                                            <input type="submit" name="password_change_btn" class="btn px-4 submit_btn" value="Change Password" />
+                                        </div>
+                                    </form>
+                                    <small style="color: red;"><b>NOTE :</b> System will automatically logout you after successfully changed your password for security purposes.</small>
+                                </div>
+                            </div>
+                            {% if user.is_authenticated and user.user_position == 'lecturer' %}
+                            <br>
+                            <div class="section-div container p-4">
+                                <div class="section-sub-title font-opensans">
+                                    <h6><b>Current Lecture Schedule</b></h6>
+                                </div>
+                                <div class="horizontal-divider-common mt-3 mb-4"></div>
+                                {% if schedule_info == "0" %}
+                                <span class="font-opensans text-danger" style="font-size: 13px;">
+                                    <i class="fal fa-times-circle fa-lg"></i>&nbsp; You don't have any lecture schedule yet.
+                                </span> {% else %}
+                                <div class="table-section">
+                                    <div class="generated-result align-items-center p-3">
+                                        <div class="result_text">
+                                            <div class="row align-items-center">
+                                                <div class="col-md-9 non-padding-cols">Schedule</div>
+                                                <div class="col-md-3 non-padding-cols text-right"><button type="button" class="btn btn-sm option-btn font-opensans" data-toggle="modal" data-target="#staticBackdrop" title="View"><i class="fal fa-external-link fa-lg"></i></button></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% if user.is_authenticated and user.user_position == 'lecturer' %}
+                        <br>
+                        <div class="col-md-8 right-padding-zero-cols">
                             <div class="section-div container p-4">
                                 <div class="section-sub-title font-opensans">
                                     <h6><b>Assigned Subjects</b></h6>
@@ -198,32 +256,20 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4 right-padding-zero-cols custom-right-padding-cols">
-                            <div class="section-div container p-4">
-                                <div class="section-sub-title font-opensans">
-                                    <h6><b>Current Lecture Schedule</b></h6>
-                                </div>
-                                <div class="horizontal-divider-common mt-3 mb-4"></div>
-                                {% if schedule_info == "0" %}
-                                <span class="font-opensans text-danger" style="font-size: 13px;">
-                                    <i class="fal fa-times-circle fa-lg"></i>&nbsp; You don't have any lecture schedule yet.
-                                </span> {% else %}
-                                <div class="table-section">
-                                    <div class="generated-result align-items-center p-3">
-                                        <div class="result_text">
-                                            <div class="row align-items-center">
-                                                <div class="col-md-9 non-padding-cols">Schedule</div>
-                                                <div class="col-md-3 non-padding-cols text-right"><button type="button" class="btn btn-sm option-btn font-opensans" data-toggle="modal" data-target="#staticBackdrop" title="View"><i class="fal fa-external-link fa-lg"></i></button></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {% endif %}
-                            </div>
-                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% else %}
+                <div class="section-div container p-4">
+                    <div class="error-msg-div my-5 text-center">
+                        <p class="text-danger mb-4"><i class="fal fa-exclamation-triangle fa-5x"></i></p>
+                        <p class="text-danger font-opensans">You are not logged in. Please log in <a href="/">here</a>.</p>
                     </div>
                 </div>
                 {% endif %}
+            </div>
+            <div class="copyright-div">
+                <p>Copyright &copy; 2020 Department of Computing & Information Systems. All Rights Reserved.</p>
             </div>
         </div>
     </div>

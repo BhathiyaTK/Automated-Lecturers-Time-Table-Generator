@@ -32,55 +32,48 @@
         <div class="container-login100">
             <div class="wrap-login100">
                 <div class="login100-form-div">
-                    <span class="login100-form-title pb-4">
-                        <i class="fad fa-user-circle fa-4x" style="color: #6675df;"></i>
-                    </span>
-                    <form class="login100-form validate-form" action="." method="POST">
-                        {% csrf_token %}
-                        <div class="wrap-input100 validate-input" data-validate="Username is required">
-                            <input class="input100" type="text" name="username" placeholder="Username">
-                        </div>
-                        <div class="wrap-input100 validate-input" data-validate="Password is required">
-                            <input class="input100" type="password" name="password" placeholder="Password">
-                        </div>
-                        <div class="flex-sb-m w-full p-t-3 p-b-32">
-                            <div class="contact100-form-checkbox">
-                                <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
-                                <label class="label-checkbox100" for="ckb1">
-                                    Remember me
-                                </label>
+                    <div class="login100-form-div-content">
+                        <span class="login100-form-title pb-4">
+                            <i class="fad fa-user-circle fa-4x" style="color: #6675df;"></i>
+                        </span>
+                        <form class="login100-form validate-form" action="." method="POST">
+                            {% csrf_token %}
+                            <div class="wrap-input100 validate-input" data-validate="Username is required">
+                                <input class="input100" type="text" name="username" placeholder="Username">
                             </div>
-                            <div>
-                                <a href="../verify" class="txt1">
-                                    Forgot Password?
-                                </a>
+                            <div class="wrap-input100 validate-input" data-validate="Password is required">
+                                <input class="input100" type="password" name="password" placeholder="Password">
                             </div>
+                            <br>
+                            <div class="container-login100-form-btn mb-4">
+                                <input class="login100-form-btn" type="submit" value="Login">
+                            </div>
+                        </form>
+                        {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %} {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                            <div class="alert {{message.tags}} alert-dismissable mb-4" role="alert" style="font-size: 13px; font-family: 'Open Sans';">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <i class="far fa-check-circle fa-lg"></i>&nbsp; {{message}}
+                            </div>
+                            {% else %}
+                            <div class="alert {{message.tags}} alert-dismissable mb-4" role="alert" style="font-size: 13px; font-family: 'Open Sans';">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <i class="far fa-times-circle fa-lg"></i>&nbsp; {{message}}
+                            </div>
+                            {% endif %} {% endfor%}
+                        </ul>
+                        {% endif %}
+                        <div class="text-center">
+                            <a href="../verify" class="txt3">Forgot Password?</a>
                         </div>
-                        <div class="container-login100-form-btn mb-4">
-                            <input class="login100-form-btn" type="submit" value="Login">
-                        </div>
-                    </form>
-                    {% if messages %}
-                    <ul class="messages">
-                        {% for message in messages %} {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-                        <div class="alert {{message.tags}} alert-dismissable mb-4" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <i class="far fa-check-circle fa-lg"></i>&nbsp; <b>{{message}}</b>
-                        </div>
-                        {% else %}
-                        <div class="alert {{message.tags}} alert-dismissable mb-4" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <i class="far fa-times-circle fa-lg"></i>&nbsp; <b>{{message}}</b>
-                        </div>
-                        {% endif %} {% endfor%}
-                    </ul>
-                    {% endif %}
+                    </div>
                 </div>
-                <div class="login100-more" style="background-color:rgb(59, 88, 152);background-image: url('../static/images/login.png'); ">
+                <div class="login100-more" style="background-color:#3b5898;background-image: url('../static/images/login.png'); ">
                     <div class="login-title">
                         <h2 class="p-5">Automated Lecture Schedules Generator</h2>
                     </div>

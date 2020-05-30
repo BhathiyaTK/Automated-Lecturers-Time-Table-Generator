@@ -41,6 +41,7 @@ def verify(request):
                 'lecturer_name', flat=True))).strip("['']")
 
             if (verified_email == verify_email) and (verified_lec_code == verify_lec_code) and (verified_lec_name == verify_lec_name):
+                request.session['reset_lec_code'] = verify_lec_code
                 return redirect('reset')
             else:
                 messages.error(request, 'Verification failed!')
@@ -59,6 +60,9 @@ def reset(request):
         else:
             if reset_password == reset_conf_password:
                 if len(reset_password)>=6 and len(reset_conf_password)>=6:
+                    User.objects.filter(Q(lecturer_code=request.session['reset_lec_code'])).update(
+                        password = make_password(reset_password)
+                    )
                     messages.success(request, 'Password changed successfully!')
                     return redirect('reset')
                 else:
@@ -68,7 +72,11 @@ def reset(request):
                 messages.error(request, 'Passwords are different!')
                 return redirect('reset')
     else:
-        return render(request, 'reset.html')
+        if 'reset_lec_code' in request.session:
+            return render(request, 'reset.html')
+        else:
+            return render(request, '401.html')
+        
 
 # Login function
 def userLogin(request):
@@ -81,11 +89,9 @@ def userLogin(request):
         if user is not None:
             request.session['logged_username'] = user.username
             login(request, user)
-            print('------------- User logged in successfully -------------')
             return redirect('dashboard')          
         else:
-            messages.error(request, 'Invalid user login creditials!')
-            print('------------- Not valid user credentials -------------')
+            messages.error(request, 'Invalid user login credentials!')
             return redirect('/')
     else:
         return render(request, 'index.html')
@@ -95,7 +101,6 @@ def userLogout(request):
     try:
         del request.session['logged_username']
         logout(request)
-        print('------------- User logged out successfully -------------')
     except:
         pass
     return redirect('/')
@@ -562,7 +567,39 @@ def profile(request):
             print('------------------ User data updating failed -----------------')
             messages.error(request, 'Schedule deleting failed! Something went wrong. Try again.')
             return redirect('profile')
+    
+    elif 'password_change_btn' in request.POST:
+        if request.method == 'POST':
+            change_id = request.POST['change_user_id']
+            old_password = request.POST['old_password']
+            new_password = request.POST['new_password']
+            new_conf_password = request.POST['conf_new_password']
 
+            current_user = User.objects.filter(id=change_id)
+            current_password = str(list(current_user.values_list('password', flat=True))).strip("['']")
+            if old_password == '' or new_password == '' or new_conf_password == '':
+                messages.error(request, 'All the fields are required!')
+                return redirect('profile')
+            else:
+                if check_password(old_password, current_password):
+                    if new_password == new_conf_password:
+                        if len(new_password) >= 6 and len(new_conf_password) >= 6:
+                            User.objects.filter(Q(id=change_id)).update(password=make_password(new_password))
+                            messages.success(request, 'Password changed successfully!')
+                            return redirect('profile')
+                        else:
+                            messages.error(request, 'Passwords must have at least 6 characters!')
+                            return redirect('profile')
+                    else:
+                        messages.error(request, 'Passwords are different!')
+                        return redirect('profile')
+                else:
+                    messages.error(request, 'Verification failed! Current password is not correct.')
+                    return redirect('profile')
+        else:
+            messages.error(request, 'Password change process failed! Something went wrong. Try again.')
+            return redirect('profile')
+    
     else:
         user_update_form = UserUpdateForm(instance=request.user)
         profile_update_form = ProfileUpdateForm(instance=Profiles)

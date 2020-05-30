@@ -21,7 +21,7 @@ USER_ROLES = (
     ('guest', 'Guest'),
 )
 TITLES = (
-    ('', '---- Choose ----'),
+    ('', '--- Choose ---'),
     ('Prof', 'Prof'),
     ('Dr', 'Dr'),
     ('Mr', 'Mr'),

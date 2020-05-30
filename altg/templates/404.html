@@ -1,11 +1,10 @@
-<!-- Website main template structure -->
 {% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title>Time-Table Generator</title>
+    <title></title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Bhathiya Kariyawasam">
@@ -18,39 +17,42 @@
     <link rel="stylesheet" type="text/css" href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'fonts/Linearicons-Free-v1.0.0/icon-font.min.css' %}">
     <!-- Vendor CSS-->
-    <link rel="stylesheet" type="text/css" href="{% static 'vendor/datepicker/daterangepicker.css' %}" media="all">
     <link rel="stylesheet" type="text/css" href="{% static 'vendor/animate/animate.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'vendor/css-hamburgers/hamburgers.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'vendor/animsition/css/animsition.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'vendor/select2/select2.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'vendor/daterangepicker/daterangepicker.css' %}">
-    <!-- Main CSS -->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/global.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/util.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 </head>
 
-<body>
-    {% block jquery %}
+<body style="background-color: #3b5898;">
+
+    <div class="container text-center">
+        <div class="img404-div">
+            <div class="img404-div-content">
+                <div class="alert404-div mb-3">
+                    <h4 class="mb-2"><i class="far fa-exclamation-triangle"></i>&nbsp; <b>Page Not Found!</b></h4>
+                    <p>It seems that the url you looking for currently unavailable or changed.</p>
+                </div>
+                <img src="{% static 'images/404_error.png' %}" alt="404 - Page not found" width="100%">
+            </div>
+        </div>
+    </div>
+
     <!-- Jquery JS-->
-    <script type="text/javascript" src="{% static 'vendor/jquery/jquery-3.4.1.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'vendor/bootstrap/js/popper.min.js' %}"></script>
+    <script src="{% static 'vendor/jquery/jquery-3.4.1.min.js' %}"></script>
     <!-- Vendor JS-->
-    <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'vendor/animsition/js/animsition.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/popper.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'vendor/select2/select2.min.js' %}"></script>
     <script src="{% static 'vendor/daterangepicker/moment.min.js' %}"></script>
     <script src="{% static 'vendor/daterangepicker/daterangepicker.js' %}"></script>
     <script src="{% static 'vendor/countdowntime/countdowntime.js' %}"></script>
-    <!-- Chart.js Plugins -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" />
-    <!-- jsPDF & AutoTable js plugins -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.3/jspdf.plugin.autotable.min.js"></script>
     <!-- Main JS-->
-    <script src="{% static 'js/global.js' %}"></script>
-    {% endblock jquery %} {% block content %} {% endblock content %}
+    <script src="{% static 'js/main.js' %}"></script>
+
 </body>
-<div id="se-pre-con"></div>
 
 </html>

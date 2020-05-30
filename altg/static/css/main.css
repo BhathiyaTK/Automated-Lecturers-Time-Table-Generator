@@ -210,6 +210,54 @@ iframe {
 /*//////////////////////////////////////////////////////////////////
 [ utility ]*/
 
+.img401-div,
+.img404-div {
+    position: relative;
+    height: 100vh;
+    display: block;
+}
+
+.img401-div-content,
+.img404-div-content {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    height: 20%;
+    width: 50%;
+    margin: -15% 0 0 -25%;
+}
+
+.alert401-div,
+.alert404-div {
+    padding: 15px 20px;
+    font-size: 13px;
+    font-family: 'Open Sans';
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    box-shadow: 1px 4px 13px 1px rgba(0, 0, 0, 0.2);
+}
+
+.alert401-div h4,
+.alert404-div h4 {
+    color: #ff0707;
+}
+
+.alert401-div p,
+.alert404-div p {
+    font-family: 'Open Sans';
+}
+
+.alert401-div p a,
+.alert404-div p a {
+    color: #6675df;
+    font-family: "Open Sans";
+}
+
+.alert401-div p a:hover,
+.alert404-div p a:hover {
+    border-bottom: 1px solid #6675df;
+}
+
 
 /*==================================================================
 [ Text ]*/
@@ -351,20 +399,41 @@ iframe {
 /*==================================================================
 [ Form ]*/
 
-.login100-form-div {
+.login100-form-div,
+.reset100-form-div,
+.verify100-form-div {
+    position: relative;
     width: 560px;
     min-height: 100vh;
     display: block;
     background-color: #f7f7f7;
-    padding: 120px 100px 55px;
 }
 
-.reset100-form-div {
-    width: 560px;
-    min-height: 100vh;
-    display: block;
-    background-color: #f7f7f7;
-    padding: 80px 100px 55px;
+.login100-form-div .login100-form-div-content {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    height: 30%;
+    width: 65%;
+    margin: -15% 0 0 -32.5%;
+}
+
+.verify100-form-div .verify100-form-div-content {
+    position: absolute;
+    top: 27%;
+    left: 50%;
+    height: 40%;
+    width: 65%;
+    margin: -15% 0 0 -32.5%;
+}
+
+.reset100-form-div .reset100-form-div-content {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    height: 40%;
+    width: 65%;
+    margin: -15% 0 0 -32.5%;
 }
 
 .login100-form-title {
@@ -598,6 +667,10 @@ input.input100 {
 
 .login100-form-btn:hover {
     background: #333333;
+}
+
+.close {
+    line-height: 0.8;
 }
 
 
