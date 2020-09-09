@@ -1,0 +1,417 @@
+/* ==========================================================================
+   #Pre-loaders
+   ========================================================================== */
+
+#se-pre-con {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: url(../images/Preloader.gif) center no-repeat #fff;
+    display: block;
+    transition: all 1s;
+}
+
+
+/* ==========================================================================
+   #FONT
+   ========================================================================== */
+
+.font-robo {
+    font-family: "Roboto", "Arial", "Helvetica Neue", sans-serif;
+}
+
+.font-poppins {
+    font-family: "Poppins", "Arial", "Helvetica Neue", sans-serif;
+}
+
+.font-opensans {
+    font-family: "Open Sans";
+}
+
+@font-face {
+    font-family: Poppins-Regular;
+    src: url('../fonts/poppins/Poppins-Regular.ttf');
+}
+
+@font-face {
+    font-family: Poppins-Medium;
+    src: url('../fonts/poppins/Poppins-Medium.ttf');
+}
+
+@font-face {
+    font-family: Poppins-Bold;
+    src: url('../fonts/poppins/Poppins-Bold.ttf');
+}
+
+@font-face {
+    font-family: Poppins-SemiBold;
+    src: url('../fonts/poppins/Poppins-SemiBold.ttf');
+}
+
+@font-face {
+    font-family: Montserrat-Bold;
+    src: url('../fonts/montserrat/Montserrat-Bold.ttf');
+}
+
+@font-face {
+    font-family: Montserrat-SemiBold;
+    src: url('../fonts/montserrat/Montserrat-SemiBold.ttf');
+}
+
+@font-face {
+    font-family: Montserrat-Regular;
+    src: url('../fonts/montserrat/Montserrat-Regular.ttf');
+}
+
+
+/* ==================================================================
+    # Common styles 
+    ================================================================= */
+
+.row {
+    margin: 0 !important;
+}
+
+.form-group {
+    margin-bottom: 0.5rem;
+}
+
+.non-padding-cols {
+    padding: 0 !important;
+}
+
+.right-padding-zero-cols {
+    padding-right: 0 !important;
+    padding-left: 20px !important;
+}
+
+.left-padding-zero-cols {
+    padding-right: 20px !important;
+    padding-left: 0 !important;
+}
+
+hr {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+#main-panel {
+    background-color: rgba(0, 0, 0, 0.035);
+}
+
+.section-div {
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 7px;
+    background-color: rgb(255, 255, 255);
+}
+
+.horizontal-divider-common {
+    border-top: 2px solid rgba(94, 135, 224, 0.781);
+}
+
+#section-table th,
+#section-table td {
+    border: 1px solid rgb(197, 197, 197) !important;
+    vertical-align: middle;
+    font-family: "Open Sans";
+}
+
+#section-table thead {
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.06);
+}
+
+#section-table th {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+#section-table td {
+    font-size: 13px;
+}
+
+h5 {
+    font-size: 1.05rem;
+}
+
+.modal-header .close {
+    line-height: 0.7;
+    margin: -0.9rem -1rem -1rem auto;
+}
+
+.modal.fade .modal-dialog {
+    -webkit-transform: translate(0);
+    -moz-transform: translate(0);
+    transform: translate(0);
+}
+
+
+/* ==================================================================
+    # Side Panel Styles
+    ================================================================= */
+
+#side-panel {
+    background: #3B5998;
+    height: 100vh;
+    padding: 2rem 1rem;
+}
+
+.profile-img-div,
+.signout-btn-div,
+.signin-btn-div {
+    text-align: center;
+}
+
+.profile-img-div img {
+    width: 60%;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+}
+
+.welcome-text {
+    font-family: Open Sans;
+    font-weight: 300;
+    font-size: 0.85em;
+    color: #dccccc;
+}
+
+.username {
+    font-family: "Open Sans";
+    font-weight: 500;
+    color: #fff;
+    font-size: 1.32em;
+}
+
+.signout-btn-div,
+.signin-btn-div {
+    margin-top: 20px;
+}
+
+.signout-btn-div a {
+    background: #FF4B5A;
+    color: #fff;
+    font-family: "Open Sans";
+    transition: 0.2s;
+}
+
+.signin-btn-div a {
+    background: #0fb42b;
+    color: #fff;
+    font-family: "Open Sans";
+    transition: 0.2s;
+}
+
+.signout-btn-div a:hover,
+.signin-btn-div a:hover {
+    mix-blend-mode: normal;
+    box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.25);
+}
+
+.menu-links {
+    list-style: none;
+    text-align: left;
+    padding: 0;
+}
+
+.menu-links li {
+    line-height: 30px;
+    padding: 0 20px;
+    margin-bottom: 10px;
+    border-radius: 7px;
+    transition: 0.2s;
+}
+
+.menu-links a {
+    color: rgba(255, 255, 255, 0.7);
+    font-family: "Open Sans";
+    letter-spacing: 0.5px;
+    font-size: 13.5px;
+    outline: none;
+    border: none;
+}
+
+.menu-links li:hover {
+    /* padding-left: 25px; */
+    background: #5c86e0;
+    /* border-left: 7px solid #fff; */
+}
+
+.menu-links li:hover a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.dropdown-btn {
+    text-decoration: none;
+    font-size: 13.5px;
+    font-family: "Open Sans";
+    letter-spacing: 0.5px;
+    color: rgba(255, 255, 255, 0.7);
+    display: block;
+    border: 0;
+    background: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    outline: 0;
+    line-height: 35px;
+    padding: 0 20px;
+    margin-bottom: 10px;
+    border-radius: 7px;
+    transition: 0.2s;
+}
+
+.dropdown-btn:hover {
+    background: rgba(94, 135, 224, 0.4);
+    color: white;
+}
+
+.dropdown-container {
+    display: none;
+    border-radius: 7px;
+    margin-bottom: 15px;
+    background-color: #fff;
+    padding: 5px;
+    transition: 0.2s ease-in-out;
+}
+
+.dropdown-container li {
+    line-height: 30px;
+    padding: 0 20px;
+    margin: 3px;
+    border-radius: 7px;
+    transition: 0.2s;
+}
+
+.dropdown-container li a {
+    color: black;
+    font-size: 12.5px;
+    transition: 0.2s;
+}
+
+.dropdown-container li:hover a {
+    color: #fff;
+}
+
+.active {
+    background: rgba(94, 135, 224, 0.4);
+    color: white;
+}
+
+.active-link {
+    background: rgba(94, 135, 224, 0.6);
+}
+
+.active-link a {
+    color: #fff;
+}
+
+
+/* ==================================================================
+    # Main Panel Styles
+    ================================================================= */
+
+#main-panel {
+    height: 100vh;
+    overflow-y: scroll;
+}
+
+.main-panel-title h4 {
+    font-family: "Open Sans";
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+}
+
+label {
+    font-family: "Open Sans";
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.section-div form .submit_btn {
+    background: #3B5998;
+    color: #fff;
+    font-family: "Open Sans";
+    font-weight: 600;
+    transition: 0.2s;
+    font-size: 15px;
+}
+
+.section-div .option-btn {
+    background: #3b5998;
+    color: #fff;
+    transition: 0.2s;
+}
+
+.section-div form .submit_btn:hover,
+.section-div .option-btn:hover {
+    mix-blend-mode: normal;
+    box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.25);
+}
+
+.messages {
+    margin: 0;
+    padding: 0;
+}
+
+.alert {
+    margin: 0;
+    font-family: 'Open Sans';
+}
+
+
+/* ==================================================================
+    # Home Page Styles
+    ================================================================= */
+
+.table-section {
+    background-color: rgb(255, 255, 255);
+}
+
+.result-icon {
+    color: #3B5998;
+}
+
+.result_text {
+    font-family: 'Open Sans';
+}
+
+.result_lec_name {
+    font-weight: 600;
+}
+
+
+/* ==================================================================
+    # Profile Page styles 
+    ================================================================= */
+
+#profile-section img {
+    width: 100%;
+    border-radius: 7px;
+}
+
+.profile_image input {
+    display: none;
+}
+
+.profile_image img {
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.profile_image img:hover {
+    opacity: 0.7;
+}
+
+.profile_image_bottom_div {
+    background: rgb(235, 228, 228);
+    /* margin: 0 2px; */
+    border-radius: 7px;
+}
+
+
+/* ==================================================================
+    # Lecturers Page styles 
+    ================================================================= */

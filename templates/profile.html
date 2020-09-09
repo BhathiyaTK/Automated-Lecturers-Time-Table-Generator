@@ -1,0 +1,341 @@
+{% extends 'base.html' %} {% block content %} {% load static %}
+<section>
+    <div class="row">
+        <div class="col-2 mh-100" id="side-panel">
+            {% if user.is_authenticated %}
+            <div class="profile-img-div fluid">
+                {% if profile_photo %} {% for photo in profile_photo %}
+                <img src="../media/{{photo.user_profile_img}}" alt="Your Profile Image"> {% endfor %} {% else %}
+                <img src="{% static 'images/profile.jpg' %}" alt="Profile Image"> {% endif %}
+                <p class="welcome-text pb-0 mb-0">Hi, welcome back!</p>
+                <p class="username">{{user.user_title}}. {{user.first_name}}</p>
+            </div>
+            <div class="signout-btn-div fluid mb-4">
+                <a href="../logout" class="btn btn-sm"><i class="fal fa-power-off"></i>&nbsp Log out</a>
+            </div>
+            {% else %}
+            <div class="profile-img-div fluid">
+                <img src="{% static 'images/profile.jpg' %}" alt="Profile Image">
+                <p class="welcome-text pb-0 mb-0">Please log in to continue.</p>
+            </div>
+            <div class="signin-btn-div fluid mb-4">
+                <a href="/" class="btn btn-sm"><i class="fal fa-sign-in-alt"></i>&nbsp Log in</a>
+            </div>
+            {% endif %}
+            <hr class="light-divider">
+            <ul class="menu-links">
+                {% if user.is_authenticated %}
+                <li><a href="../dashboard"><i class="fal fa-tachometer-alt-fast"></i>&nbsp&nbsp Dashboard</a></li>
+                <li><a href="../schedule"><i class="fal fa-calendar-alt"></i>&nbsp&nbsp Schedule</a></li>
+                {% if user.is_superuser %}
+                <button class="dropdown-btn"><i class="fal fa-sliders-h"></i>&nbsp&nbsp Manage<span class="float-right"><i class="fal fa-chevron-down"></i></span></button>
+                <div class="dropdown-div">
+                    <div class="dropdown-container">
+                        <li><a href="../hall">&nbsp;<i class="fal fa-building fa-lg"></i>&nbsp;&nbsp; Lecture Halls</a></li>
+                        <li><a href="../subject">&nbsp;<i class="fal fa-book fa-lg"></i>&nbsp;&nbsp; Subjects</a></li>
+                        <li><a href="../users"><i class="fal fa-users fa-lg"></i>&nbsp;&nbsp; Users</a></li>
+                    </div>
+                </div>
+                {% endif %}
+                <li class="active-link"><a href="."><i class="fal fa-user-alt"></i>&nbsp&nbsp My Account</a></li class="active-link">
+                {% endif %}
+                <li><a href="../help"><i class="fal fa-question-circle"></i>&nbsp&nbsp Help</a></li>
+            </ul>
+        </div>
+        <div class="col-10" id="main-panel">
+            <div class="main-panel-title py-3 pl-4 pr-3">
+                <div class="row justify-content-between">
+                    <div class="col-4 non-padding-cols">
+                        <h4>User Profile</h4>
+                        <small class="text-muted">Customize your profile details</small>
+                    </div>
+                    <div class="col-2 text-center right-padding-zero-cols">
+                        {% if user.is_authenticated %}
+                        <div class="alert alert-info px-0 mt-1 user_role_alert">
+                            {% if user.is_superuser %}
+                            <strong>Your Role : ADMIN </strong> {% else %}
+                            <strong>Your Role : GUEST </strong> {% endif %}
+                        </div>
+                        {% else %}
+                        <div class="alert alert-danger px-0 mt-1 user_role_alert">
+                            Please log in to continue
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="main-panel-content px-5 py-4">
+                {% if user.is_authenticated %}
+                <div class="section-div container p-4" id="profile-section">
+                    {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %} {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                        <div class="alert {{message.tags}} alert-dismissable mb-4" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                            <i class="far fa-check-circle fa-lg"></i>&nbsp; <b>{{message}}</b>
+                        </div>
+                        {% else %}
+                        <div class="alert {{message.tags}} alert-dismissable mb-4" role="alert" style="font-size: 13.5px; font-family: 'Open Sans';">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                            <i class="far fa-times-circle fa-lg"></i>&nbsp; <b>{{message}}</b>
+                        </div>
+                        {% endif %} {% endfor%}
+                    </ul>
+                    {% endif %}
+                    <div class="section-sub-title font-opensans">
+                        <h6><b>Your Personal Details</b></h6>
+                    </div>
+                    <div class="horizontal-divider-common mt-3 mb-4"></div>
+                    <form action="." method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-8 non-padding-cols">
+                                <div class="row">
+                                    <div class="col-md-2 left-padding-zero-cols">
+                                        <div class="form-group">
+                                            <label for="user_title">Title</label>{{user_update_form.user_title}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5 left-padding-zero-cols">
+                                        <div class="form-group">
+                                            <label for="first_name">First Name</label>{{user_update_form.first_name}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5 non-padding-cols">
+                                        <div class="form-group">
+                                            <label for="last_name">Last Name</label>{{user_update_form.last_name}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 non-padding-cols">
+                                        <div class="form-group">
+                                            <label for="first_name">Name with Initials</label>{{user_update_form.lecturer_name}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 non-padding-cols">
+                                        <div class="form-group">
+                                            <label for="email">Email</label>{{user_update_form.email}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 left-padding-zero-cols">
+                                        <div class="form-group">
+                                            <label for="username">Lecturer Code</label>{{user_update_form.lecturer_code}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 non-padding-cols">
+                                        <div class="form-group">
+                                            <label for="username">Username</label>{{user_update_form.username}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="save-btn-div text-left">
+                                    {{user_update_form.id}}
+                                    <input type="submit" name="lecturer_bio_update_btn" class="btn px-4 submit_btn" value="Save Changes" />
+                                </div>
+                            </div>
+                            <div class="col-md-4 right-padding-zero-cols profile_image text-center" data-toggle="tooltip" data-placement="bottom" title="Upload yourself centered image to make your profile image more better">
+                                <label for="id_user_profile_img" class="m-0">
+                                {% if profile_photo %}
+                                    {% for photo in profile_photo %}
+                                        <img src="../media/{{photo.user_profile_img}}" id="prof_img">
+                                    {% endfor %}
+                                {% else %}
+                                <img src="{% static 'images/profile.jpg' %}">
+                                {% endif %}
+                                </label> {{profile_update_form.user_profile_img}}
+                                <div class="profile_image_bottom_div py-2 mt-2">
+                                    <small id="imageHelp" class="form-text m-0">
+                                        <i>Click on the image to upload new one.</i> 
+                                        <i class="fal fa-info-circle fa-lg"></i>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <br>
+                <div class="container px-0">
+                    <div class="row">
+                        <div class="col-md-4 non-padding-cols">
+                            <div class="section-div container px-4 py-3 font-opensans" id="advanced-option-div">
+                                <div class="advanced-option-link">
+                                    <span class="span1"><i class="fal fa-bars"></i>&nbsp;&nbsp; <span class="span1-text">Show more options</span></span>
+                                    <span class="span2" style="float: right;"><i class="fal fa-chevron-down"></i></span>
+                                </div>
+                                <div class="advanced-option-div-content">
+                                    <hr>
+                                    <div class="section-sub-title font-opensans">
+                                        <h6><b>Change Current Password</b></h6>
+                                    </div>
+                                    <div class="horizontal-divider-common my-3"></div>
+                                    <form action="." method="POST">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <input class="form-control form-control-sm change-passwords" type="password" name="old_password" placeholder="Current Password">
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control form-control-sm change-passwords" type="password" name="new_password" placeholder="New Password">
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control form-control-sm change-passwords" type="password" name="conf_new_password" placeholder="Confirm New Password">
+                                        </div>
+                                        <div class="contact100-form-checkbox my-3">
+                                            <input class="input-checkbox100" id="change-passwords-show" type="checkbox" name="change-passwords-show">
+                                            <label class="label-checkbox100" for="change-passwords-show">Show Passwords</label>
+                                        </div>
+                                        <input type="hidden" name="change_user_id" value="{{user.id}}">
+                                        <div class="mb-2">
+                                            <input type="submit" name="password_change_btn" class="btn px-4 submit_btn" value="Change Password" />
+                                        </div>
+                                    </form>
+                                    <small class="text-danger"><b>NOTE :</b> System will automatically logout you after successfully changed your password for security purposes.</small>
+                                </div>
+                            </div>
+                            {% if user.is_authenticated and user.user_position == 'lecturer' %}
+                            <br>
+                            <div class="section-div container p-4">
+                                <div class="section-sub-title font-opensans">
+                                    <h6><b>Current Lecture Schedule</b></h6>
+                                </div>
+                                <div class="horizontal-divider-common mt-3 mb-4"></div>
+                                {% if schedule_info == "0" %}
+                                <span class="font-opensans text-danger" style="font-size: 13px;">
+                                    <i class="fal fa-times-circle fa-lg"></i>&nbsp; You don't have any lecture schedule yet.
+                                </span> {% else %}
+                                <div class="table-section">
+                                    <div class="generated-result align-items-center p-3">
+                                        <div class="result_text">
+                                            <div class="row align-items-center">
+                                                <div class="col-md-9 non-padding-cols">Schedule</div>
+                                                <div class="col-md-3 non-padding-cols text-right"><button type="button" class="btn btn-sm option-btn font-opensans" data-toggle="modal" data-target="#staticBackdrop" title="View"><i class="fal fa-external-link fa-lg"></i></button></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% if user.is_authenticated and user.user_position == 'lecturer' %}
+                        <br>
+                        <div class="col-md-8 right-padding-zero-cols">
+                            <div class="section-div container p-4">
+                                <div class="section-sub-title font-opensans">
+                                    <h6><b>Assigned Subjects</b></h6>
+                                </div>
+                                <div class="horizontal-divider-common my-3"></div>
+
+                                {% if lecturers_subjects %}
+                                <div class="table-div">
+                                    <table class="table table-bordered table-hover table-sm" id="schedule-table">
+                                        <thead class="text-center">
+                                            <th scope="col">Subject Code</th>
+                                            <th scope="col">Subject Name</th>
+                                            <th scope="col">Year</th>
+                                            <th scope="col">Semester</th>
+                                        </thead>
+                                        <tbody class="bg-light text-center">
+                                            {% for subjects in lecturers_subjects %}
+                                            <tr>
+                                                <td>{{subjects.subject_code}}</td>
+                                                <td class="text-left px-3">{{subjects.subject_name}}</td>
+                                                <td>{{subjects.related_batch}}</td>
+                                                <td>{{subjects.semester}}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {% else %}
+                                <span class="font-opensans text-danger" style="font-size: 13px;">
+                                    <i class="fal fa-times-circle fa-lg"></i>&nbsp; You haven't assigned for any subject yet.
+                                </span> {% endif %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% else %}
+                <div class="section-div container p-4">
+                    <div class="error-msg-div my-5 text-center">
+                        <p class="text-danger mb-4"><i class="fal fa-exclamation-triangle fa-5x"></i></p>
+                        <p class="text-danger font-opensans">You are not logged in. Please log in <a href="/">here</a>.</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            <div class="copyright-div">
+                <p>Copyright &copy; 2020 Department of Computing & Information Systems. All Rights Reserved.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--Time-Table Modal -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header px-4">
+                <h5 class="modal-title font-opensans" id="staticBackdropLabel"><i class="fal fa-calendar-alt fa-lg"></i>&nbsp;&nbsp;&nbsp;Your Lecture schedule</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fal fa-times-circle text-danger"></i>
+                </button>
+            </div>
+            <div class="modal-body px-4">
+                <div class="table-div" id="schedule-table-div">
+                    <table class="table table-bordered table-hover table-sm" id="schedule-table">
+                        <thead class="text-center">
+                            <th scope="col">#</th>
+                            <th scope="col">Subject (Subject code, no. of students)</th>
+                            <th scope="col">Lecture Hall</th>
+                            <th scope="col">Date & Time</th>
+                        </thead>
+                        <tbody class="bg-light text-center">
+                            {% for schedule in schedule_info %} {{schedule|safe}} {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="custom-modal-footer px-4 py-3">
+                <div class="row">
+                    <div class="col-md-6 text-left non-padding-cols">
+                        <input type="hidden" name="schedule_owner_name" id="schedule_owner_name" value="{{user.user_title}}. {{user.lecturer_name}}">
+                        <button type="button" id="schedule_download_btn" class="btn btn-sm option-btn font-opensans" title="Download Schedule"><i class="fal fa-download fa-lg"></i>&nbsp;&nbsp;Download</button>
+                    </div>
+                    <div class="col-md-6 text-right non-padding-cols">
+                        <form action="." method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="schedule_owner" value="{{user.lecturer_name}}">
+                            <button type="submit" name="schedule_delete_btn" class="btn btn-sm delete-btn font-opensans" title="Delete Schedule"><i class="fal fa-trash-alt fa-lg"></i>&nbsp;&nbsp;Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('prof_img').setAttribute('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    document.getElementById('id_user_profile_img').addEventListener("change", function() {
+        readURL(this);
+    });
+</script>
+{% endblock content %}
