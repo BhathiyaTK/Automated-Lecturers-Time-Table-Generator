@@ -24,6 +24,4 @@ generator developed using custom-created python-based genetic algorithm.
 - JQuery
 - PostgreSQL (as Relational-DBMS)
 
-*NOTE: Curently this is only available for a single department of the faculty.*
-
-:bulb: **willing to implement this for the entire faculty and the university.**
+*NOTE: Curently this is only available for a single department of a faculty.*
