@@ -2,7 +2,7 @@ asgiref==3.3.1
 Django==3.1.13
 django-filter==2.4.0
 django-static-jquery==2.1.4
-Pillow==8.3.2
+Pillow==9.3.0
 prettytable==2.0.0
 pytz==2020.4
 requests==2.25.1
