@@ -5,6 +5,6 @@ django-static-jquery==2.1.4
 Pillow==8.3.2
 prettytable==2.0.0
 pytz==2020.4
-requests==2.25.1
+requests==2.31.0
 sqlparse==0.4.2
 wcwidth==0.2.5
